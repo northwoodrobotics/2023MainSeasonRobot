@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.PhotonCams;
@@ -20,21 +21,20 @@ public class DriveToTag extends CommandBase{
     private PathPlannerTrajectory Route2Tag;
     private Pose2d TagPose;
     private Transform2d robotToTag;
-    private Timer posetimer;
+    private Command pathCommand;
+   
     
     
 
     public DriveToTag(SwerveSubsystem m_SwerveSubsystem, PhotonCams camera){
         this.m_Swerve = m_SwerveSubsystem;
         this.m_Cameras = camera;
-        posetimer = new Timer();
+        
     }
     @Override
     public void initialize(){
-        posetimer.reset();
-        posetimer.start();
-        // gets location of the target relative to the robot's internal position
-        TagPose = m_Cameras.getTagLocation(m_Swerve.dt.getPose());
+
+
 
         // calculates a 2d vector in between the two tags
         robotToTag = new Transform2d(m_Swerve.dt.getPose(), TagPose);
@@ -47,13 +47,15 @@ public class DriveToTag extends CommandBase{
             new PathPoint(m_Swerve.dt.getPose().getTranslation(),robotToTag.getRotation(),m_Swerve.dt.getGyroscopeRotation() ), 
             new PathPoint(TagPose.getTranslation(), robotToTag.getRotation(), TagPose.getRotation())
             );
+
+            pathCommand=m_Swerve.dt.createCommandForTrajectory(Route2Tag, m_Swerve);
         
     }
 
     @Override
     public void execute(){
-        m_Swerve.dt.goToPose(Route2Tag.getEndState());
-      
+        
+        pathCommand.schedule();
     }
 
 

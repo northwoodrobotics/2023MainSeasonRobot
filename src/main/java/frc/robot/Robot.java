@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
+import java.io.IOException;
+
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -72,6 +74,7 @@ public class Robot extends LoggedRobot {
     // and put our
     // autonomous chooser on the dashboard. 
     m_robotContainer = new RobotContainer();
+    
   }
 
   /**

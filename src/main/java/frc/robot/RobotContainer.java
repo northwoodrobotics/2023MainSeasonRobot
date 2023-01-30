@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.io.IOException;
+
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
 
@@ -58,16 +60,6 @@ public class RobotContainer {
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
 
 
-  /**
-   * Exp Curves are exponential curves, think parabolas. the first value controls
-   * how agressive the curve is, (mess with this one first)
-   * the second is it's vertical offset from zero
-   * the third value is how stretched or squeezed it is.
-   * The final value is how large the deadzone in the middle will be.
-   * 
-   */
-  public static ExpCurve throttleCurve = new ExpCurve(1.2, 0, 1.0, 0.15);
-  public static ExpCurve steeringCurve = new ExpCurve(1.2, 0, -1.0, 0.15);
 
 
   /**
@@ -89,14 +81,15 @@ public class RobotContainer {
  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
+   * 
    */
   public RobotContainer() {
     // create drivetrain from our file, utilizing the libary to do position
     // tracking, path following, and a couple of other tricks.
     dt = DrivetrainSubsystem.createSwerveModel();
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
-    camera = new PhotonCamera("gloworm");
-    m_cams = new PhotonCams(camera);
+    
+    m_cams = new PhotonCams();
     TagPose = new Pose2d();
     PortForwarder.add(5800, "gloworm.local", 5800);
     
@@ -128,7 +121,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
     driver.bButton.whileTrue(new DriveToTag(m_SwerveSubsystem, m_cams));
-    driver.xButton.onTrue(new GetTagPose(m_cams));
+
     
 
   }
@@ -143,25 +136,12 @@ public class RobotContainer {
     return new SquiglyPath(m_SwerveSubsystem);
   }
 
-  public static double getDriveY() {
-    return throttleCurve.calculateMappedVal(driver.leftStick.getY());
-  }
-
-  public static double getDriveX() {
-    return throttleCurve.calculateMappedVal(driver.leftStick.getX());
-  }
-
-  public static double getDriveR() {
-    double value = driver.rightStick.getY();
-    value = steeringCurve.calculateMappedVal(value);
-    return value;
-  }
+  
   public void ShowInputs(){
     //master.addNumber("TagID", ()-> m_cams.getTagID());
     master.addNumber("X Command", ()-> -xLimiter.calculate(driver.leftStick.getX())*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
     master.addNumber("Y Command", () -> -yLimiter.calculate(driver.leftStick.getY()) * Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
-    master.addNumber("X Old Command", ()-> -getDriveX()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS* Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
-    master.addNumber("Y Old Command", () -> -getDriveY() * Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
+   
     
     master.addNumber("X Input", ()-> (-driver.leftStick.getX()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS));
     master.addNumber("Y Input", () -> (-driver.leftStick.getY()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS));

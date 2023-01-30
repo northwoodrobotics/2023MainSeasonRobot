@@ -4,6 +4,8 @@ import frc.swervelib.ctre.*;
 import frc.swervelib.rev.NeoDriveControllerFactoryBuilder;
 import frc.swervelib.rev.NeoSteerConfiguration;
 import frc.swervelib.rev.NeoSteerControllerFactoryBuilder;
+import frc.wpiClasses.QuadSwerveSim;
+import frc.wpiClasses.SwerveModuleSim;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public final class Mk4iSwerveModuleHelper {
@@ -526,5 +528,20 @@ public final class Mk4iSwerveModuleHelper {
         public ModuleConfiguration getConfiguration() {
             return configuration;
         }
+    }
+    public static SwerveModuleSim createSim(SwerveModule module) {
+        ModuleConfiguration modConfig = module.getModuleConfiguration();
+        return new SwerveModuleSim(module.getSteerController().getSteerMotor(),
+                                   module.getDriveController().getDriveMotor(),
+                                   modConfig.getWheelDiameter() / 2,
+                                   1 / modConfig.getSteerReduction(),
+                                   1 / modConfig.getDriveReduction(),
+                                   1.0, // CANCoder is directly on the shaft
+                                   1 / modConfig.getDriveReduction(),
+                                   1.1,
+                                   0.8,
+                                   SwerveConstants.MASS_kg * 9.81 / QuadSwerveSim.NUM_MODULES, 
+                                   0.01
+                                   );
     }
 }
