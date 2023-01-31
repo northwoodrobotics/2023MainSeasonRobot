@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,7 +20,7 @@ public class DriveToTag extends CommandBase{
     private final SwerveSubsystem m_Swerve;
     private final PhotonCams m_Cameras;
     private PathPlannerTrajectory Route2Tag;
-    private Pose2d TagPose;
+    private Pose2d TagPose = new Pose2d(new Translation2d(4, 2), new Rotation2d());
     private Transform2d robotToTag;
     private Command pathCommand;
    
