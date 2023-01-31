@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.ExternalLib.PoofLib.util.InterpolatingDouble;
 import frc.ExternalLib.PoofLib.util.InterpolatingTreeMap;
 
@@ -57,7 +58,7 @@ public final class Constants {
          * Should be measured from center to center.
          */
         public static final double WHEELBASE_METERS = Units.inchesToMeters(15.5); // FIXME Measure and set wheelbase
-        public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
+        public static final SecondOrderKinematics KINEMATICS = new SecondOrderKinematics(
                 new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
                 new Translation2d(TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0),
                 new Translation2d(-TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
