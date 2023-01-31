@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
 public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration> {
    
 
@@ -102,7 +103,9 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
 
         
         @Override
-        public void set(double driveVoltage, double steerAngle) {
+        public void set(BetterSwerveModuleState state) {
+            double steerAngle = state.angle.getRadians();
+            double driveVoltage = state.speedMetersPerSecond/SwerveConstants.MAX_FWD_REV_SPEED_MPS;
             steerAngle %= (2.0 * Math.PI);
             if (steerAngle < 0.0) {
                 steerAngle += 2.0 * Math.PI;
@@ -143,7 +146,9 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
         }
 
         @Override
-        public void setVelocity(double driveVelocity, double steerAngle) {
+        public void setVelocity(BetterSwerveModuleState state) {    
+            double driveVelocity = state.speedMetersPerSecond;
+            double steerAngle = state.angle.getRadians();
             steerAngle %= (2.0 * Math.PI);
             if (steerAngle < 0.0) {
                 steerAngle += 2.0 * Math.PI;
