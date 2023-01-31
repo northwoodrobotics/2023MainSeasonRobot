@@ -5,7 +5,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 public interface EnclosedSteerController{
     double getReferenceAngle();
 
-    void setReferenceAngle(double referenceAngleRadians);
+    void setReferenceAngle(double referenceAngleRadians,double omegaRadiansPerSecond );
 
     DCMotor getSteerMotor();
 

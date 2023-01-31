@@ -1,5 +1,6 @@
 package frc.swervelib.ctre;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -16,6 +17,7 @@ import frc.swervelib.AbsoluteEncoderFactory;
 import frc.swervelib.EnclosedSteerController;
 import frc.swervelib.EnclosedSteerControllerFactory;
 import frc.swervelib.ModuleConfiguration;
+import frc.swervelib.SwerveConstants;
 
 public class TalonSteerFactoryBuilder {
 
@@ -219,7 +221,7 @@ public class TalonSteerFactoryBuilder {
         }
 
         @Override
-        public void setReferenceAngle(double referenceAngleRadians) {
+        public void setReferenceAngle(double referenceAngleRadians, double omegaRadiansPerSecond) {
 
             double currentAngleRadians;
 
@@ -254,7 +256,7 @@ public class TalonSteerFactoryBuilder {
                 adjustedReferenceAngleRadians += 2.0 * Math.PI;
             }
 
-            motor.set(motorControlMode, adjustedReferenceAngleRadians / motorEncoderPositionCoefficient);
+            motor.set(motorControlMode, adjustedReferenceAngleRadians / motorEncoderPositionCoefficient, DemandType.ArbitraryFeedForward, omegaRadiansPerSecond* SwerveConstants.ModuleTwist_KV);
 
 
             this.referenceAngleRadians = referenceAngleRadians;
