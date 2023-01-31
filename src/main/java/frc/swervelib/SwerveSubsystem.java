@@ -4,6 +4,7 @@
 
 package frc.swervelib;
 
+import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
 import frc.wpiClasses.QuadSwerveSim;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveSubsystem extends SubsystemBase {
-  private SwerveModuleState[] states;
+  private BetterSwerveModuleState[] states;
   private SwerveModulePosition[] positions;
   private swerveModuleIOInputsAutoLogged[] inputs = new swerveModuleIOInputsAutoLogged[]{
     new swerveModuleIOInputsAutoLogged(), 
@@ -46,14 +47,14 @@ public class SwerveSubsystem extends SubsystemBase {
     if (states != null) {
       SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
 
-      modules.get(0).set(states[0].speedMetersPerSecond / SwerveConstants.MAX_FWD_REV_SPEED_MPS * SwerveConstants.MAX_VOLTAGE, states[0].angle.getRadians());
-      modules.get(1).set(states[1].speedMetersPerSecond / SwerveConstants.MAX_FWD_REV_SPEED_MPS * SwerveConstants.MAX_VOLTAGE, states[1].angle.getRadians());
-      modules.get(2).set(states[2].speedMetersPerSecond / SwerveConstants.MAX_FWD_REV_SPEED_MPS * SwerveConstants.MAX_VOLTAGE, states[2].angle.getRadians());
-      modules.get(3).set(states[3].speedMetersPerSecond / SwerveConstants.MAX_FWD_REV_SPEED_MPS * SwerveConstants.MAX_VOLTAGE, states[3].angle.getRadians());
+      modules.get(0).set(states[0]);
+      modules.get(1).set(states[1]);
+      modules.get(2).set(states[2]);
+      modules.get(3).set(states[3]);
 
 
       dt.m_poseEstimator.update(dt.getGyroscopeRotation(), 
-      new SwerveModuleState[]{
+      new BetterSwerveModuleState[]{
         states[0], 
         states[1], 
         states[2], 

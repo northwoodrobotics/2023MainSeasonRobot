@@ -20,8 +20,7 @@ public class GetTagPose extends CommandBase{
 
     @Override
     public void initialize(){
-        posetimer.reset();
-        posetimer.start();
+
        
      
     }

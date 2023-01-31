@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 
 public class SwerveConstants {
     public static double MAX_FWD_REV_SPEED_MPS;
@@ -21,7 +22,8 @@ public class SwerveConstants {
     public static double TRACKLENGTH_METERS;
     public static double MASS_kg;
     public static double MOI_KGM2;
-    public static SwerveDriveKinematics KINEMATICS;
+    public static SecondOrderKinematics KINEMATICS;
+    public static double ModuleTwist_KV;
     
     public static double kMinRotationCommand;
     public static double kMinTranslationCommand;

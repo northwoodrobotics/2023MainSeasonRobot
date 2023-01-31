@@ -20,6 +20,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
+import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
+
 import java.util.function.BiConsumer;
 
 /**
@@ -57,7 +59,7 @@ import java.util.function.BiConsumer;
  */
 public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs extends Num> {
   private final UnscentedKalmanFilter<States, Inputs, Outputs> m_observer;
-  private final SwerveDriveKinematics m_kinematics;
+  private final SecondOrderKinematics m_kinematics;
   private final BiConsumer<Matrix<Inputs, N1>, Matrix<N3, N1>> m_visionCorrect;
   private final TimeInterpolatableBuffer<Pose2d> m_poseBuffer;
 
@@ -100,7 +102,7 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
       Rotation2d gyroAngle,
       SwerveModulePosition[] modulePositions,
       Pose2d initialPoseMeters,
-      SwerveDriveKinematics kinematics,
+      SecondOrderKinematics kinematics,
       Matrix<States, N1> stateStdDevs,
       Matrix<Outputs, N1> localMeasurementStdDevs,
       Matrix<N3, N1> visionMeasurementStdDevs) {
@@ -146,7 +148,7 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
       Rotation2d gyroAngle,
       SwerveModulePosition[] modulePositions,
       Pose2d initialPoseMeters,
-      SwerveDriveKinematics kinematics,
+      SecondOrderKinematics kinematics,
       Matrix<States, N1> stateStdDevs,
       Matrix<Outputs, N1> localMeasurementStdDevs,
       Matrix<N3, N1> visionMeasurementStdDevs,

@@ -171,7 +171,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
         }
 
         @Override
-        public void setReferenceAngle(double referenceAngleRadians) {
+        public void setReferenceAngle(double referenceAngleRadians, double omegaRadiansPerSecond) {
             double currentAngleRadians = motor.getSelectedSensorPosition() * motorEncoderPositionCoefficient;
 
             double currentAngleRadiansMod = currentAngleRadians % (2.0 * Math.PI);
@@ -187,9 +187,9 @@ public final class Falcon500SteerControllerFactoryBuilder {
                 adjustedReferenceAngleRadians += 2.0 * Math.PI;
             }
 
-            motor.set(motorControlMode, adjustedReferenceAngleRadians / motorEncoderPositionCoefficient);
+            motor.set(motorControlMode, adjustedReferenceAngleRadians / motorEncoderPositionCoefficient, DemandType.ArbitraryFeedForward, omegaRadiansPerSecond );
 
-
+            
             this.referenceAngleRadians = referenceAngleRadians;
         }
 
