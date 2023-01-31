@@ -239,8 +239,8 @@ public class SwerveDrivetrainModel {
     }
     /** set modules to X pattern, which prevents  us from being pushed. */
 
-    public void VisionPose(Pose2d VisionMeasurement){
-        m_poseEstimator.addVisionMeasurement(VisionMeasurement, Timer.getFPGATimestamp());
+    public void VisionPose(Pose2d VisionMeasurement, double timestamp){
+        m_poseEstimator.addVisionMeasurement(VisionMeasurement, timestamp);
     }
 
     /**

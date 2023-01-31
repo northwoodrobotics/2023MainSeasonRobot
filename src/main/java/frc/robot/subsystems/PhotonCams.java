@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.hardware.VisionLEDMode;
+import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -63,6 +65,16 @@ public class PhotonCams extends SubsystemBase{
         this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, null);
 
         
+    }
+    
+    /**
+     * @param estimatedRobotPose The current best guess at robot pose
+     * @return A pair of the fused camera observations to a single Pose2d on the field, and the time
+     *     of the observation. Assumes a planar field and the robot is always firmly on the ground
+     */
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+        poseEstimator.setReferencePose(prevEstimatedRobotPose);
+        return poseEstimator.update();
     }
    
     // returns if the camera has a target

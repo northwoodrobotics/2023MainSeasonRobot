@@ -28,7 +28,7 @@ import frc.robot.commands.AutoCommands.SquiglyPath;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
-import frc.robot.commands.VisionCommands.GetTagPose;
+import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
 import frc.swervelib.SwerveDrivetrainModel;
@@ -102,7 +102,7 @@ public class RobotContainer {
         ShowInputs();
 
     Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(m_SwerveSubsystem.dt.getPose().getTranslation(), m_SwerveSubsystem.dt.getGyroscopeRotation()));
-
+    m_cams.setDefaultCommand(new AddVisionPose(m_cams, m_SwerveSubsystem));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -152,9 +152,7 @@ public class RobotContainer {
     master.addNumber("PoseX", ()-> m_SwerveSubsystem.dt.getPose().getX());
     master.addNumber("PoseY", ()-> m_SwerveSubsystem.dt.getPose().getY());
     master.addNumber("PoseRotation", ()-> m_SwerveSubsystem.dt.getPose().getRotation().getDegrees());
-    //master.addNumber("TagX", ()-> m_cams.getTagLocation(m_SwerveSubsystem.dt.getPose()).getX());
-    //master.addNumber("Tagy", ()-> m_cams.getTagLocation(m_SwerveSubsystem.dt.getPose()).getY());
-    //master.addBoolean("hasTag", ()->m_cams.hasTargets());
+
    
 
     
