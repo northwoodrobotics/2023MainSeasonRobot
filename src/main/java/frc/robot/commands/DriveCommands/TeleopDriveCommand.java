@@ -8,7 +8,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.DriveConstants;
 import frc.swervelib.SwerveSubsystem;
+import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
+import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.robot.Constants;
 import java.util.function.DoubleSupplier;
 //import frc.ExternalLib.SpectrumLib.controllers.SpectrumXboxController;
@@ -38,8 +41,15 @@ public class TeleopDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
+    
     m_SwerveSubsystem.dt.driveClean(m_translationXSupplier.getAsDouble()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS, m_translationYSupplier.getAsDouble()*Constants.DriveConstants.MAX_STRAFE_SPEED_MPS, m_rotationSupplier.getAsDouble());
-
+   /* m_SwerveSubsystem.dt.setModuleStates(
+    DriveConstants.KINEMATICS.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(
+      m_translationXSupplier.getAsDouble()*DriveConstants.MAX_FWD_REV_SPEED_MPS,
+       m_translationYSupplier.getAsDouble()*DriveConstants.MAX_FWD_REV_SPEED_MPS, 
+       m_rotationSupplier.getAsDouble(), 
+       m_SwerveSubsystem.dt.getGyroscopeRotation())) 
+    );*/
   }
 
   @Override

@@ -5,6 +5,7 @@
 package frc.swervelib;
 
 import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
+import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.wpiClasses.QuadSwerveSim;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveSubsystem extends SubsystemBase {
-  private BetterSwerveModuleState[] states;
+  private SwerveModuleState[] states;
   private SwerveModulePosition[] positions;
   private swerveModuleIOInputsAutoLogged[] inputs = new swerveModuleIOInputsAutoLogged[]{
     new swerveModuleIOInputsAutoLogged(), 
@@ -54,7 +55,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
       dt.m_poseEstimator.update(dt.getGyroscopeRotation(), 
-      new BetterSwerveModuleState[]{
+      new SwerveModuleState[]{
         states[0], 
         states[1], 
         states[2], 
@@ -70,7 +71,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       );
       
-      dt.m_tracker.update(dt.getGyroscopeRotation(), dt.gyro.getAccelerlationArray());
+    //  dt.m_tracker.update(dt.getGyroscopeRotation(), dt.gyro.getAccelerlationArray());
       
       for (int i = 0; i<4; i++){
         modules.get(i).updateInputs(inputs[i]);
@@ -79,7 +80,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     }
 
-    dt.updateTelemetry();
   }
 
   @Override

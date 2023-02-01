@@ -27,9 +27,9 @@ public class HuskyPathFollower extends CommandBase{
     private final Timer timer = new Timer();
   private final PathPlannerTrajectory trajectory;
   private final Supplier<Pose2d> poseSupplier;
-  private final SecondOrderKinematics kinematics;
+  private final SwerveDriveKinematics kinematics;
   private final PPHolonomicDriveController controller;
-  private final Consumer<BetterSwerveModuleState[]> outputModuleStates;
+  private final Consumer<SwerveModuleState[]> outputModuleStates;
   private final Consumer<ChassisSpeeds> outputChassisSpeeds;
   private final boolean useKinematics;
   private final boolean useAllianceColor;
@@ -156,7 +156,7 @@ public class HuskyPathFollower extends CommandBase{
       PIDController xController,
       PIDController yController,
       PIDController rotationController,
-      Consumer<BetterSwerveModuleState[]> outputModuleStates,
+      Consumer<SwerveModuleState[]> outputModuleStates,
       boolean useAllianceColor,
       Subsystem... requirements) {
     this.trajectory = trajectory;
@@ -204,7 +204,7 @@ public class HuskyPathFollower extends CommandBase{
       PIDController xController,
       PIDController yController,
       PIDController rotationController,
-      Consumer<BetterSwerveModuleState[]> outputModuleStates,
+      Consumer<SwerveModuleState[]> outputModuleStates,
       Subsystem... requirements) {
     this(
         trajectory,
@@ -252,7 +252,7 @@ public class HuskyPathFollower extends CommandBase{
     ChassisSpeeds targetChassisSpeeds = this.controller.calculate(currentPose, desiredState);
 
     if (this.useKinematics) {
-      BetterSwerveModuleState[] targetModuleStates =
+      SwerveModuleState[] targetModuleStates =
           this.kinematics.toSwerveModuleStates(targetChassisSpeeds);
 
       this.outputModuleStates.accept(targetModuleStates);

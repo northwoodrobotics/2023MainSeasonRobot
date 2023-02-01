@@ -1,6 +1,7 @@
 package frc.swervelib;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -103,7 +104,7 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
 
         
         @Override
-        public void set(BetterSwerveModuleState state) {
+        public void set(SwerveModuleState state) {
             double steerAngle = state.angle.getRadians();
             double driveVoltage = state.speedMetersPerSecond/SwerveConstants.MAX_FWD_REV_SPEED_MPS;
             steerAngle %= (2.0 * Math.PI);

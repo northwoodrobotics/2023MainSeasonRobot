@@ -91,7 +91,7 @@ public class RobotContainer {
     
     m_cams = new PhotonCams();
     TagPose = new Pose2d();
-    PortForwarder.add(5800, "gloworm.local", 5800);
+    PortForwarder.add(5800, "photonvision.local", 5800);
     
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
@@ -102,7 +102,7 @@ public class RobotContainer {
         ShowInputs();
 
     Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(m_SwerveSubsystem.dt.getPose().getTranslation(), m_SwerveSubsystem.dt.getGyroscopeRotation()));
-    m_cams.setDefaultCommand(new AddVisionPose(m_cams, m_SwerveSubsystem));
+    m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
     // Configure the button bindings
     configureButtonBindings();

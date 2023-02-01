@@ -57,15 +57,15 @@ public class SwerveDrivetrainModel {
   
 
     Pose2d endPose;
-    PoseTelemetry dtPoseView;
+
 
     HuskyPoseEstimator<N7, N7, N5> m_poseEstimator;
-    GyroTracker m_tracker;
+    //GyroTracker m_tracker;
     Pose2d curEstPose = new Pose2d(SwerveConstants.DFLT_START_POSE.getTranslation(), SwerveConstants.DFLT_START_POSE.getRotation());
     Pose2d fieldPose = new Pose2d(); // Field-referenced orign
     boolean pointedDownfield = false;
     double curSpeed = 0;
-    BetterSwerveModuleState[] states;
+    SwerveModuleState[] states;
     SwerveModulePosition[] positions;
 
     PIDController thetaController =
@@ -153,7 +153,7 @@ public class SwerveDrivetrainModel {
         SmartDashboard.putData("Orientation Chooser", orientationChooser);
 
        m_holo = new PPHolonomicDriveController(SwerveConstants.XPIDCONTROLLER, SwerveConstants.YPIDCONTROLLER, thetaController);
-       m_tracker = new GyroTracker(getGyroscopeRotation(), SwerveConstants.DFLT_START_POSE);
+      // m_tracker = new GyroTracker(getGyroscopeRotation(), SwerveConstants.DFLT_START_POSE);
     }
 
     /**
@@ -233,7 +233,7 @@ public class SwerveDrivetrainModel {
      *
      * @param desiredStates The desired SwerveModule states.
      */
-    public void setModuleStates(BetterSwerveModuleState[] desiredStates) {
+    public void setModuleStates(SwerveModuleState[] desiredStates) {
         states = desiredStates;
         
     }
@@ -315,7 +315,7 @@ public class SwerveDrivetrainModel {
         }
     }
 
-    public BetterSwerveModuleState[] getSwerveModuleStates() {
+    public SwerveModuleState[] getSwerveModuleStates() {
       return states;
     }
 
@@ -370,9 +370,10 @@ public class SwerveDrivetrainModel {
     public void plusNinetyGyroscope() {
         gyro.zeroGyroscope(90.0);
     }
+    /*
     public Pose2d gyroPose(){
         return m_tracker.getPoseMeters();
-    }
+    } */
 
     public Rotation2d getGyroscopeRotation() {
         SmartDashboard.putNumber("Gyro Angle", gyro.getGyroHeading().getDegrees());
@@ -387,14 +388,6 @@ public class SwerveDrivetrainModel {
         return gyro.getGyroReady();
     }
 
-    public void updateTelemetry(){
-        dtPoseView.update(Timer.getFPGATimestamp()*1000);
-    }
-
-    public Field2d getField() {
-        return dtPoseView.getField();
-    }
-
     public void resetWheelEncoders() {
       for(int idx = 0; idx < QuadSwerveSim.NUM_MODULES; idx++){
         realModules.get(idx).resetWheelEncoder();
@@ -402,8 +395,8 @@ public class SwerveDrivetrainModel {
     }
 
     public Command createCommandForTrajectory(PathPlannerTrajectory trajectory, SwerveSubsystem m_drive) {
-        HuskyPathFollower swerveControllerCommand =
-            new HuskyPathFollower(
+        PPSwerveControllerCommand swerveControllerCommand =
+            new PPSwerveControllerCommand(
                 trajectory,
                 () -> getPose(), // Functional interface to feed supplier
                 SwerveConstants.KINEMATICS,

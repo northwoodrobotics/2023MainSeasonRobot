@@ -58,7 +58,7 @@ public final class Constants {
          * Should be measured from center to center.
          */
         public static final double WHEELBASE_METERS = Units.inchesToMeters(15.5); // FIXME Measure and set wheelbase
-        public static final SecondOrderKinematics KINEMATICS = new SecondOrderKinematics(
+        public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
                 new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
                 new Translation2d(TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0),
                 new Translation2d(-TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
@@ -69,7 +69,7 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5; // FIXME Set front left module drive motor ID
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; // FIXME Set front left module steer motor ID
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 6; // FIXME Set front left steer encoder ID
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(5.80); // FIXME Measure and
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(5.80+180); // FIXME Measure and
                                                                                                     // set front left
                                                                                                     // steer offset
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 8; // FIXME Set front right drive motor ID

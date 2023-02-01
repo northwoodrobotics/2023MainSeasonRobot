@@ -3,6 +3,7 @@ package frc.swervelib;
 import org.littletonrobotics.junction.AutoLog;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
 
 public interface SwerveModule {
@@ -39,7 +40,7 @@ public interface SwerveModule {
 
     void resetWheelEncoder();
 
-    void set(BetterSwerveModuleState state);
+    void set(SwerveModuleState states);
     void updateInputs(swerveModuleIOInputs inputs);
 
     void setVelocity(BetterSwerveModuleState state);

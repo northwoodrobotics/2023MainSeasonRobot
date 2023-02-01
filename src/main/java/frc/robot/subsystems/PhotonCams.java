@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
@@ -25,6 +26,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
@@ -46,12 +48,12 @@ public class PhotonCams extends SubsystemBase{
 
     public PhotonCams(){
         //sets the camera in the subsytem, as the camera given. 
-        this.visionCam = new PhotonCamera("gloworm");;
+        this.visionCam = new PhotonCamera("photonvision");;
         // turns off "driver mode"
         visionCam.setDriverMode(false);
         // turns off LEDs
         visionCam.setLED(VisionLEDMode.kOff);
-        try {
+      /*  try {
             layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
             var alliance = DriverStation.getAlliance();
             layout.setOrigin(alliance == Alliance.Blue ?
@@ -59,8 +61,13 @@ public class PhotonCams extends SubsystemBase{
           } catch(IOException e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
             layout = null;
-          }
-        
+          } */
+
+          final AprilTag tag01 = new AprilTag(0,
+          new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(118)), Rotation2d.fromDegrees(180))));
+        ArrayList<AprilTag> list = new ArrayList<>();
+        list.add(tag01);   
+        layout = new AprilTagFieldLayout(list, Units.inchesToMeters(118), Units.inchesToMeters(86));
 
         this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, null);
 

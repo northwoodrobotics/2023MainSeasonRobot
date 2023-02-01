@@ -2,6 +2,7 @@ package frc.swervelib;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -115,9 +116,9 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
 
         
         @Override
-        public void set(BetterSwerveModuleState state) {
+        public void set(SwerveModuleState state) {
             double steerAngle = state.angle.getDegrees();
-            double driveVoltage = state.speedMetersPerSecond;
+            double driveVoltage = state.speedMetersPerSecond/SwerveConstants.MAX_FWD_REV_SPEED_MPS* SwerveConstants.MAX_VOLTAGE;
             steerAngle %= (2.0 * Math.PI);
             if (steerAngle < 0.0) {
                 steerAngle += 2.0 * Math.PI;
@@ -146,8 +147,8 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
                 steerAngle += 2.0 * Math.PI;
             }
 
-            driveController.setReferenceVoltage(driveVoltage/SwerveConstants.MAX_FWD_REV_SPEED_MPS);
-            steerController.setReferenceAngle(steerAngle, state.omegaRadPerSecond* SwerveConstants.ModuleTwist_KV);
+            driveController.setReferenceVoltage(driveVoltage);
+            steerController.setReferenceAngle(steerAngle,0 );
 
                     }
         @Override

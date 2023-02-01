@@ -158,8 +158,8 @@ public final class NeoSteerControllerFactoryBuilder {
 
             this.referenceAngleRadians = referenceAngleRadians;
 
-            controller.setReference(adjustedReferenceAngleRadians, ControlType.kPosition);
-            controller.setReference(adjustedReferenceAngleRadians, ControlType.kPosition, 0, omegaRadiansPerSecond );
+           // controller.setReference(adjustedReferenceAngleRadians, ControlType.kPosition, 0, omegaRadiansPerSecond );
+           controller.setReference(adjustedReferenceAngleRadians, ControlType.kPosition);
         }
 
         @Override

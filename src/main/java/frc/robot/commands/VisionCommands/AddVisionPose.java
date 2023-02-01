@@ -14,13 +14,13 @@ import frc.swervelib.SwerveSubsystem;
 
 public class AddVisionPose extends CommandBase{
     private final PhotonCams m_cameras;
-    private final SwerveSubsystem m_drivetrain;
+   // private final SwerveSubsystem m_drivetrain;
 
     
-    public AddVisionPose(PhotonCams cameras, SwerveSubsystem drive){
-        this.m_drivetrain = drive;
+    public AddVisionPose(PhotonCams cameras){
+   
         this.m_cameras = cameras;
-        
+        addRequirements(cameras);
      
     }
 
@@ -33,11 +33,11 @@ public class AddVisionPose extends CommandBase{
     }
     public void execute(){
         Optional<EstimatedRobotPose> result =
-        m_cameras.getEstimatedGlobalPose(m_drivetrain.dt.getPose());
+        m_cameras.getEstimatedGlobalPose(RobotContainer.m_SwerveSubsystem.dt.getPose());
 
         if (result.isPresent()) {
             EstimatedRobotPose camPose = result.get();
-            m_drivetrain.dt.VisionPose(
+            RobotContainer.m_SwerveSubsystem.dt.VisionPose(
                     camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
           
         }
