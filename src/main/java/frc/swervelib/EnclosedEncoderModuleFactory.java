@@ -104,7 +104,7 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
 
         
         @Override
-        public void set(SwerveModuleState state) {
+        public void set(BetterSwerveModuleState state) {
             double steerAngle = state.angle.getRadians();
             double driveVoltage = state.speedMetersPerSecond/SwerveConstants.MAX_FWD_REV_SPEED_MPS;
             steerAngle %= (2.0 * Math.PI);

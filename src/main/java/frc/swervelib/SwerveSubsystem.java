@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveSubsystem extends SubsystemBase {
-  private SwerveModuleState[] states;
+  private BetterSwerveModuleState[] states;
   private SwerveModulePosition[] positions;
   private swerveModuleIOInputsAutoLogged[] inputs = new swerveModuleIOInputsAutoLogged[]{
     new swerveModuleIOInputsAutoLogged(), 
@@ -46,7 +46,7 @@ public class SwerveSubsystem extends SubsystemBase {
     
 
     if (states != null) {
-      SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
+      SecondOrderKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
 
       modules.get(0).set(states[0]);
       modules.get(1).set(states[1]);

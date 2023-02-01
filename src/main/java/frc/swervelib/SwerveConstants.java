@@ -22,7 +22,7 @@ public class SwerveConstants {
     public static double TRACKLENGTH_METERS;
     public static double MASS_kg;
     public static double MOI_KGM2;
-    public static SwerveDriveKinematics KINEMATICS;
+    public static SecondOrderKinematics KINEMATICS;
     public static double ModuleTwist_KV;
     
     public static double kMinRotationCommand;

@@ -40,7 +40,7 @@ public interface SwerveModule {
 
     void resetWheelEncoder();
 
-    void set(SwerveModuleState states);
+    void set(BetterSwerveModuleState state);
     void updateInputs(swerveModuleIOInputs inputs);
 
     void setVelocity(BetterSwerveModuleState state);

@@ -65,7 +65,7 @@ public class SwerveDrivetrainModel {
     Pose2d fieldPose = new Pose2d(); // Field-referenced orign
     boolean pointedDownfield = false;
     double curSpeed = 0;
-    SwerveModuleState[] states;
+    BetterSwerveModuleState[] states;
     SwerveModulePosition[] positions;
 
     PIDController thetaController =
@@ -233,7 +233,7 @@ public class SwerveDrivetrainModel {
      *
      * @param desiredStates The desired SwerveModule states.
      */
-    public void setModuleStates(SwerveModuleState[] desiredStates) {
+    public void setModuleStates(BetterSwerveModuleState[] desiredStates) {
         states = desiredStates;
         
     }
@@ -315,7 +315,7 @@ public class SwerveDrivetrainModel {
         }
     }
 
-    public SwerveModuleState[] getSwerveModuleStates() {
+    public BetterSwerveModuleState[] getSwerveModuleStates() {
       return states;
     }
 
@@ -395,8 +395,8 @@ public class SwerveDrivetrainModel {
     }
 
     public Command createCommandForTrajectory(PathPlannerTrajectory trajectory, SwerveSubsystem m_drive) {
-        PPSwerveControllerCommand swerveControllerCommand =
-            new PPSwerveControllerCommand(
+        HuskyPathFollower swerveControllerCommand =
+            new HuskyPathFollower(
                 trajectory,
                 () -> getPose(), // Functional interface to feed supplier
                 SwerveConstants.KINEMATICS,

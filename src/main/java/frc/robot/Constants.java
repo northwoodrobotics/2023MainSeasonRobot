@@ -58,7 +58,7 @@ public final class Constants {
          * Should be measured from center to center.
          */
         public static final double WHEELBASE_METERS = Units.inchesToMeters(15.5); // FIXME Measure and set wheelbase
-        public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
+        public static final SecondOrderKinematics KINEMATICS = new SecondOrderKinematics(
                 new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
                 new Translation2d(TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0),
                 new Translation2d(-TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
