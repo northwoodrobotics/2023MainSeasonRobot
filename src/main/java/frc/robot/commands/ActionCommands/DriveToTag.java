@@ -20,7 +20,7 @@ public class DriveToTag extends CommandBase{
     private final SwerveSubsystem m_Swerve;
     private final PhotonCams m_Cameras;
     private PathPlannerTrajectory Route2Tag;
-    private Pose2d TagPose = new Pose2d(new Translation2d(4, 2), new Rotation2d());
+    private Pose2d TagPose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
     private Transform2d robotToTag;
     private Command pathCommand;
    
@@ -50,19 +50,20 @@ public class DriveToTag extends CommandBase{
             );
 
             pathCommand=m_Swerve.dt.createCommandForTrajectory(Route2Tag, m_Swerve);
-        
+            pathCommand.schedule();
     }
 
     @Override
     public void execute(){
         
-        pathCommand.schedule();
+        
     }
 
 
     @Override
     public void end(boolean interrupted){
-        
+        pathCommand.cancel();
+        m_Swerve.dt.driveClean(0, 0, 0);
     }
 
 

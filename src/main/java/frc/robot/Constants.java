@@ -103,7 +103,7 @@ public final class Constants {
         // Sensor-related constants - pulled from datasheets for the sensors and
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////// gearboxes
 
-        static public final Pose2d DFLT_START_POSE = new Pose2d(Units.feetToMeters(24.0), Units.feetToMeters(10.0),
+        static public final Pose2d DFLT_START_POSE = new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0),
                 Rotation2d.fromDegrees(0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
