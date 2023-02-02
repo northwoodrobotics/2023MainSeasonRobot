@@ -16,10 +16,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
+import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 
 import java.util.function.BiConsumer;
@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
  *
  * <p>The generic arguments to this class define the size of the state, input and output vectors
  * used in the underlying {@link UnscentedKalmanFilter Unscented Kalman Filter}. {@link Num States}
- * must be equal to the module count + 3. {@link Num Inputs} must be equal to the module count + 3.
+ * must be equal to twice the module count + 3. {@link Num Inputs} must be equal to twice the module count + 3.
  * {@link Num Outputs} must be equal to the module count + 1.
  *
  * <p>{@link HuskyPoseEstimator#update} should be called every robot loop. If your loops are
@@ -362,7 +362,7 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
    */
   public Pose2d update(
       Rotation2d gyroAngle,
-      SwerveModuleState[] moduleStates,
+      BetterSwerveModuleState[] moduleStates,
       SwerveModulePosition[] modulePositions) {
     return updateWithTime(WPIUtilJNI.now() * 1.0e-6, gyroAngle, moduleStates, modulePositions);
   }
@@ -381,7 +381,7 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
   public Pose2d updateWithTime(
       double currentTimeSeconds,
       Rotation2d gyroAngle,
-      SwerveModuleState[] moduleStates,
+      BetterSwerveModuleState[] moduleStates,
       SwerveModulePosition[] modulePositions) {
     double dt = m_prevTimeSeconds >= 0 ? currentTimeSeconds - m_prevTimeSeconds : m_nominalDt;
     m_prevTimeSeconds = currentTimeSeconds;
