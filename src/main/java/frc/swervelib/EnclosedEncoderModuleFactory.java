@@ -105,7 +105,9 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
         
         @Override
         public void set(BetterSwerveModuleState state) {
+            // steerAngle is in RADIANS
             double steerAngle = state.angle.getRadians();
+            // this is open loop drive
             double driveVoltage = state.speedMetersPerSecond/SwerveConstants.MAX_FWD_REV_SPEED_MPS;
             steerAngle %= (2.0 * Math.PI);
             if (steerAngle < 0.0) {
@@ -148,7 +150,9 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
 
         @Override
         public void setVelocity(BetterSwerveModuleState state) {    
+            // Closed loop drive with velocity control
             double driveVelocity = state.speedMetersPerSecond;
+            // steerAngle is in Radians.
             double steerAngle = state.angle.getRadians();
             steerAngle %= (2.0 * Math.PI);
             if (steerAngle < 0.0) {

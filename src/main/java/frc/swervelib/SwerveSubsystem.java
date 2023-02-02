@@ -55,7 +55,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
       dt.m_poseEstimator.update(dt.getGyroscopeRotation(), 
-      new SwerveModuleState[]{
+      new BetterSwerveModuleState[]{
         states[0], 
         states[1], 
         states[2], 
@@ -67,12 +67,9 @@ public class SwerveSubsystem extends SubsystemBase {
         positions[2],
         positions[3]  
       }
-
-
-      );
+);
       
-    //  dt.m_tracker.update(dt.getGyroscopeRotation(), dt.gyro.getAccelerlationArray());
-      
+
       for (int i = 0; i<4; i++){
         modules.get(i).updateInputs(inputs[i]);
         Logger.getInstance().processInputs("DriveModule"+Integer.toString(i), inputs[i]);
