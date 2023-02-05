@@ -48,7 +48,7 @@ public class PhotonCams extends SubsystemBase{
 
     public PhotonCams(){
         //sets the camera in the subsytem, as the camera given. 
-        this.visionCam = new PhotonCamera("photonvision");;
+        this.visionCam = new PhotonCamera("Main");;
         // turns off "driver mode"
         visionCam.setDriverMode(false);
         // turns off LEDs
@@ -63,7 +63,7 @@ public class PhotonCams extends SubsystemBase{
             layout = null;
           } */
 
-          final AprilTag tag01 = new AprilTag(0,
+          final AprilTag tag01 = new AprilTag(1,
           new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(118)), Rotation2d.fromDegrees(180))));
         ArrayList<AprilTag> list = new ArrayList<>();
         list.add(tag01);   
