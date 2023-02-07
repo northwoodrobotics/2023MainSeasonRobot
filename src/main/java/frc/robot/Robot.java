@@ -6,10 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-
-import java.io.IOException;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -71,8 +68,11 @@ public class Robot extends LoggedRobot {
     }
 
     logger.start(); 
+<<<<<<< HEAD
    
 
+=======
+>>>>>>> a34c68cdddc4a51d80d0d6e06f8020a104805f59
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard. 
