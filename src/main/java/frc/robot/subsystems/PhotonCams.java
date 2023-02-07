@@ -65,11 +65,7 @@ public class PhotonCams extends SubsystemBase{
           } */
 
           final AprilTag tag01 = new AprilTag(1,
-<<<<<<< HEAD
           new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(7.75)), Rotation2d.fromDegrees(180))));
-=======
-          new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(118)), Rotation2d.fromDegrees(180))));
->>>>>>> a34c68cdddc4a51d80d0d6e06f8020a104805f59
         ArrayList<AprilTag> list = new ArrayList<>();
         list.add(tag01);   
         layout = new AprilTagFieldLayout(list, Units.inchesToMeters(118), Units.inchesToMeters(86));

@@ -68,11 +68,8 @@ public class Robot extends LoggedRobot {
     }
 
     logger.start(); 
-<<<<<<< HEAD
    
 
-=======
->>>>>>> a34c68cdddc4a51d80d0d6e06f8020a104805f59
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard. 
