@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -61,7 +62,7 @@ public class Robot extends LoggedRobot {
       if (isReal()) {
       Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
       Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-      new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+      new PowerDistribution(1, ModuleType.kCTRE); // Enables power distribution logging
     }  else {
       setUseTiming(false); // Run as fast as possible
       String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
@@ -69,7 +70,9 @@ public class Robot extends LoggedRobot {
       Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
 
-    Logger.getInstance().start(); 
+    logger.start(); 
+   
+
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard. 
@@ -97,6 +100,7 @@ public class Robot extends LoggedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    //Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(RobotContainer.m_SwerveSubsystem.dt.getPose().getTranslation(), RobotContainer.m_SwerveSubsystem.dt.getGyroscopeRotation()));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

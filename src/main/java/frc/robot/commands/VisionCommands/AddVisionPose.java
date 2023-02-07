@@ -34,13 +34,12 @@ public class AddVisionPose extends CommandBase{
     public void execute(){
         Optional<EstimatedRobotPose> result =
         m_cameras.getEstimatedGlobalPose(RobotContainer.m_SwerveSubsystem.dt.getPose());
-
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
-            RobotContainer.m_SwerveSubsystem.dt.VisionPose(
-                    camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-          
+        if (result.isPresent()){
+            RobotContainer.m_SwerveSubsystem.dt.VisionPose(result.get().estimatedPose.toPose2d(), result.get().timestampSeconds);
         }
+     
+
+        
        
     }
     public void end(boolean interrupted){

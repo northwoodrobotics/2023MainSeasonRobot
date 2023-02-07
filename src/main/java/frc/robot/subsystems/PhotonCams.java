@@ -26,6 +26,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.VisionConstants;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -48,7 +49,7 @@ public class PhotonCams extends SubsystemBase{
 
     public PhotonCams(){
         //sets the camera in the subsytem, as the camera given. 
-        this.visionCam = new PhotonCamera("photonvision");;
+        this.visionCam = new PhotonCamera("Main");;
         // turns off "driver mode"
         visionCam.setDriverMode(false);
         // turns off LEDs
@@ -63,13 +64,13 @@ public class PhotonCams extends SubsystemBase{
             layout = null;
           } */
 
-          final AprilTag tag01 = new AprilTag(0,
-          new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(118)), Rotation2d.fromDegrees(180))));
+          final AprilTag tag01 = new AprilTag(1,
+          new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(7.75)), Rotation2d.fromDegrees(180))));
         ArrayList<AprilTag> list = new ArrayList<>();
         list.add(tag01);   
         layout = new AprilTagFieldLayout(list, Units.inchesToMeters(118), Units.inchesToMeters(86));
 
-        this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, null);
+        this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, VisionConstants.robotToCam );
 
         
     }
@@ -80,6 +81,7 @@ public class PhotonCams extends SubsystemBase{
      *     of the observation. Assumes a planar field and the robot is always firmly on the ground
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+        
         poseEstimator.setReferencePose(prevEstimatedRobotPose);
         return poseEstimator.update();
     }

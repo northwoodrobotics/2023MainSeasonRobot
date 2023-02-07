@@ -5,8 +5,10 @@
 package frc.robot;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -84,8 +86,8 @@ public class RobotContainer {
    * 
    */
   public RobotContainer() {
-    // create drivetrain from our file, utilizing the libary to do position
-    // tracking, path following, and a couple of other tricks.
+    /* create drivetrain from our file, utilizing the libary to do position
+     tracking, path following, and a couple of other tricks. */
     dt = DrivetrainSubsystem.createSwerveModel();
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     
@@ -101,7 +103,7 @@ public class RobotContainer {
 
         ShowInputs();
 
-    Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(m_SwerveSubsystem.dt.getPose().getTranslation(), m_SwerveSubsystem.dt.getGyroscopeRotation()));
+   
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
     // Configure the button bindings
@@ -152,8 +154,15 @@ public class RobotContainer {
     master.addNumber("PoseY", ()-> m_SwerveSubsystem.dt.getPose().getY());
     master.addNumber("PoseRotation", ()-> m_SwerveSubsystem.dt.getPose().getRotation().getDegrees());
 
-   
-
+    Optional<EstimatedRobotPose> result =
+        m_cams.getEstimatedGlobalPose(RobotContainer.m_SwerveSubsystem.dt.getPose());
+    
+        if (result.isPresent()) {
+          EstimatedRobotPose camPose = result.get();
+          master.addNumber("PhotonX",()->camPose.estimatedPose.getX());
+          master.addNumber("PhotonY",()->camPose.estimatedPose.getY());
+        
+      }
     
     
     

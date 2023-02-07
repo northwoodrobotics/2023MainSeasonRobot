@@ -6,7 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -36,6 +39,17 @@ public final class Constants {
         public static final double blindlightAngle = 23;
         public static final Pose2d GoalPose = new Pose2d(4, 6, Rotation2d.fromDegrees(0));
         public static final double intakeCamHeight = Units.inchesToMeters(38);
+
+        public static final Transform3d robotToCam = (
+            new Transform3d(new Translation3d(
+                Units.inchesToMeters(9), 
+                Units.inchesToMeters(6),
+                Units.inchesToMeters(6.5)), 
+                new Rotation3d(
+                    0, 
+                    0,
+                    Units.degreesToRadians(-90))));
+        
 
     }
 
@@ -128,7 +142,7 @@ public final class Constants {
         public static final double DriveKS = 1.1152;
         public static final double DriveKV = 0.62013;
         public static final double DriveKA = 0.12412;
-        public static final double THETACONTROLLERkP = 1;
+        public static final double THETACONTROLLERkP = 1.5;
         public static final double THETACONTROLLERkI = 0;
         public static final double THETACONTROLLERkD = 0;
         // FIXME In order for auto to work consistently and as viewed on the path

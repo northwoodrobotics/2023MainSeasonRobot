@@ -20,7 +20,7 @@ public class DriveToTag extends CommandBase{
     private final SwerveSubsystem m_Swerve;
     private final PhotonCams m_Cameras;
     private PathPlannerTrajectory Route2Tag;
-    private Pose2d TagPose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
+    private Pose2d TagPose = new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(90));
     private Transform2d robotToTag;
     private Command pathCommand;
    
@@ -43,7 +43,7 @@ public class DriveToTag extends CommandBase{
         // feeds all data into path generation software
         Route2Tag = PathPlanner.generatePath(
             // these are acceleration and velocity constraints, in m/s and m/s squared
-            new PathConstraints(6, 4), 
+            new PathConstraints(2, 4), 
             // PathPoints have 3 values, the cordinates of the intial point, the heading of the desired vector, and the "holonomic rotation" of the robot
             new PathPoint(m_Swerve.dt.getPose().getTranslation(),robotToTag.getRotation(),m_Swerve.dt.getGyroscopeRotation() ), 
             new PathPoint(TagPose.getTranslation(), robotToTag.getRotation(), TagPose.getRotation())

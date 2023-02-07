@@ -7,6 +7,7 @@ package frc.swervelib;
 import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.wpiClasses.QuadSwerveSim;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -74,6 +75,7 @@ public class SwerveSubsystem extends SubsystemBase {
         modules.get(i).updateInputs(inputs[i]);
         Logger.getInstance().processInputs("DriveModule"+Integer.toString(i), inputs[i]);
       }
+      Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(dt.getPose().getTranslation(), dt.getGyroscopeRotation()));
 
     }
 
