@@ -4,22 +4,21 @@ import java.util.ArrayList;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.numbers.N5;
 import edu.wpi.first.math.numbers.N7;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.HolonomicDriveController;
+
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -239,8 +238,8 @@ public class SwerveDrivetrainModel {
     }
     /** set modules to X pattern, which prevents  us from being pushed. */
 
-    public void VisionPose(Pose2d VisionMeasurement){
-        m_poseEstimator.addVisionMeasurement(VisionMeasurement, Timer.getFPGATimestamp());
+    public void VisionPose(Pose2d VisionMeasurement, double timeStamp){
+        m_poseEstimator.addVisionMeasurement(VisionMeasurement, timeStamp);
     }
 
     /**

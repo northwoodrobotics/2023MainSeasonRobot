@@ -5,6 +5,7 @@
 package frc.swervelib;
 
 import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
+import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.wpiClasses.QuadSwerveSim;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -45,7 +46,7 @@ public class SwerveSubsystem extends SubsystemBase {
     
 
     if (states != null) {
-      SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
+      SecondOrderKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
 
       modules.get(0).set(states[0]);
       modules.get(1).set(states[1]);

@@ -116,8 +116,8 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
         
         @Override
         public void set(BetterSwerveModuleState state) {
-            double steerAngle = state.angle.getDegrees();
-            double driveVoltage = state.speedMetersPerSecond;
+            double steerAngle = state.angle.getRadians();
+            double driveVoltage = state.speedMetersPerSecond/SwerveConstants.MAX_FWD_REV_SPEED_MPS * SwerveConstants.MAX_VOLTAGE;
             steerAngle %= (2.0 * Math.PI);
             if (steerAngle < 0.0) {
                 steerAngle += 2.0 * Math.PI;
@@ -146,7 +146,7 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
                 steerAngle += 2.0 * Math.PI;
             }
 
-            driveController.setReferenceVoltage(driveVoltage/SwerveConstants.MAX_FWD_REV_SPEED_MPS);
+            driveController.setReferenceVoltage(driveVoltage);
             steerController.setReferenceAngle(steerAngle, state.omegaRadPerSecond* SwerveConstants.ModuleTwist_KV);
 
                     }

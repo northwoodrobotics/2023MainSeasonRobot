@@ -28,7 +28,7 @@ import frc.robot.commands.AutoCommands.SquiglyPath;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
-import frc.robot.commands.VisionCommands.GetTagPose;
+import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
 import frc.swervelib.SwerveDrivetrainModel;
@@ -91,17 +91,17 @@ public class RobotContainer {
     
     m_cams = new PhotonCams();
     TagPose = new Pose2d();
-    PortForwarder.add(5800, "gloworm.local", 5800);
-    
+    PortForwarder.add(5800, "photonvision.local", 5800);
+    m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
         () -> xLimiter.calculate(driver.leftStick.getX()),
         () -> yLimiter.calculate(driver.leftStick.getY()),
-        () -> -driver.rightStick.getX() * Constants.DriveConstants.MAX_ROTATE_SPEED_RAD_PER_SEC));
+        () -> -driver.rightStick.getX()));
 
         ShowInputs();
 
-    Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(m_SwerveSubsystem.dt.getPose().getTranslation(), m_SwerveSubsystem.dt.getGyroscopeRotation()));
+    Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());
 
 
     // Configure the button bindings
@@ -120,7 +120,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
-    driver.bButton.whileTrue(new DriveToTag(m_SwerveSubsystem, m_cams));
+    driver.bButton.whileTrue(new DriveToTag(m_SwerveSubsystem));
 
     
 
@@ -141,20 +141,10 @@ public class RobotContainer {
     //master.addNumber("TagID", ()-> m_cams.getTagID());
     master.addNumber("X Command", ()-> -xLimiter.calculate(driver.leftStick.getX())*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
     master.addNumber("Y Command", () -> -yLimiter.calculate(driver.leftStick.getY()) * Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
-   
-    
-    master.addNumber("X Input", ()-> (-driver.leftStick.getX()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS));
-    master.addNumber("Y Input", () -> (-driver.leftStick.getY()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS));
-    
-    master.addNumber("GyroReading", () -> dt.getGyroscopeRotation().getDegrees());
-    
-
     master.addNumber("PoseX", ()-> m_SwerveSubsystem.dt.getPose().getX());
     master.addNumber("PoseY", ()-> m_SwerveSubsystem.dt.getPose().getY());
     master.addNumber("PoseRotation", ()-> m_SwerveSubsystem.dt.getPose().getRotation().getDegrees());
-    //master.addNumber("TagX", ()-> m_cams.getTagLocation(m_SwerveSubsystem.dt.getPose()).getX());
-    //master.addNumber("Tagy", ()-> m_cams.getTagLocation(m_SwerveSubsystem.dt.getPose()).getY());
-    //master.addBoolean("hasTag", ()->m_cams.hasTargets());
+  
    
 
     

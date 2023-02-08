@@ -142,24 +142,23 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
-    public static final class ClimberConstants{
-        public static final int ClimbLeftID = 28; 
-        public static final int ClimbRightID = 29; 
-        public static final int ClimbSolenoidForward= 0;
-        public static final int CLimbSolenoidReverse = 1;
+    public static final class ElevatorConstants{
+        public static final int ElevatorMotorID = 1; 
+        public static final int WristMotorID = 2; 
+        public static final int EndEffectorMotorID = 3; 
 
-        public static final double Climb1P = 0.5;
-        public static final double Climb1D = 0.0;
-        public static final double Climb1I = 0.0;
-        public static final double Climb1F = 0.045;
-        public static final double Climb1MotionAccel = 8192.0; 
-        public static final double Climb1MotionVelocity =8192.0; 
-        public static final double Climb2P = 0.5;
-        public static final double Climb2F = 0.045;
-        public static final double Climb2D = 0.0;
-        public static final double Climb2I = 0.0;
-        public static final double Climb2MotionAccel = 8192.0; 
-        public static final double Climb2MotionVelocity =8192.0; 
+        public static final double ElevatorP = 0.5;
+        public static final double ElevatorD = 0.0;
+        public static final double ElevatorI = 0.0;
+        public static final double ElevatorF = 0.045;
+        public static final double ElevatorMotionAccel = 2.0; 
+        public static final double ElevatorMotionVelocity =2.0; 
+        public static final double WristP = 0.5;
+        public static final double WristF = 0.045;
+        public static final double WristD = 0.0;
+        public static final double WristI = 0.0;
+        public static final double WristMotionAccel = 2.0; 
+        public static final double WristMotionVelocity =2.0; 
         public static final float Climb1SoftForward = 0;
         public static final float Climb1SoftReverse = 0;
         public static final float Climb2SoftForward = 0;
