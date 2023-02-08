@@ -75,7 +75,11 @@ public class SwerveSubsystem extends SubsystemBase {
         modules.get(i).updateInputs(inputs[i]);
         Logger.getInstance().processInputs("DriveModule"+Integer.toString(i), inputs[i]);
       }
-      Logger.getInstance().recordOutput("Pose Estimator", new Pose2d(dt.getPose().getTranslation(), dt.getGyroscopeRotation()));
+      for (int i = 0; i<4; i++){
+        
+        Logger.getInstance().recordOutput("SwerveModuleStates", states[i].toSwerveModuleState());
+      }
+      Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());
 
     }
 

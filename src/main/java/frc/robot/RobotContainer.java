@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.net.PortForwarder;
 import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox;
 import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
@@ -72,13 +73,7 @@ public class RobotContainer {
   public static SlewRateLimiter xLimiter = new SlewRateLimiter(1.5);
   public static SlewRateLimiter yLimiter = new SlewRateLimiter(1.5);
 
-  /**
-   * This Pose2d Object is the field realtive location of a vision target,
-   *  an 36h11 family AprilTag, specifically tag #3 
-   */
-  public Pose2d TagPose;
 
-  public static PathPlannerTrajectory TargetTrajectory;
 
  
   /**
@@ -92,7 +87,7 @@ public class RobotContainer {
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     
     m_cams = new PhotonCams();
-    TagPose = new Pose2d();
+  
     PortForwarder.add(5800, "photonvision.local", 5800);
     
 
@@ -101,7 +96,7 @@ public class RobotContainer {
         () -> yLimiter.calculate(driver.leftStick.getX()),
         () -> -driver.rightStick.getX() * Constants.DriveConstants.MAX_ROTATE_SPEED_RAD_PER_SEC));
 
-        ShowInputs();
+    ShowInputs();
 
    
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
@@ -121,8 +116,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
-    driver.bButton.whileTrue(new DriveToTag(m_SwerveSubsystem, m_cams));
+    driver.aButton.onTrue(new CalibrateGyro(m_SwerveSubsystem));
+    driver.bButton.whileTrue(new DriveToTag(m_SwerveSubsystem, 
+    new Pose2d(
+      new Translation2d(
+                      0, 
+                      0), 
+      Rotation2d.fromDegrees(
+                    90)
+                    )
+                  )
+                );
 
     
 
@@ -153,16 +157,6 @@ public class RobotContainer {
     master.addNumber("PoseX", ()-> m_SwerveSubsystem.dt.getPose().getX());
     master.addNumber("PoseY", ()-> m_SwerveSubsystem.dt.getPose().getY());
     master.addNumber("PoseRotation", ()-> m_SwerveSubsystem.dt.getPose().getRotation().getDegrees());
-
-    Optional<EstimatedRobotPose> result =
-        m_cams.getEstimatedGlobalPose(RobotContainer.m_SwerveSubsystem.dt.getPose());
-    
-        if (result.isPresent()) {
-          EstimatedRobotPose camPose = result.get();
-          master.addNumber("PhotonX",()->camPose.estimatedPose.getX());
-          master.addNumber("PhotonY",()->camPose.estimatedPose.getY());
-        
-      }
     
     
     

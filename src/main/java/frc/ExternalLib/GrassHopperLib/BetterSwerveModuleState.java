@@ -27,4 +27,7 @@ public class BetterSwerveModuleState extends SwerveModuleState {
         this.angle = angle;
         this.omegaRadPerSecond = omegaRadPerSecond;
     }
+    public SwerveModuleState toSwerveModuleState(){
+        return new SwerveModuleState(speedMetersPerSecond, angle);
+    }
 }
