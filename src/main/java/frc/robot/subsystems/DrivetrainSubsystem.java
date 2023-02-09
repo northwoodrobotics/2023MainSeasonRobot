@@ -126,6 +126,10 @@ public class DrivetrainSubsystem {
 
                 SwerveConstants.TRAJECTORYYkP = Constants.AutoConstants.TRAJECTORYYkP;
 
+                SwerveConstants.kMinRotationCommand = DriveConstants.kMinRotationCommand;
+                SwerveConstants.kMinTranslationCommand = DriveConstants.kMinTranslationCommand;
+
+
         }
 
 }

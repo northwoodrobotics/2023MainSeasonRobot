@@ -370,10 +370,7 @@ public class SwerveDrivetrainModel {
     public void plusNinetyGyroscope() {
         gyro.zeroGyroscope(90.0);
     }
-    /*
-    public Pose2d gyroPose(){
-        return m_tracker.getPoseMeters();
-    } */
+
 
     public Rotation2d getGyroscopeRotation() {
         SmartDashboard.putNumber("Gyro Angle", gyro.getGyroHeading().getDegrees());
@@ -407,6 +404,7 @@ public class SwerveDrivetrainModel {
                 thetaController,
                 // feed states into controller
                 commandStates -> this.states = commandStates,
+                true,
                 m_drive);
         return swerveControllerCommand.andThen(() -> setModuleStates(new SwerveInput(0,0,0)));
     }

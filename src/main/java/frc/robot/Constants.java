@@ -42,23 +42,21 @@ public final class Constants {
 
         public static final Transform3d robotToCam = (
             new Transform3d(new Translation3d(
-                Units.inchesToMeters(9), 
-                Units.inchesToMeters(6),
+                Units.inchesToMeters(-9), 
+                Units.inchesToMeters(-6),
                 Units.inchesToMeters(6.5)), 
                 new Rotation3d(
                     0, 
                     0,
-                    Units.degreesToRadians(-90))));
+                    Units.degreesToRadians(90))));
         
 
     }
 
     public static final class DriveConstants {
-        public static final class AimConstants {
-            public static final double AimP = 0.006;
-            public static final double AimI = 0.005;
-            public static final double AimD = 0.0027;
-        }
+        public static final double kMinRotationCommand = Units.degreesToRadians(0.1);
+        public static final double kMinTranslationCommand = Units.inchesToMeters(0.5);
+
 
         /**
          * The left-to-right distance between the drivetrain wheels
@@ -105,7 +103,7 @@ public final class Constants {
         // Drivetrain Performance Mechanical limits
         static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(4);
         static public final double MAX_STRAFE_SPEED_MPS = Units.feetToMeters(4);
-        static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(90);
+        static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(360);
         static public final double MAX_TRANSLATE_ACCEL_MPS2 = MAX_FWD_REV_SPEED_MPS / 0.25; // 0-full time of 0.25
                                                                                             // second
         static public final double MAX_ROTATE_ACCEL_RAD_PER_SEC_2 = MAX_ROTATE_SPEED_RAD_PER_SEC / 0.25; // 0-full time
