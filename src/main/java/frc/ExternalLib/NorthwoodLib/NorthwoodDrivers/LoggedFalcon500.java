@@ -3,6 +3,7 @@ package frc.ExternalLib.NorthwoodLib.NorthwoodDrivers;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
@@ -13,16 +14,18 @@ public class LoggedFalcon500 implements LoggedMotor{
     private static final double TICKS_PER_REV = 2048;
     private final int motorID;
     private final TalonFX motor;
+    private final TalonFXConfiguration config;
     
     public LoggedFalcon500(int motorID){
         this.motorID = motorID;
         this.motor = new TalonFX(this.motorID);
-        TalonFXConfiguration config = new TalonFXConfiguration();
-        config.voltageCompSaturation = 12.0;
-        config.statorCurrLimit.enable = true;
-        config.statorCurrLimit.currentLimit = 40;
-        config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        this.config = new TalonFXConfiguration();
+        this.config.voltageCompSaturation = 12.0;
+        this.config.statorCurrLimit.enable = true;
+        this.config.statorCurrLimit.currentLimit = 40;
+        this.config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         motor.setInverted(false);
+        motor.configAllSettings(this.config);
 
 
     }
@@ -37,22 +40,45 @@ public class LoggedFalcon500 implements LoggedMotor{
     inputs.statorTempCelcius = new double[]{motor.getTemperature()};
   }
   @Override 
-  public void setVelocity(double velocityRadPerSec, double ffVolts){
+  public void setVelocity(double velocityRadPerSec, double ffVolts, int slotID){
+    motor.selectProfileSlot(slotID, 0);
     double velocityFalconUnits = Units.radiansToRotations(velocityRadPerSec)
          * TICKS_PER_REV / 10.0;
     motor.set(ControlMode.Velocity, velocityFalconUnits,
         DemandType.ArbitraryFeedForward, ffVolts / 12.0);
+        
   }
   @Override
   public void stop() {
     motor.set(ControlMode.PercentOutput, 0.0);
   }
   @Override
-  public void configurePID(double kP, double kI, double kD, double ff) {
-    motor.config_kP(0, kP);
-    motor.config_kI(0, kI);
-    motor.config_kD(0, kD);
-    motor.config_kF(0, ff);
+  public void setPosition(double positionRad, int slotID){
+    motor.selectProfileSlot(slotID, slotID);
+    double positionFalconUnits = Units.radiansToRotations(positionRad)*TICKS_PER_REV;
+    motor.set(ControlMode.Position, positionFalconUnits);
+  }
+
+  public void setMotionMagicPosition(double positionRad, double ff, int slotID){
+    motor.selectProfileSlot(slotID, slotID);
+    double positionFalconUnits = Units.radiansToRotations(positionRad)*TICKS_PER_REV;
+    motor.set(ControlMode.MotionMagic, positionFalconUnits, DemandType.ArbitraryFeedForward, ff);
+  }
+
+  @Override
+  public void configurePID(double kP, double kI, double kD, double ff, int slotID) {
+    motor.config_kP(slotID, kP);
+    motor.config_kI(slotID, kI);
+    motor.config_kD(slotID, kD);
+    motor.config_kF(slotID, ff);
+  }
+  public void configureMotionMagic(double maxVelocity, double maxAcceleration, int curveStrength){
+    this.config.motionCurveStrength = curveStrength;
+    this.config.motionCruiseVelocity = maxVelocity;
+    this.config.motionAcceleration = maxAcceleration;
+    motor.configAllSettings(config);
+    
+
   }
 
 

@@ -28,7 +28,10 @@ public interface LoggedMotor {
     }
   
     /** Run closed loop at the specified velocity. */
-    public default void setVelocity(double velocityRadPerSec, double ffVolts) {
+    public default void setVelocity(double velocityRadPerSec, double ffVolts,int slotID) {
+    }
+    /*Move to position using internal PIDF controller */
+    public default void setPosition(double positionRad, int slotID){   
     }
   
     /** Stop in open loop. */
@@ -36,8 +39,9 @@ public interface LoggedMotor {
     }
   
     /** Set velocity PID constants. */
-    public default void configurePID(double kP, double kI, double kD, double ff) {
+    public default void configurePID(double kP, double kI, double kD, double ff, int slotID) {
     }
+    
   }
 
 

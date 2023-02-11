@@ -13,8 +13,7 @@ import frc.swervelib.Gyroscope;
 
 public class Pigeon2FactoryBuilder {
     //private static PigeonIMUSimCollection pigeonSim;
-    
-    private static double gyroOffset = 0.0;
+
 
     private static short[] AccelerationArray; 
     private static double ForwardAcceleration;
@@ -32,19 +31,20 @@ public class Pigeon2FactoryBuilder {
 
         private GyroscopeImplementation(WPI_Pigeon2 pigeon) {
             this.pigeon = pigeon;
-           // pigeonSim = pigeon.getSimCollection();
+            this.pigeon.zeroGyroBiasNow();
+            this.pigeon.setYaw(0.0);
         }
      
         @Override
         public void zeroGyroscope(double angle) {
-            gyroOffset = angle - getGyroHeading().getDegrees();
+           this.pigeon.setYaw(angle);
+        
             
             
         }
         @Override
         public Boolean getGyroReady() {
             return true;
-          //  return pigeon.getState().equals(PigeonState.Ready);
         }
         @Override 
         public Double getGyroRoll(){
@@ -67,7 +67,7 @@ public class Pigeon2FactoryBuilder {
 
         @Override
         public Rotation2d getGyroHeading() {
-            return Rotation2d.fromDegrees(pigeon.getYaw()+gyroOffset);
+            return Rotation2d.fromDegrees(pigeon.getYaw());
         }/*
 
         

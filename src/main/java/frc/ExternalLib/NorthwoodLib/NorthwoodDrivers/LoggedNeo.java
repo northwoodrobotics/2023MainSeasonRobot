@@ -3,13 +3,11 @@ package frc.ExternalLib.NorthwoodLib.NorthwoodDrivers;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-
 
 
 public class LoggedNeo implements LoggedMotor{
@@ -25,7 +23,8 @@ public class LoggedNeo implements LoggedMotor{
         motor.setInverted(false);
         motor.enableVoltageCompensation(12.0);
         motor.setSmartCurrentLimit(30);
-      
+        controller.setFeedbackDevice(encoder);
+
     }
     @Override
     public void updateInputs(LoggedMotorIOInputs inputs) {
@@ -38,21 +37,40 @@ public class LoggedNeo implements LoggedMotor{
     inputs.statorTempCelcius = new double[]{motor.getMotorTemperature()};
     }
     @Override
-    public void setVelocity(double velocityRadPerSec, double ffVolts){
+    public void setVelocity(double velocityRadPerSec, double ffVolts, int slotID){
         double velocity = Units.radiansPerSecondToRotationsPerMinute(velocityRadPerSec);
-        controller.setReference(velocity, ControlType.kVelocity);
-
+        controller.setReference(velocity, ControlType.kVelocity, slotID);
+    }
+    @Override
+    public void setPosition(double positionRad, int slotID){
+        controller.setReference(positionRad, ControlType.kPosition, slotID);
     }
     @Override
     public void stop() {
       motor.set(0.0);
     }
+    public void setSmartMotionPosition(double positionRad, int slotID){
+      controller.setReference(positionRad, ControlType.kSmartMotion, slotID);
+    }
+    public void setSmartVelocity(double velocityRadPerSec, int slotID){
+      controller.setReference(velocityRadPerSec, ControlType.kSmartVelocity, slotID);
+    }
+    public void setPercentOutput(double percent){
+      motor.set(percent);
+    }
     @Override
-  public void configurePID(double kP, double kI, double kD, double ff) {
-    controller.setP(kP, 0);
-    controller.setI(kI, 0);
-    controller.setD(kD, 0);
-    controller.setFF(ff, 0);
+  public void configurePID(double kP, double kI, double kD, double ff, int slotID) {
+    controller.setP(kP, slotID);
+    controller.setI(kI, slotID);
+    controller.setD(kD, slotID);
+    controller.setFF(ff, slotID);
+  }
+  public void configureSmartMotion(double maxVelocity, double maxAcceleration, double allowableError, int slotID, AccelStrategy strategy){
+    controller.setSmartMotionAccelStrategy(strategy, slotID);
+    controller.setSmartMotionAllowedClosedLoopError(allowableError, slotID);
+    controller.setSmartMotionMaxAccel(maxAcceleration, slotID);
+    controller.setSmartMotionMaxVelocity(maxVelocity, slotID);
+    
   }
 
 
