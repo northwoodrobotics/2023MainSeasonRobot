@@ -32,7 +32,7 @@ import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.HuskyPathFollower;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.HuskyPoseEstimator;
 import frc.wpiClasses.QuadSwerveSim;
 import frc.wpiClasses.SwerveModuleSim;
-import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
+import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
 import frc.ExternalLib.NorthwoodLib.Math.FieldRelativeVelocity;
 
 public class SwerveDrivetrainModel {

@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
+
 import org.ejml.simple.SimpleMatrix;
 
 import java.util.Arrays;

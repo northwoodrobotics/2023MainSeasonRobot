@@ -4,8 +4,8 @@
 
 package frc.swervelib;
 
-import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
+import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
 import frc.wpiClasses.QuadSwerveSim;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -75,12 +75,18 @@ public class SwerveSubsystem extends SubsystemBase {
       
       for (int i = 0; i<4; i++){
         modules.get(i).updateInputs(inputs[i]);
-        Logger.getInstance().processInputs("DriveModule"+Integer.toString(i), inputs[i]);
+        Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), inputs[i]);
       }
+      for (int i = 0; i<4; i++){
+        
+        Logger.getInstance().recordOutput("SwerveModuleStates", states[i].toSwerveModuleState());
+      }
+      Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());  
+    }
 
     }
 
-    dt.updateTelemetry();
+
   }
 
   @Override

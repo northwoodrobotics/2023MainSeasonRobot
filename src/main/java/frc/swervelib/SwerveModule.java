@@ -3,7 +3,7 @@ package frc.swervelib;
 import org.littletonrobotics.junction.AutoLog;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
+import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
 
 public interface SwerveModule {
     @AutoLog

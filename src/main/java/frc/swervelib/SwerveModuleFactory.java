@@ -6,7 +6,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.ExternalLib.GrassHopperLib.BetterSwerveModuleState;
+import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
 
 public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
     private final ModuleConfiguration moduleConfiguration;
