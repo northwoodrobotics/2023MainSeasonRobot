@@ -22,7 +22,6 @@ public interface LoggedMotor {
         public double appliedVolts =0.0; 
         public double[] statorAmps = new double[]{}; 
         public double[] statorTempCelcius = new double[]{};
-
     } 
     public default void updateInputs(LoggedMotorIOInputs inputs) {
     }

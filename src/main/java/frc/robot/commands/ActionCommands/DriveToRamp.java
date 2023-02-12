@@ -9,10 +9,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.SuperStructureConstants;
+import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
+import frc.robot.subsystems.SuperStructure.SuperStructure;
+import frc.robot.subsystems.SuperStructure.SuperStructure.endEffectorState;
 import frc.swervelib.SwerveSubsystem;
 
-public class DriveToTag extends CommandBase{
+public class DriveToRamp extends CommandBase{
     private final SwerveSubsystem m_Swerve;
+    private final SuperStructure m_SuperStructure;
     private PathPlannerTrajectory Route2Tag;
     private Pose2d TagPose;
     private Transform2d robotToTag;
@@ -21,13 +26,15 @@ public class DriveToTag extends CommandBase{
     
     
 
-    public DriveToTag(SwerveSubsystem m_SwerveSubsystem){
+    public DriveToRamp(SwerveSubsystem m_SwerveSubsystem, SuperStructure superStructure){
         this.m_Swerve = m_SwerveSubsystem;
+        this.m_SuperStructure = superStructure;
   
         
     }
     @Override
     public void initialize(){
+        m_SuperStructure.setSuperStructureState(SuperStructurePresets.ramp);
 
 
 

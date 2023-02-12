@@ -2,31 +2,15 @@ package frc.robot.subsystems;
 
 import frc.swervelib.Gyroscope;
 import frc.swervelib.GyroscopeHelper;
-import frc.swervelib.Mk4SwerveModuleHelper;
 import frc.swervelib.Mk4iSwerveModuleHelper;
-import frc.swervelib.WCPSSModuleHelper;
 import frc.swervelib.SwerveConstants;
 import frc.swervelib.SwerveModule;
 import frc.swervelib.SwerveSubsystem;
-import frc.swervelib.SwerveTalonModuleHelper;
-import frc.swervelib.TalonSteerModuleConfiguration;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.wpiClasses.QuadSwerveSim;
-import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.RevThroughBore;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-
 import java.util.ArrayList;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;

@@ -1,16 +1,7 @@
 package frc.ExternalLib.CitrusLib;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-//import com.lib.util.SwerveModuleConstants;
-//import com.team1678.frc2021.subsystems.Limelight.LimelightConstants;
 import frc.ExternalLib.CitrusLib.ServoMotorSubsystem.ServoMotorSubsystemConstants;
-import frc.ExternalLib.PoofLib.geometry.Pose2d;
-import frc.ExternalLib.PoofLib.geometry.Rotation2d;
-import frc.ExternalLib.PoofLib.geometry.Translation2d;
-
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 

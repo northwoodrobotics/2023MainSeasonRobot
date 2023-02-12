@@ -23,14 +23,23 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.PortForwarder;
 import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox;
 import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
-import frc.robot.commands.ActionCommands.DriveToTag;
+import frc.robot.commands.ActionCommands.DriveToRamp;
 import frc.robot.commands.AutoCommands.SquiglyPath;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
+import frc.robot.commands.SuperStructureCommands.EjectAndReturnToBottom;
+import frc.robot.commands.SuperStructureCommands.GroundIntake;
+import frc.robot.commands.SuperStructureCommands.HighCone;
+import frc.robot.commands.SuperStructureCommands.HighCube;
+import frc.robot.commands.SuperStructureCommands.LowDrop;
+import frc.robot.commands.SuperStructureCommands.MidCone;
+import frc.robot.commands.SuperStructureCommands.MidCube;
+import frc.robot.commands.SuperStructureCommands.WaitToRecieve;
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
+import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.swervelib.SwerveSubsystem;
 
@@ -49,6 +58,7 @@ public class RobotContainer {
   public static SwerveSubsystem m_SwerveSubsystem;
   public static PhotonCams m_cams;
   public static PhotonCamera camera;
+  public static SuperStructure m_SuperStructure;
 
   /**
    * SpectrumXbox(0, 0.1, 0.1); is an xbox controller with baked in buttons,
@@ -70,13 +80,6 @@ public class RobotContainer {
   public static SlewRateLimiter xLimiter = new SlewRateLimiter(1.5);
   public static SlewRateLimiter yLimiter = new SlewRateLimiter(1.5);
 
-  /**
-   * This Pose2d Object is the field realtive location of a vision target,
-   *  an 36h11 family AprilTag, specifically tag #3 
-   */
-  public Pose2d TagPose;
-
-  public static PathPlannerTrajectory TargetTrajectory;
 
  
   /**
@@ -88,9 +91,8 @@ public class RobotContainer {
     // tracking, path following, and a couple of other tricks.
     dt = DrivetrainSubsystem.createSwerveModel();
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
-    
     m_cams = new PhotonCams();
-    TagPose = new Pose2d();
+    m_SuperStructure = new SuperStructure();
     PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
@@ -119,9 +121,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
-    driver.bButton.whileTrue(new DriveToTag(m_SwerveSubsystem));
-
+    //driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
+    driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
+    driver.aButton.onTrue(new GroundIntake(m_SuperStructure));
+    driver.leftTriggerButton.onTrue(new HighCone(m_SuperStructure));
+    driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
+    driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
+    driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
+    driver.xButton.onTrue(new LowDrop(m_SuperStructure));
     
 
   }

@@ -7,12 +7,10 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
-import frc.ExternalLib.PoofLib.util.InterpolatingDouble;
-import frc.ExternalLib.PoofLib.util.InterpolatingTreeMap;
+import frc.robot.subsystems.SuperStructure.SuperStructureState;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -46,13 +44,13 @@ public final class Constants {
          *
          * Should be measured from center to center.
          */
-        public static final double TRACKWIDTH_METERS = Units.inchesToMeters(15.5); // FIXME Measure and set trackwidth
+        public static final double TRACKWIDTH_METERS = Units.inchesToMeters(15.5); // FIXME Measure set trackwidth
         /**
          * The front-to-back distance between the drivetrain wheels.
          *
          * Should be measured from center to center.
          */
-        public static final double WHEELBASE_METERS = Units.inchesToMeters(15.5); // FIXME Measure and set wheelbase
+        public static final double WHEELBASE_METERS = Units.inchesToMeters(15.5); // FIXME Measure set wheelbase
         public static final SecondOrderKinematics KINEMATICS = new SecondOrderKinematics(
                 new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
                 new Translation2d(TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0),
@@ -65,14 +63,12 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; // FIXME Set front left module steer motor ID
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 6; // FIXME Set front left steer encoder ID
         public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and
-                                                                                                    // set front left
-                                                                                                    // steer offset
+                                                                                                    // set front left steer offset
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 8; // FIXME Set front right drive motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 7; // FIXME Set front right steer motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 9; // FIXME Set front right steer encoder ID
         public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and set
-                                                                                                // front right steer
-                                                                                                // offse
+                                                                                                // front right stee steer offset
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11; // FIXME Set back left drive motor ID
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 10; // FIXME Set back left steer motor ID
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 12; // FIXME Set back left steer encoder ID
@@ -93,10 +89,9 @@ public final class Constants {
                                                                                                          // of 0.25
                                                                                                          // second
         public static final double MAX_VOLTAGE = 12.0; // Maximum Voltage sent to the drive motors
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       
         // SENSOR CONSTANTS
-        // Sensor-related constants - pulled from datasheets for the sensors and
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////// gearboxes
+        // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
         static public final Pose2d DFLT_START_POSE = new Pose2d(Units.feetToMeters(24.0), Units.feetToMeters(10.0),
                 Rotation2d.fromDegrees(0));
@@ -164,6 +159,51 @@ public final class Constants {
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
         public static final double WristMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final class SuperStructurePresets{
+            public static final SuperStructureState groundIntake = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                ); 
+            public static final SuperStructureState lowDrop = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState midCube = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState midCone = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState highCone = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState highCube = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState humanPlayer = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState ramp = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState stowed  = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+                         
+        }
+      
+
+
     }
+
+ 
+
 
 }
