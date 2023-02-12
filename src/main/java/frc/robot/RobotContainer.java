@@ -39,7 +39,9 @@ import frc.robot.commands.SuperStructureCommands.HumanPlayerPickup;
 import frc.robot.commands.SuperStructureCommands.LowDrop;
 import frc.robot.commands.SuperStructureCommands.MidCone;
 import frc.robot.commands.SuperStructureCommands.MidCube;
+import frc.robot.commands.SuperStructureCommands.ReturnToStowed;
 import frc.robot.commands.SuperStructureCommands.WaitToRecieve;
+import frc.robot.commands.TuningCommands.WristAdjust;
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
@@ -72,7 +74,8 @@ public class RobotContainer {
    * within the object parameters, the first one is the port, the second and third
    * parameters are deadzone sizes.
    **/
-  public static SpectrumXbox driver = new SpectrumXbox(0, 0.1, 0.2);
+  public static SpectrumXbox driver = new SpectrumXbox(0, 0.1, 0.21);
+  public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
 
 
@@ -108,7 +111,7 @@ public class RobotContainer {
         () -> -driver.rightStick.getX()));
 
         ShowInputs();
-
+    m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
     
 
 
@@ -143,7 +146,8 @@ public class RobotContainer {
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
     
-
+    coDriver.aButton.toggleOnTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
+    coDriver.bButton.toggleOnTrue(new WristAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
   }
 
   /**

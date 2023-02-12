@@ -32,7 +32,6 @@ public class SuperStructure extends SubsystemBase{
     private ControlState controlState;
     private endEffectorState intakeControlState;
     private SuperStructureState wantedState;
-    private boolean isClear;
     private boolean hasGamePiece;
     private boolean intakeStateHasChanged;
     private double timeStateEntered;
@@ -44,7 +43,6 @@ public class SuperStructure extends SubsystemBase{
 
 
     public SuperStructure(){  
-        isClear = false;
         hasGamePiece = true;
         intakeStateHasChanged = false;
         wantedState = SuperStructurePresets.stowed;
@@ -116,21 +114,26 @@ public class SuperStructure extends SubsystemBase{
         preset, 
         wristAdjust,
         heightAdjust,
-
-        
     }
   
 
 
         
     
-    public void adjustWristAngle(double adjustmentDemandDegrees){   
+    public void adjustWristAngle(double adjustmentDemandDegrees){  
+        controlState = ControlState.wristAdjust; 
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
         adjustedWristAngle = (wristMotor.getPosition()+ adjustmentRadians);
     }
     public void setSuperStructureState(SuperStructureState targetState){
         controlState = ControlState.preset;
         wantedState = targetState;
+    }
+    public void adjustElevatorPosition(double adjustmentDemandDegrees){
+        controlState = ControlState.heightAdjust;
+        double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
+        adjustedElevatorPosition = (elevatorMotor.getPosition()+ adjustmentRadians);
+
     }
     
 

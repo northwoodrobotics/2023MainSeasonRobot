@@ -44,13 +44,13 @@ public final class Constants {
          *
          * Should be measured from center to center.
          */
-        public static final double TRACKWIDTH_METERS = Units.inchesToMeters(15.5); // FIXME Measure set trackwidth
+        public static final double TRACKWIDTH_METERS = Units.inchesToMeters(22.750); // FIXME Measure set trackwidth
         /**
          * The front-to-back distance between the drivetrain wheels.
          *
          * Should be measured from center to center.
          */
-        public static final double WHEELBASE_METERS = Units.inchesToMeters(15.5); // FIXME Measure set wheelbase
+        public static final double WHEELBASE_METERS = Units.inchesToMeters(22.750); // FIXME Measure set wheelbase
         public static final SecondOrderKinematics KINEMATICS = new SecondOrderKinematics(
                 new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
                 new Translation2d(TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0),
@@ -159,6 +159,12 @@ public final class Constants {
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
         public static final double WristMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+
+
+        public static final double ElevatorAdjustScaler = (360*20.0);
+        public static final double WristAdjustScaler = (10*20.0);
+
+
         public static final class SuperStructurePresets{
             public static final SuperStructureState groundIntake = new SuperStructureState(
                 0.0, // FIXME Measure
@@ -195,6 +201,14 @@ public final class Constants {
             public static final SuperStructureState stowed  = new SuperStructureState(
                 0.0, // FIXME Measure
                 0.0 // FIXME Measure
+                );
+            public static final SuperStructureState init = new SuperStructureState(
+                0.0, // FIXME Measure
+                0.0 // FIXME Measure
+                );
+            public static final SuperStructureState tuningPreset = new SuperStructureState(
+                0.0, // FIXME Measure
+                Units.degreesToRadians(90.0) // FIXME Measure
                 );
                          
         }
