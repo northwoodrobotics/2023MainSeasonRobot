@@ -34,7 +34,7 @@ public class PhotonCams extends SubsystemBase{
 
     public PhotonCams(){
         //sets the camera in the subsytem, as the camera given. 
-        this.visionCam = new PhotonCamera("gloworm");;
+        this.visionCam = new PhotonCamera("Main");;
         // turns off "driver mode"
         visionCam.setDriverMode(false);
         // turns off LEDs
@@ -50,7 +50,7 @@ public class PhotonCams extends SubsystemBase{
           }
         
 
-        this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, null);
+        this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, visionCam, null);
 
         
     }

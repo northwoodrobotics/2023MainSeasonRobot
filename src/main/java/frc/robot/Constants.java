@@ -137,10 +137,16 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
-    public static final class ElevatorConstants{
+    public static final class SuperStructureConstants{
         public static final int ElevatorMotorID = 1; 
         public static final int WristMotorID = 2; 
         public static final int EndEffectorMotorID = 3; 
+
+        public static final double intakeCurrentSpikeThreashhold = 0.0; //FIXME value in Amps
+        public static final double intakeHoldingPercentOutput = 0.0; //FIXME value 
+
+        public static final double initalWristAngleRadians = 0.0; //FIXME Preset
+
 
         public static final double MotionProfileElevatorP = 0.5; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorD = 0.0; // FIXME set PIDF constant for Elevator

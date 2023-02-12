@@ -59,19 +59,33 @@ public class LoggedNeo implements LoggedMotor{
       motor.set(percent);
     }
     @Override
-  public void configurePID(double kP, double kI, double kD, double ff, int slotID) {
+    public void configurePID(double kP, double kI, double kD, double ff, int slotID) {
     controller.setP(kP, slotID);
     controller.setI(kI, slotID);
     controller.setD(kD, slotID);
     controller.setFF(ff, slotID);
-  }
-  public void configureSmartMotion(double maxVelocity, double maxAcceleration, double allowableError, int slotID, AccelStrategy strategy){
-    controller.setSmartMotionAccelStrategy(strategy, slotID);
-    controller.setSmartMotionAllowedClosedLoopError(allowableError, slotID);
-    controller.setSmartMotionMaxAccel(maxAcceleration, slotID);
-    controller.setSmartMotionMaxVelocity(maxVelocity, slotID);
+    }
+    public void configureSmartMotion(double maxVelocity, double maxAcceleration, double allowableError, int slotID, AccelStrategy strategy){
+      controller.setSmartMotionAccelStrategy(strategy, slotID);
+      controller.setSmartMotionAllowedClosedLoopError(allowableError, slotID);
+      controller.setSmartMotionMaxAccel(maxAcceleration, slotID);
+      controller.setSmartMotionMaxVelocity(maxVelocity, slotID);
     
-  }
+    }
+
+    public double getCurrentAmps(){
+      return motor.getOutputCurrent();
+    }
+    @Override
+    public double getPosition(){
+      return Units.rotationsToRadians(encoder.getPosition());
+    }
+    @Override
+    public double getVelocity(){
+      return Units.rotationsPerMinuteToRadiansPerSecond(encoder.getVelocity());
+    }
+    
+    
 
 
 }

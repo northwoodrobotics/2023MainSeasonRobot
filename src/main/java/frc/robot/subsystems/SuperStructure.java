@@ -2,28 +2,25 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.MotorFeedbackSensor;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedFalcon500;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedNeo;
-import frc.robot.Constants;
-import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.SuperStructureConstants;;
 
 
 public class SuperStructure extends SubsystemBase{
     // Elevator class 
     
     // initialize motor objects
-    private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(ElevatorConstants.ElevatorMotorID); 
-    private LoggedNeo intakeMotor = new LoggedNeo(ElevatorConstants.EndEffectorMotorID);
-    private LoggedNeo wristMotor = new LoggedNeo(ElevatorConstants.WristMotorID);
+    private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
+    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);
+    private LoggedNeo wristMotor = new LoggedNeo(SuperStructureConstants.WristMotorID);
 
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
@@ -31,14 +28,25 @@ public class SuperStructure extends SubsystemBase{
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
     //State Machine Logic Objects:     
-    private ElevatorControlState controlState;
-    private ElevatorPresets wantedPreset;
-    private endEffectorState wantedState;
-    private endEffectorPosition wantedPosition;
+    private ControlState controlState;
+    private endEffectorState intakeControlState;
+    private SuperStructureState wantedState;
+    private boolean isClear;
+    private boolean hasGamePiece;
+    private boolean intakeStateHasChanged;
+    private double timeStateEntered;
+    private double adjustedWristAngle;
+    private double adjustedElevatorPosition;
+    private double lastElevatorPosition;
+    private double lastWristAngle;
+
 
 
     public SuperStructure(){  
-        wantedPosition = endEffectorPosition.STOWED;
+        isClear = false;
+        hasGamePiece = true;
+        intakeStateHasChanged = false;
+        wantedState = new SuperStructureState(0, SuperStructureConstants.initalWristAngleRadians, endEffectorState.holding);
 
         //configure Elevator Motion Profile
         /* Motion Profiles: Using "Motion Planning" as our control method is analagous to how one travels from place to place on a car or bike. 
@@ -47,69 +55,163 @@ public class SuperStructure extends SubsystemBase{
          * Falcon 500's integrated motion planning control mode, called mtion magic. 
           */
         elevatorMotor.configurePID(
-            ElevatorConstants.MotionProfileElevatorP, 
-            ElevatorConstants.MotionProfileElevatorI, 
-            ElevatorConstants.MotionProfileElevatorD, 
-            ElevatorConstants.MotionProfileElevatorF, 
+            SuperStructureConstants.MotionProfileElevatorP, 
+            SuperStructureConstants.MotionProfileElevatorI, 
+            SuperStructureConstants.MotionProfileElevatorD, 
+            SuperStructureConstants.MotionProfileElevatorF, 
             0); /*this is important, the Falcon 500 can retain several PIDF constant slots.
              for example, slot 1 could have [1, 0, 0.05, 0, 0] and slot 2 could have [ 0.5, 0, 0 ,0 ] allowing us to use different control methods.
              in this case, we will use slots 1 and 2, for a "motion profile" and an emergency standard position control method.*/
         elevatorMotor.configureMotionMagic(
-            ElevatorConstants.ElevatorMotionVelocity, 
-            ElevatorConstants.ElevatorMotionAccel, 
+            SuperStructureConstants.ElevatorMotionVelocity, 
+            SuperStructureConstants.ElevatorMotionAccel, 
             0); 
         // now we configure the constants for elevator position control:
         elevatorMotor.configurePID(
-            ElevatorConstants.ElevatorP, 
-            ElevatorConstants.ElevatorI, 
-            ElevatorConstants.ElevatorD, 
-            ElevatorConstants.ElevatorF, 
+            SuperStructureConstants.ElevatorP, 
+            SuperStructureConstants.ElevatorI, 
+            SuperStructureConstants.ElevatorD, 
+            SuperStructureConstants.ElevatorF, 
             1);
         // congfigure Wrist Motion Profile
         wristMotor.configurePID(
-            ElevatorConstants.WristP, 
-            ElevatorConstants.WristI, 
-            ElevatorConstants.WristD, 
-            ElevatorConstants.WristF, 
+            SuperStructureConstants.WristP, 
+            SuperStructureConstants.WristI, 
+            SuperStructureConstants.WristD, 
+            SuperStructureConstants.WristF, 
             0);
         wristMotor.configureSmartMotion(
-            ElevatorConstants.WristMotionVelocity, 
-            ElevatorConstants.WristMotionAccel, 
+            SuperStructureConstants.WristMotionVelocity, 
+            SuperStructureConstants.WristMotionAccel, 
             0, 
             0, 
             AccelStrategy.kTrapezoidal);
-       
-
-
-         
     }
     
 
     
     private enum endEffectorState{
-        HOLDING, EJECTING, INTAKING
+        holding, ejecting, intaking, empty
     }
-    private enum ElevatorControlState{
-        MovingToPosition, 
-        HoldingPosition, 
-        OPENLOOP
-    }
-    private enum ElevatorPresets{
-        GROUNDPICKUP, 
-        STOWED, 
-        CONEMIDDLE, 
-        CONEHIGH, 
-        CUBEMIDDLE, 
-        CUBEHIGH, 
-        STATIONPICKUP
+    
+
+    private synchronized void setEndEffectorState(endEffectorState newState) {
+        if (newState != intakeControlState)
+          intakeStateHasChanged = true;
+        intakeControlState = newState;
+        timeStateEntered = Timer.getFPGATimestamp();
+        
     }
 
-    private enum endEffectorPosition{
-        CLEARED, STOWED, OBSTRUCTED
+    private enum ControlState{
+        preset, 
+        wristAdjust,
+        heightAdjust,
+
+        
     }
+    public class SuperStructureState{
+        public double elevatorPositionRadians;
+        public double wristAngleRadians; 
+        public endEffectorState intakeState;
+        public SuperStructureState(double position, double wristPosition, endEffectorState state){
+            this.elevatorPositionRadians = position;
+            this.wristAngleRadians = wristPosition;
+            this.intakeState = state;
+        }
+        public SuperStructureState(){
+            this.elevatorPositionRadians = 0;
+            this.wristAngleRadians = 0;
+            this.intakeState = endEffectorState.holding;
+        }
+        
+        public double getHeightDemand(){
+            return this.elevatorPositionRadians;
+        }
+        
+        public double getWristAngleRadians(){
+            return this.wristAngleRadians;
+        }
+        public double getWristAngleDegrees(){
+            return Units.radiansToDegrees(this.wristAngleRadians);
+        }
+        public void setHeightDemand(double radians){
+            this.elevatorPositionRadians = radians;
+        }
+        public void setWristAngleRadians(double radians){
+            this.wristAngleRadians = radians;
+        }
+        public void setWristAngleDegrees(double degrees){
+            this.wristAngleRadians = Units.degreesToRadians(degrees);
+        }
+
+
+        
+    }
+    public void adjustWristAngle(double adjustmentDemandDegrees){   
+        double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
+        adjustedWristAngle = (wristMotor.getPosition()+ adjustmentRadians);
+    }
+    
+
+
 
     @Override 
     public void periodic(){
+
+        switch (controlState){
+            case preset: 
+            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand(), 0, 0);
+            lastElevatorPosition = wantedState.getHeightDemand();
+            wristMotor.setSmartMotionPosition(wantedState.wristAngleRadians, 0);
+            lastWristAngle = wantedState.getWristAngleRadians();
+            setEndEffectorState(wantedState.intakeState);
+            break;
+            case wristAdjust:
+            elevatorMotor.setMotionMagicPosition(lastElevatorPosition, 0, 0);
+            wristMotor.setSmartMotionPosition(adjustedWristAngle, 0);
+            break; 
+            case heightAdjust: 
+            elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition, 0, 0);
+            wristMotor.setSmartMotionPosition(lastWristAngle, 0);
+            
+        }
+
+        switch (intakeControlState){
+            case ejecting: 
+            intakeMotor.setPercentOutput(-1);
+            if(intakeStateHasChanged){
+                hasGamePiece = false;
+                if((Timer.getFPGATimestamp() - timeStateEntered)>1){
+                    setEndEffectorState(endEffectorState.empty);
+                }
+                
+            }
+            break;
+            case intaking: 
+            if (intakeMotor.getCurrentAmps() > SuperStructureConstants.initalWristAngleRadians){
+                hasGamePiece = true;
+                if((Timer.getFPGATimestamp() - timeStateEntered)>1){
+                    setEndEffectorState(endEffectorState.holding);
+                }
+
+            }else 
+                intakeMotor.setPercentOutput(1);
+            
+            break;
+            case holding:
+                intakeMotor.setPercentOutput(SuperStructureConstants.intakeHoldingPercentOutput);
+            break;
+            case empty:
+
+            
+        }
+
+        
+
+
+
+
         elevatorMotor.updateInputs(elevatorLog);
         Logger.getInstance().processInputs("ElevatorMotor", elevatorLog);
         wristMotor.updateInputs(wristLog);

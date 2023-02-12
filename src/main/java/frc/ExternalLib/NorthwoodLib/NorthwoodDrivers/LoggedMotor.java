@@ -41,7 +41,12 @@ public interface LoggedMotor {
     /** Set velocity PID constants. */
     public default void configurePID(double kP, double kI, double kD, double ff, int slotID) {
     }
-    
+    /** Returns Current Motor Velocity in Radians per second */
+    public double getVelocity();
+    /** Returns Current Motor Positon in Radians */
+    public double getPosition();
+
+
   }
 
 

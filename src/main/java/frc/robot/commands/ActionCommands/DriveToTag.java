@@ -9,7 +9,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PhotonCams;
 import frc.swervelib.SwerveSubsystem;
 
 public class DriveToTag extends CommandBase{
@@ -38,7 +37,7 @@ public class DriveToTag extends CommandBase{
         // feeds all data into path generation software
         Route2Tag = PathPlanner.generatePath(
             // these are acceleration and velocity constraints, in m/s and m/s squared
-            new PathConstraints(2, 4), 
+            new PathConstraints(1, 2), 
             // PathPoints have 3 values, the cordinates of the intial point, the heading of the desired vector, and the "holonomic rotation" of the robot
             new PathPoint(m_Swerve.dt.getPose().getTranslation(),robotToTag.getRotation(),m_Swerve.dt.getGyroscopeRotation() ), 
             new PathPoint(TagPose.getTranslation(), robotToTag.getRotation(), TagPose.getRotation())

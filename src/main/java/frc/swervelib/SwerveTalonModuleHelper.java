@@ -2,8 +2,7 @@ package frc.swervelib;
 
 import frc.swervelib.ctre.*;
 import frc.swervelib.rev.NeoDriveControllerFactoryBuilder;
-import frc.wpiClasses.QuadSwerveSim;
-import frc.wpiClasses.SwerveModuleSim;
+
 
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 
@@ -15,7 +14,7 @@ public final  class SwerveTalonModuleHelper {
 
     private static TalonSRXFeedbackDevice SwerveAndSteerDevice = TalonSRXFeedbackDevice.Analog;
     private static TalonSRXFeedbackDevice TBDevice = TalonSRXFeedbackDevice.CTRE_MagEncoder_Absolute;
-    private static TalonSRXFeedbackDevice TBDevice2 = TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative;
+    private static TalonSRXFeedbackDevice TBDevice2 = TalonSRXFeedbackDevice.Analog;
     private static GearRatio SwerveAndSteerRatio = GearRatio.SS; 
     private static GearRatio ThirftyRatio = GearRatio.TS; 
 

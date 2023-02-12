@@ -80,6 +80,14 @@ public class LoggedFalcon500 implements LoggedMotor{
     
 
   }
+  @Override
+  public double getPosition(){
+    return Units.rotationsToRadians(motor.getSelectedSensorPosition() / TICKS_PER_REV);
+  }
+  @Override
+  public double getVelocity(){
+    return Units.rotationsPerMinuteToRadiansPerSecond(motor.getSelectedSensorVelocity() * 10 / TICKS_PER_REV);
+  }
 
 
 
