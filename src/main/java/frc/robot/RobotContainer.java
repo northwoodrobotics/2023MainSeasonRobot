@@ -105,6 +105,8 @@ public class RobotContainer {
     PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
+   
+
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
         () -> xLimiter.calculate(driver.leftStick.getX()),
         () -> yLimiter.calculate(driver.leftStick.getY()),
@@ -159,19 +161,11 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return new ThreeCube(m_SwerveSubsystem, m_SuperStructure);
   }
+  
 
   
   public void ShowInputs(){
     master.addNumber("X Command", ()-> -xLimiter.calculate(driver.leftStick.getX())*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
     master.addNumber("Y Command", () -> -yLimiter.calculate(driver.leftStick.getY()) * Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
-
-  
-   
-
-    
-    
-    
-    
-    
   }
 }

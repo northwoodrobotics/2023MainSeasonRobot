@@ -56,7 +56,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     Logger logger = Logger.getInstance();
-      Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+      Logger.getInstance().recordMetadata("Northwood2023", "2023"); // Set a metadata value
 
       if (isReal()) {
       Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
@@ -69,7 +69,7 @@ public class Robot extends LoggedRobot {
       Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
 
-    Logger.getInstance().start(); 
+    logger.start(); 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard. 
