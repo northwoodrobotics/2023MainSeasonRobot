@@ -46,6 +46,7 @@ public interface LoggedMotor {
     public double getPosition();
 
 
+
   }
 
 

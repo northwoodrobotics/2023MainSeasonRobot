@@ -102,6 +102,9 @@ public final class Constants {
         public static final double MOI_KGM2 = 1.0 / 12.0 * MASS_kg * Math.pow((TRACKWIDTH_METERS * 1.1), 2) * 2;
         // degrees per second
         public static final double Min_Rotation_Deg = 25;
+
+        public static final double minTranslationCommand = Units.feetToMeters(0.5);
+        public static final double minRotationCommand = Units.degreesToRadians(0.5);
     }
 
     public final static class AutoConstants {
@@ -142,7 +145,6 @@ public final class Constants {
 
         public static final double initalWristAngleRadians = 0.0; //FIXME Preset
 
-
         public static final double MotionProfileElevatorP = 0.5; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorD = 0.0; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorI = 0.0; // FIXME set PIDF constant for Elevator
@@ -153,12 +155,14 @@ public final class Constants {
         public static final double ElevatorF = 0.045; // FIXME set PIDF constant for Elevator
         public static final double ElevatorMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
         public static final double ElevatorMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final int ElevatorCurrentLimit = 30; //FIXME set Current Limit
         public static final double WristP = 0.5; // FIXME set PIDF constant for Wrist
         public static final double WristF = 0.045; // FIXME set PIDF constant for Elevator
         public static final double WristD = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
         public static final double WristMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final int WristCurrentLimit = 30; //FIXME Current Limit
 
 
         public static final double ElevatorAdjustScaler = (360*20.0);

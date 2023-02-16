@@ -31,7 +31,7 @@ public class SuperStructure extends SubsystemBase{
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);
-    private LoggedNeo wristMotor = new LoggedNeo(SuperStructureConstants.WristMotorID);
+    private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
 
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
@@ -77,6 +77,10 @@ public class SuperStructure extends SubsystemBase{
             SuperStructureConstants.ElevatorMotionVelocity, 
             SuperStructureConstants.ElevatorMotionAccel, 
             0); 
+
+        // configs current limit in Amps
+        elevatorMotor.configCurrentLimit(SuperStructureConstants.ElevatorCurrentLimit);
+
         // now we configure the constants for elevator position control:
         elevatorMotor.configurePID(
             SuperStructureConstants.ElevatorP, 
@@ -91,12 +95,12 @@ public class SuperStructure extends SubsystemBase{
             SuperStructureConstants.WristD, 
             SuperStructureConstants.WristF, 
             0);
-        wristMotor.configureSmartMotion(
+        wristMotor.configureMotionMagic(
             SuperStructureConstants.WristMotionVelocity, 
             SuperStructureConstants.WristMotionAccel, 
-            0, 
-            0, 
-            AccelStrategy.kTrapezoidal);
+            0);
+
+        wristMotor.configCurrentLimit(SuperStructureConstants.WristCurrentLimit);
     }
     
 
@@ -127,9 +131,6 @@ public class SuperStructure extends SubsystemBase{
     }
   
 
-
-        
-    
     public void adjustWristAngle(double adjustmentDemandDegrees){  
         controlState = ControlState.wristAdjust; 
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
@@ -159,16 +160,16 @@ public class SuperStructure extends SubsystemBase{
             case preset: 
             elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand(), 0, 0);
             lastElevatorPosition = wantedState.getHeightDemand();
-            wristMotor.setSmartMotionPosition(wantedState.wristAngleRadians, 0);
+            wristMotor.setMotionMagicPosition(lastWristAngle, 0, 0);
             lastWristAngle = wantedState.getWristAngleRadians();
             break;
             case wristAdjust:
             elevatorMotor.setMotionMagicPosition(lastElevatorPosition, 0, 0);
-            wristMotor.setSmartMotionPosition(adjustedWristAngle, 0);
+            wristMotor.setMotionMagicPosition(adjustedWristAngle, 0, 0);
             break; 
             case heightAdjust: 
             elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition, 0, 0);
-            wristMotor.setSmartMotionPosition(lastWristAngle, 0);
+            wristMotor.setMotionMagicPosition(lastWristAngle, 0, 0);
             break;
         }
 
