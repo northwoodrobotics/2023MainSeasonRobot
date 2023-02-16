@@ -15,7 +15,9 @@ public class LoggedNeo implements LoggedMotor{
     private final CANSparkMax motor; 
     private final SparkMaxPIDController controller;
     private final RelativeEncoder encoder; 
+    private final double gearRatio;
     public LoggedNeo(int motorID){
+        this.gearRatio = 1.0;
         this.motorID = motorID;
         this.motor = new CANSparkMax(this.motorID, MotorType.kBrushless);
         this.controller = this.motor.getPIDController();
@@ -24,8 +26,35 @@ public class LoggedNeo implements LoggedMotor{
         motor.enableVoltageCompensation(12.0);
         motor.setSmartCurrentLimit(30);
         controller.setFeedbackDevice(encoder);
+        encoder.setPositionConversionFactor(gearRatio);
 
     }
+    public LoggedNeo(int motorID, boolean motorInvert, int currentLimit){
+      this.gearRatio = 1.0;
+      this.motorID = motorID;
+      this.motor = new CANSparkMax(this.motorID, MotorType.kBrushless);
+      this.controller = this.motor.getPIDController();
+      this.encoder = motor.getEncoder();
+      motor.setInverted(motorInvert);
+      motor.enableVoltageCompensation(12.0);
+      motor.setSmartCurrentLimit(currentLimit);
+      controller.setFeedbackDevice(encoder);
+      encoder.setPositionConversionFactor(gearRatio);
+
+  }
+  public LoggedNeo(int motorID, boolean motorInvert, int currentLimit, double gearRatio){
+    this.motorID = motorID;
+    this.gearRatio = gearRatio;
+    this.motor = new CANSparkMax(this.motorID, MotorType.kBrushless);
+    this.controller = this.motor.getPIDController();
+    this.encoder = motor.getEncoder();
+    motor.setInverted(motorInvert);
+    motor.enableVoltageCompensation(12.0);
+    motor.setSmartCurrentLimit(currentLimit);
+    controller.setFeedbackDevice(encoder);
+    encoder.setPositionConversionFactor(gearRatio);
+
+}
     @Override
     public void updateInputs(LoggedMotorIOInputs inputs) {
     inputs.positionRad = Units.rotationsToRadians(

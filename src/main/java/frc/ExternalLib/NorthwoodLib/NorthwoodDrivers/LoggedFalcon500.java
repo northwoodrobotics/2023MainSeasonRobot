@@ -3,6 +3,7 @@ package frc.ExternalLib.NorthwoodLib.NorthwoodDrivers;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
@@ -14,6 +15,7 @@ public class LoggedFalcon500 implements LoggedMotor{
     private final int motorID;
     private final TalonFX motor;
     private final TalonFXConfiguration config;
+    private int supplyCurrentLimit;
     
     public LoggedFalcon500(int motorID){
         this.motorID = motorID;
@@ -25,9 +27,19 @@ public class LoggedFalcon500 implements LoggedMotor{
         this.config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         motor.setInverted(false);
         motor.configAllSettings(this.config);
-
-
     }
+
+    public LoggedFalcon500(int motorID, boolean motorinvert, int statorCurrLimit){
+      this.motorID = motorID;
+      this.motor = new TalonFX(this.motorID);
+      this.config = new TalonFXConfiguration();
+      this.config.voltageCompSaturation = 12.0;
+      this.config.statorCurrLimit.enable = true;
+      this.config.statorCurrLimit.currentLimit = statorCurrLimit;
+      this.config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+      motor.setInverted(motorinvert);
+      motor.configAllSettings(this.config);
+  }
     @Override
     public void updateInputs(LoggedMotorIOInputs inputs) {
     inputs.positionRad = Units.rotationsToRadians(
@@ -46,6 +58,19 @@ public class LoggedFalcon500 implements LoggedMotor{
     motor.set(ControlMode.Velocity, velocityFalconUnits,
         DemandType.ArbitraryFeedForward, ffVolts / 12.0);
         
+  }
+
+  public void configCurrentLimit(int supplyCurrLimit){
+    this.supplyCurrentLimit = supplyCurrLimit;
+    this.config.supplyCurrLimit.currentLimit = supplyCurrLimit;
+    this.config.supplyCurrLimit.enable = true;
+  }
+  public void setCurrentLimit(boolean enabled){
+    SupplyCurrentLimitConfiguration config = new SupplyCurrentLimitConfiguration();
+        config.currentLimit = this.supplyCurrentLimit;
+        config.enable = enabled;
+
+    motor.configSupplyCurrentLimit(config);
   }
   @Override
   public void stop() {

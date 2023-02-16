@@ -22,7 +22,7 @@ public class WristAdjust extends CommandBase{
     
     @Override
     public void execute(){
-        m_superStructure.adjustElevatorPosition(SuperStructureConstants.WristAdjustScaler* m_angleAdjust.getAsDouble());
+        m_superStructure.adjustWristAngle(SuperStructureConstants.WristAdjustScaler* m_angleAdjust.getAsDouble());
         
        
     }
