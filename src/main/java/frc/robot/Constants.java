@@ -6,8 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
@@ -30,7 +32,18 @@ public final class Constants {
     public static final double MinVoltage = 8.0;
 
     public static final class VisionConstants {
-        public static final Transform3d cameraToRobot = new Transform3d();
+        public static final Transform3d robotToCam = (
+            new Transform3d(new Translation3d(
+                Units.inchesToMeters(-9), // X Translation
+                Units.inchesToMeters(-6), //Y Translation
+                Units.inchesToMeters(6.5)), // Z Translation
+                new Rotation3d(
+                    0, 
+                    0,
+                    Units.degreesToRadians(0) // yaw
+                    )
+                )
+            );
 
     }
 

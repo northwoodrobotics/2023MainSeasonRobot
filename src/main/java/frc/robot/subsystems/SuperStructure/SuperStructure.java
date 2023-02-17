@@ -41,7 +41,6 @@ public class SuperStructure extends SubsystemBase{
     //State Machine Logic Objects:     
     private ControlState controlState;
     private endEffectorState intakeControlState;
-    private endEffectorState commandedState;
     private SuperStructureState wantedState;
     private boolean hasGamePiece;
     private boolean intakeStateHasChanged;
@@ -64,7 +63,7 @@ public class SuperStructure extends SubsystemBase{
         /* Motion Profiles: Using "Motion Planning" as our control method is analagous to how one travels from place to place on a car or bike. 
          * When you are close to where you want to be, you pre-emtively slow down, comming to a stop exactly where you intend to. 
          * In order to make our control of a mechanism (in this case an elevator) perfom controlably, predicatbly and smoothly, we use the 
-         * Falcon 500's integrated motion planning control mode, called mtion magic. 
+         * Falcon 500's integrated motion planning control mode, called motion magic. 
           */
         elevatorMotor.configurePID(
             SuperStructureConstants.MotionProfileElevatorP, 
@@ -107,7 +106,12 @@ public class SuperStructure extends SubsystemBase{
 
     
     public enum endEffectorState{
-        holding, ejecting, intaking, empty
+        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1.0), empty(0.0);
+        public double output;
+        private endEffectorState(double output){
+            this.output = output;
+
+        }
     }
     public boolean hasGamePiece(){
         return hasGamePiece;
@@ -120,10 +124,16 @@ public class SuperStructure extends SubsystemBase{
     public synchronized void setEndEffectorState(endEffectorState newState) {
         if (newState != intakeControlState){
             intakeStateHasChanged = true;
+            intakeControlState = newState;
+            timeStateEntered = Timer.getFPGATimestamp();
         }
-        intakeControlState = newState;
-        timeStateEntered = Timer.getFPGATimestamp();
+
         
+    }
+
+    public void conformEndEffectorState(endEffectorState targetState){
+        intakeMotor.setPercentOutput(targetState.output);
+        setEndEffectorState(targetState);
     }
 
     private enum ControlState{
@@ -177,7 +187,6 @@ public class SuperStructure extends SubsystemBase{
 
         switch (intakeControlState){
             case ejecting: 
-            intakeMotor.setPercentOutput(-1);
             if(intakeStateHasChanged){
                 hasGamePiece = false;
                 if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
@@ -194,11 +203,9 @@ public class SuperStructure extends SubsystemBase{
                 }
 
             }else 
-                intakeMotor.setPercentOutput(1);
             
             break;
             case holding:
-                intakeMotor.setPercentOutput(SuperStructureConstants.intakeHoldingPercentOutput);
             break;
             case empty:
             break; 
