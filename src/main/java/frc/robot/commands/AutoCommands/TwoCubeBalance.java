@@ -29,8 +29,8 @@ public class TwoCubeBalance extends SequentialCommandGroup{
 
     public TwoCubeBalance(SwerveSubsystem swerve, SuperStructure structure){
         eventMap.put("ElevatorToMax", new HighCone(structure));
-        eventMapTwo.put("IntakeDown1", new GroundIntake(structure));
-        eventMapTwo.put("HighCube", new HighCube(structure));
+        eventMapTwo.put("IntakeMode", new GroundIntake(structure));
+        eventMapTwo.put("ElevatorToMax2", new HighCube(structure));
         FollowPathWithEvents firstCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(TwoCubeBalance.get(0), swerve), TwoCubeBalance.get(0).getMarkers(), eventMap);
         FollowPathWithEvents secondCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(TwoCubeBalance.get(1), swerve), TwoCubeBalance.get(1).getMarkers(), eventMapTwo);
         
