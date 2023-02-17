@@ -4,7 +4,7 @@ import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
 
 
-import com.revrobotics.SparkMaxPIDController.AccelStrategy;
+//import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,11 +19,11 @@ import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 public class SuperStructure extends SubsystemBase{
 
     @AutoLog
-    public class SuperStructureAutoLogged{
+    public class SuperStructureLog{
         public ControlState internalState;
         public endEffectorState internalIntakeState; 
         public SuperStructureState internalSuperStructureState;
-        public double adjustedWristAngle;
+        public double adjustedWristAngle;   
         public double adjustedElevatorPosition;
             
 
@@ -41,6 +41,7 @@ public class SuperStructure extends SubsystemBase{
     //State Machine Logic Objects:     
     private ControlState controlState;
     private endEffectorState intakeControlState;
+    private endEffectorState commandedState;
     private SuperStructureState wantedState;
     private boolean hasGamePiece;
     private boolean intakeStateHasChanged;
@@ -117,8 +118,9 @@ public class SuperStructure extends SubsystemBase{
     
 
     public synchronized void setEndEffectorState(endEffectorState newState) {
-        if (newState != intakeControlState)
-          intakeStateHasChanged = true;
+        if (newState != intakeControlState){
+            intakeStateHasChanged = true;
+        }
         intakeControlState = newState;
         timeStateEntered = Timer.getFPGATimestamp();
         

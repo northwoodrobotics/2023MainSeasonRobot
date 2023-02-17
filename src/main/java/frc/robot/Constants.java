@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -29,11 +30,7 @@ public final class Constants {
     public static final double MinVoltage = 8.0;
 
     public static final class VisionConstants {
-        public static final double TargetHeight = Units.inchesToMeters(102);
-        public static final double blindlightHeight = Units.inchesToMeters(40);
-        public static final double blindlightAngle = 23;
-        public static final Pose2d GoalPose = new Pose2d(4, 6, Rotation2d.fromDegrees(0));
-        public static final double intakeCamHeight = Units.inchesToMeters(38);
+        public static final Transform3d cameraToRobot = new Transform3d();
 
     }
 
@@ -105,6 +102,8 @@ public final class Constants {
 
         public static final double minTranslationCommand = Units.feetToMeters(0.5);
         public static final double minRotationCommand = Units.degreesToRadians(0.5);
+
+        public static final Pose2d rampPose = new Pose2d(0, 0, Rotation2d.fromDegrees(270));
     }
 
     public final static class AutoConstants {

@@ -50,7 +50,7 @@ public class PhotonCams extends SubsystemBase{
           }
         
 
-        this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, visionCam, null);
+        this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.MULTI_TAG_PNP, visionCam, null);
 
         
     }
