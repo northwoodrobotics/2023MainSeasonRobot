@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.swervelib.AbsoluteEncoder;
@@ -23,6 +24,7 @@ public class CanCoderFactoryBuilder {
 
     public CanCoderFactoryBuilder withDirection(Direction direction) {
         this.direction = direction;
+
         return this;
     }
 
@@ -35,7 +37,8 @@ public class CanCoderFactoryBuilder {
             config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
             //config.initializationStrategy = configuration.getInitStrategy();
 
-            CANCoder encoder = new CANCoder(configuration.getId());
+            WPI_CANCoder encoder = new WPI_CANCoder(configuration.getId());
+            
             encoder.configAllSettings(config, 250);
 
             encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, periodMilliseconds, 250);
@@ -45,9 +48,9 @@ public class CanCoderFactoryBuilder {
     }
 
     private static class EncoderImplementation implements AbsoluteEncoder {
-        private final CANCoder encoder;
+        private final WPI_CANCoder encoder;
 
-        private EncoderImplementation(CANCoder encoder) {
+        private EncoderImplementation(WPI_CANCoder encoder) {
             this.encoder = encoder;
         }
 

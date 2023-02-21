@@ -8,6 +8,7 @@ import frc.swervelib.SwerveModule;
 import frc.swervelib.SwerveSubsystem;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.wpiClasses.QuadSwerveSim;
+import frc.wpiClasses.SwerveModuleSim;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import java.util.ArrayList;
@@ -87,6 +88,7 @@ public class DrivetrainSubsystem {
                 return new SwerveDrivetrainModel(modules, gyro);
 
         }
+
 
         public static SwerveSubsystem createSwerveSubsystem(SwerveDrivetrainModel dt) {
                 return new SwerveSubsystem(dt);

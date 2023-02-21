@@ -102,12 +102,6 @@ public class SwerveDrivetrainModel {
         };
         
 
-        if (RobotBase.isSimulation()) {
-            modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(0)));
-            modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(1)));
-            modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(2)));
-            modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(3)));
-        }
         
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
         
@@ -157,6 +151,7 @@ public class SwerveDrivetrainModel {
        m_holo = new PPHolonomicDriveController(SwerveConstants.XPIDCONTROLLER, SwerveConstants.YPIDCONTROLLER, thetaController);
        m_tracker = new GyroTracker(getGyroscopeRotation(), SwerveConstants.DFLT_START_POSE);
     }
+    
 
     /**
      * Handles discontinuous jumps in robot pose. Used at the start of
