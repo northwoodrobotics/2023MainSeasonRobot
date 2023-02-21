@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -12,7 +14,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
+import frc.ExternalLib.SpectrumLib.util.Alert;
+import frc.ExternalLib.SpectrumLib.util.Alert.AlertType;
 import frc.robot.subsystems.SuperStructure.SuperStructureState;
 
 /**
@@ -28,8 +33,59 @@ import frc.robot.subsystems.SuperStructure.SuperStructureState;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final boolean TuningMode = false;
-    public static final double MinVoltage = 8.0;
+    public static RobotType getRobot() {
+        if (!disableHAL && RobotBase.isReal()) {
+          if (robot == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
+            if (!invalidRobotAlertSent) {
+              new Alert("Invalid robot selected, using competition robot as default.", AlertType.ERROR)
+                  .set(true);
+              invalidRobotAlertSent = true;
+            }
+            return RobotType.ROBOT_2023C;
+          } else {
+            return robot;
+          }
+        } else {
+          return robot;
+        }
+      }
+
+      public static Mode getMode() {
+        switch (getRobot()) {
+          case ROBOT_2023C:
+          case ROBOT_2023P:
+            return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
+    
+          case ROBOT_SIMBOT:
+            return Mode.SIM;
+    
+          default:
+            return Mode.REAL;
+        }
+      }
+
+      
+  public static enum RobotType {
+    ROBOT_2023C,
+    ROBOT_2023P,
+    ROBOT_SIMBOT
+  }
+  
+  public static enum Mode {
+    REAL,
+    REPLAY,
+    SIM
+  }
+  public static final boolean tuningMode = true;
+  public static boolean invalidRobotAlertSent = false;
+  private static final RobotType robot = RobotType.ROBOT_2023C;
+  
+  public static double loopPeriodSeconds = 0.02;
+  public static double MinVoltage = 8.0;
+  
+  public static boolean disableHAL = false;
+  public static final Map<RobotType, String> logFolders =
+      Map.of(RobotType.ROBOT_2023C, " /media/sda1/");
 
     public static final class VisionConstants {
         public static final Transform3d robotToCam = (
