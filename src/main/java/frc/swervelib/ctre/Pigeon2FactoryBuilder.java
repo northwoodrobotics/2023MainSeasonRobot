@@ -15,9 +15,6 @@ public class Pigeon2FactoryBuilder {
     //private static PigeonIMUSimCollection pigeonSim;
 
 
-    private static short[] AccelerationArray; 
-    private static double ForwardAcceleration;
-
 
 
 
@@ -49,17 +46,6 @@ public class Pigeon2FactoryBuilder {
         @Override 
         public Double getGyroRoll(){
             return pigeon.getRoll();
-        }
-        @Override
-        public Double getForwardAcceleration(){
-             pigeon.getBiasedAccelerometer(AccelerationArray);
-             ForwardAcceleration= AccelerationArray[0];
-             return 9.8*(ForwardAcceleration/16384);
-        }
-        @Override
-        public short[] getAccelerlationArray(){
-            pigeon.getBiasedAccelerometer(AccelerationArray);
-            return AccelerationArray;
         }
         
 

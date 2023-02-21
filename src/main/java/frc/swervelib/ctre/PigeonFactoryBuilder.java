@@ -11,8 +11,6 @@ public class PigeonFactoryBuilder {
     private static BasePigeonSimCollection pigeonSim;
 
     private static double gyroOffset = 0.0;
-    private static short[] AccelerationArray; 
-    private static double ForwardAcceleration;
 
     public Gyroscope build(WPI_PigeonIMU pigeon) {
         return new GyroscopeImplementation(pigeon);
@@ -37,18 +35,6 @@ public class PigeonFactoryBuilder {
         
 
         }
-        // returns current Acceleration in m/s
-        @Override
-        public Double getForwardAcceleration(){
-            pigeon.getBiasedAccelerometer(AccelerationArray);
-            ForwardAcceleration= AccelerationArray[0];
-            return 9.8*(ForwardAcceleration/16384);
-       }
-       @Override
-       public short[] getAccelerlationArray(){
-           pigeon.getBiasedAccelerometer(AccelerationArray);
-           return AccelerationArray;
-       }
 
 
 

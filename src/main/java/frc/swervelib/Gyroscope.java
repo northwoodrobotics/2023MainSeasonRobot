@@ -10,12 +10,10 @@ public interface Gyroscope {
    */
   Rotation2d getGyroHeading();
 
-  Double getForwardAcceleration();
   
 
   Double getGyroRoll();
 
-  short[] getAccelerlationArray();
 
   /**
   * Sets the gyroscope angle. This can be used to set the direction the robot is currently facing to the

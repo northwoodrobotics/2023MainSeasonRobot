@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
+import frc.robot.Constants;
 import frc.swervelib.*;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -148,6 +149,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
 
     private static class ControllerImplementation implements SteerController {
         private final WPI_TalonFX motor;
+        private final TalonFXSimCollection sim;
         private final double motorEncoderPositionCoefficient;
         private final TalonFXControlMode motorControlMode;
         public final AbsoluteEncoder absoluteEncoder;
@@ -163,6 +165,8 @@ public final class Falcon500SteerControllerFactoryBuilder {
             this.motorEncoderPositionCoefficient = motorEncoderPositionCoefficient;
             this.motorControlMode = motorControlMode;
             this.absoluteEncoder = absoluteEncoder;
+            this.sim = motor.getSimCollection();
+            sim.setBusVoltage(Constants.DriveConstants.MAX_VOLTAGE);
         }
 
         @Override

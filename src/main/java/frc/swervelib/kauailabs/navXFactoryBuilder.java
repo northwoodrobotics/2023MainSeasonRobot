@@ -15,7 +15,6 @@ public class navXFactoryBuilder {
     private static class GyroscopeImplementation implements Gyroscope {
         private final AHRS navX;
         private final SimDouble angleSim;
-        private static short[] AccelerationArray; 
 
         private static double gyroOffset = 0.0;
 
@@ -40,18 +39,6 @@ public class navXFactoryBuilder {
         @Override
         public Boolean getGyroReady() {
             return !navX.isCalibrating();
-        }
-        // returns current Acceleration in m/s
-        @Override 
-        public Double getForwardAcceleration(){
-            return (double) navX.getRawAccelX()*9.8;
-        }
-        @Override
-        public short[] getAccelerlationArray(){
-           AccelerationArray[0] = (short)navX.getWorldLinearAccelX();
-           AccelerationArray[2] = (short)navX.getWorldLinearAccelY();
-           AccelerationArray[3] = (short)navX.getWorldLinearAccelZ();
-           return AccelerationArray;
         }
 
         @Override

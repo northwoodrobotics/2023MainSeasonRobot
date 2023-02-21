@@ -18,16 +18,6 @@ import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 public class SuperStructure extends SubsystemBase{
 
-    @AutoLog
-    public class SuperStructureLog{
-        public ControlState internalState;
-        public endEffectorState internalIntakeState; 
-        public SuperStructureState internalSuperStructureState;
-        public double adjustedWristAngle;   
-        public double adjustedElevatorPosition;
-            
-
-    }
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);

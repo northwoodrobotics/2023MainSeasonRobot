@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.Constants;
 import frc.swervelib.DriveController;
 import frc.swervelib.DriveControllerFactory;
 import frc.swervelib.ModuleConfiguration;
@@ -129,6 +130,7 @@ public final class Falcon500DriveControllerFactoryBuilder {
             this.motor = motor;
             this.sensorVelocityCoefficient = sensorVelocityCoefficient;
             this.sensorPositionCoefficient = sensorPositionCoefficient;
+            motor.getSimCollection().setBusVoltage(Constants.DriveConstants.MAX_VOLTAGE);
         }
 
         @Override
