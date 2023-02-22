@@ -100,6 +100,12 @@ public class SwerveDrivetrainModel {
             realModules.get(3).getPosition(),
 
         };
+        if (RobotBase.isSimulation()) {
+            this.modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(0)));
+            this.modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(1)));
+            this.modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(2)));
+            this.modules.add(Mk4iSwerveModuleHelper.createSim(realModules.get(3)));
+        }
         
 
         

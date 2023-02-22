@@ -1,10 +1,25 @@
 package frc.wpiClasses;
 
+import org.littletonrobotics.junction.AutoLog;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 
 public class SwerveModuleSim {
+     @AutoLog
+     public static class simModuleInputs{
+        public double drivePositionMeters = 0.0; 
+        public double driveVelocity = 0.0;
+        public double driveAppliedVolts = 0.0;
+
+        public double steerAngleDeg = 0.0;
+        public double steerAbsoluteDeg = 0.0;
+        public double steerVelocity = 0.0; 
+        public double steerAppliedVolts = 0.0;
+    }
+
 
     private SimpleMotorWithMassModel m_azmthMotor;
     private MotorGearboxWheelSim m_wheelMotor;
@@ -15,7 +30,7 @@ public class SwerveModuleSim {
     private final double m_treadKineticFricForce;
     //TODO - make the "how much grease" factor configurable?
     private final double m_wheelGearboxLossFactor = 0.01;
-
+   
     Pose2d m_prevModulePose = null;
     Pose2d m_curModulePose  = null;
     //Positive = in curAngle_deg, Negative = opposite of curAngle_deg
@@ -97,6 +112,18 @@ public class SwerveModuleSim {
      */
     public double getAzimuthEncoderPositionRev() {
         return m_azmthMotor.getMechanismPositionRev() * m_azimuthEncGearRatio;
+    }
+    public void updateInputs(simModuleInputs m_inputs){
+        m_inputs.drivePositionMeters = Units.rotationsToRadians((m_wheelMotor.getPositionRev())*m_wheelMotor.m_wheelRadiusM);
+        m_inputs.driveAppliedVolts = m_wheelVoltage;
+        m_inputs.driveVelocity = m_wheelMotor.getMotorSpeed_RPM();
+        
+
+        m_inputs.steerAbsoluteDeg = Units.rotationsToDegrees(m_azmthMotor.getMechanismPositionRev());
+        m_inputs.steerAngleDeg = Units.rotationsToDegrees(m_azmthMotor.getMechanismPositionRev());
+        m_inputs.steerAppliedVolts = m_azmthVoltage;
+        
+
     }
 
     /**

@@ -7,10 +7,14 @@ package frc.swervelib;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
 import frc.wpiClasses.QuadSwerveSim;
+import frc.wpiClasses.SwerveModuleSim;
+import frc.wpiClasses.simModuleInputsAutoLogged;
+import frc.wpiClasses.SwerveModuleSim.simModuleInputs;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.ArrayList;
@@ -26,14 +30,23 @@ public class SwerveSubsystem extends SubsystemBase {
     new swerveModuleIOInputsAutoLogged(), 
     new swerveModuleIOInputsAutoLogged(),
   };
+  private simModuleInputsAutoLogged[] simInputs = new simModuleInputsAutoLogged[]{
+    new simModuleInputsAutoLogged(), 
+    new simModuleInputsAutoLogged(), 
+    new simModuleInputsAutoLogged(), 
+    new simModuleInputsAutoLogged(),
+  };
   
  
   private ArrayList<SwerveModule> modules = new ArrayList<SwerveModule>(QuadSwerveSim.NUM_MODULES);
+  private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
+
   public SwerveDrivetrainModel dt;
 
   public SwerveSubsystem(SwerveDrivetrainModel dt) {
     this.dt = dt;
     modules = dt.getRealModules();
+    simModules = dt.getModules();
   }  
 
   @Override
@@ -43,9 +56,20 @@ public class SwerveSubsystem extends SubsystemBase {
     dt.setModulePositions();
     positions = dt.getModulePositions();
 
+
+   
+      
+
+      for (int i = 0; i<4; i++){
+        simModules.get(i).updateInputs(simInputs[i]);
+        Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), simInputs[i]);
+      }
+
     
 
     if (states != null) {
+
+
       SecondOrderKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
 
       modules.get(0).set(states[0]);
