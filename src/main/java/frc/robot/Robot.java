@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -16,8 +22,13 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.ExternalLib.SpectrumLib.util.Alert;
+import frc.ExternalLib.SpectrumLib.util.Alert.AlertType;
+import frc.robot.Constants.RobotType;
+import frc.robot.Constants.Mode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,6 +47,10 @@ public class Robot extends LoggedRobot {
   public enum RobotState {
     DISABLED, AUTONOMOUS, TELEOP, TEST
   }
+  private final Alert logNoFileAlert =
+  new Alert("No log path set for current robot. Data will NOT be logged.", AlertType.WARNING);
+  private final Alert logReceiverQueueAlert =
+  new Alert("Logging queue exceeded capacity, data will NOT be logged.", AlertType.ERROR);
 
   public static RobotState s_robot_state = RobotState.DISABLED;
 
@@ -45,6 +60,9 @@ public class Robot extends LoggedRobot {
 
   public static void setState(final RobotState state) {
     s_robot_state = state;  
+  }
+  public Robot() {
+    super(Constants.loopPeriodSeconds);
   }
 
   /**
@@ -56,22 +74,73 @@ public class Robot extends LoggedRobot {
   public void robotInit() {
     Logger logger = Logger.getInstance();
 
-    
-      Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    logger.recordMetadata("Robot", Constants.getRobot().toString());
+    logger.recordMetadata("TuningMode", Boolean.toString(Constants.tuningMode));
+    logger.recordMetadata("RuntimeType", getRuntimeType().toString());
 
-      if (isReal()) {
-      Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
-      Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-      LoggedPowerDistribution.getInstance(); // Enables power distribution logging
-    }  else {
-      setUseTiming(false); // Run as fast as possible
-      String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-      Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
-      Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+    // Set up data receivers & replay source
+    switch (Constants.getMode()) {
+      case REAL:
+        String folder = Constants.logFolders.get(Constants.getRobot());
+        if (folder != null) {
+          logger.addDataReceiver(new WPILOGWriter(folder));
+        } else {
+          logNoFileAlert.set(true);
+        }
+        logger.addDataReceiver(new NT4Publisher());
+        if (Constants.getRobot() == RobotType.ROBOT_2023C) {
+          LoggedPowerDistribution.getInstance(50, ModuleType.kRev);
+        }
+        break;
+
+      case SIM:
+        logger.addDataReceiver(new NT4Publisher());
+        break;
+
+      case REPLAY:
+        String path = LogFileUtil.findReplayLog();
+        logger.setReplaySource(new WPILOGReader(path));
+        logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(path, "_sim")));
+        break;
     }
+    
+  
     // start logging
+    setUseTiming(Constants.getMode() != Mode.REPLAY);
     logger.start(); 
    
+
+    Map<String, Integer> commandCounts = new HashMap<>();
+    BiConsumer<Command, Boolean> logCommandFunction =
+        (Command command, Boolean active) -> {
+          String name = command.getName();
+          int count = commandCounts.getOrDefault(name, 0) + (active ? 1 : -1);
+          commandCounts.put(name, count);
+          Logger.getInstance()
+              .recordOutput(
+                  "CommandsUnique/" + name + "_" + Integer.toHexString(command.hashCode()), active);
+          Logger.getInstance().recordOutput("CommandsAll/" + name, count > 0);
+        };
+    CommandScheduler.getInstance()
+        .onCommandInitialize(
+            (Command command) -> {
+              logCommandFunction.accept(command, true);
+            });
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            (Command command) -> {
+              logCommandFunction.accept(command, false);
+            });
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            (Command command) -> {
+              logCommandFunction.accept(command, false);
+            });
+
+      // Default to blue alliance in sim
+    if (Constants.getMode() == Mode.SIM) {
+      DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
+    }
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our

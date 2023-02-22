@@ -55,7 +55,7 @@ public class TunablePrefrence {
    * @return The current value
    */
   public double get() {
-    if (Constants.TuningMode) {
+    if (Constants.tuningMode) {
       value = SpectrumPreferences.getNumber(key, value);
       return value;
     } else {
