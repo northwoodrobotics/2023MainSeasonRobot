@@ -71,6 +71,11 @@ public class SwerveDrivetrainModel {
     PIDController thetaController =
         new PIDController(
             SwerveConstants.THETACONTROLLERkP, 0, 0);
+    
+    PIDController snapController = 
+    new PIDController(
+        SwerveConstants.THETACONTROLLERkP, 0, 0);
+
 
     PPHolonomicDriveController m_holo;
 
@@ -128,7 +133,7 @@ public class SwerveDrivetrainModel {
         // Trustworthiness of the vision system
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var visionMeasurementStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.1));
+        var visionMeasurementStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(0.1));
 
         m_poseEstimator = 
         new HuskyPoseEstimator<N7,N7,N5>(
@@ -275,7 +280,7 @@ public class SwerveDrivetrainModel {
           keepAngle = getGyroscopeRotation().getRadians();
         }
         else if(Math.abs(rotation) < SwerveConstants.kMinRotationCommand && timeSinceDrive < 0.25){ //Run Keep angle pid until 0.75s after drive command stops to combat decel drift
-          output = thetaController.calculate(getGyroscopeRotation().getRadians(), keepAngle);               //Set output command to the result of the Keep Angle PID 
+          output = snapController.calculate(getGyroscopeRotation().getRadians(), keepAngle);               //Set output command to the result of the Keep Angle PID 
         }
         return output;
     }
@@ -284,7 +289,7 @@ public class SwerveDrivetrainModel {
         double output = 0.0; 
 
            if(Math.abs(getGyroscopeRotation().getRadians()- SnapAngle.getRadians()) > SwerveConstants.kMinRotationCommand){ //Run Snap pid until 0.75s after drive command stops to combat decel drift
-            output = thetaController.calculate(getGyroscopeRotation().getRadians(), SnapAngle.getRadians());               //Set output command to the result of the Keep Angle PID 
+            output = snapController.calculate(getGyroscopeRotation().getRadians(), SnapAngle.getRadians());               //Set output command to the result of the Keep Angle PID 
           }
           return output; 
     }

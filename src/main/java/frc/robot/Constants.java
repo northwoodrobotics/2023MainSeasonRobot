@@ -48,7 +48,7 @@ public final class Constants {
                 new Rotation3d(
                     0, 
                     0,
-                    Units.degreesToRadians(90))));
+                    Units.degreesToRadians(-90))));
         
 
     }
@@ -103,7 +103,7 @@ public final class Constants {
         // Drivetrain Performance Mechanical limits
         static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(4);
         static public final double MAX_STRAFE_SPEED_MPS = Units.feetToMeters(4);
-        static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(360);
+        static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(90.0);
         static public final double MAX_TRANSLATE_ACCEL_MPS2 = MAX_FWD_REV_SPEED_MPS / 0.25; // 0-full time of 0.25
                                                                                             // second
         static public final double MAX_ROTATE_ACCEL_RAD_PER_SEC_2 = MAX_ROTATE_SPEED_RAD_PER_SEC / 0.25; // 0-full time
@@ -115,7 +115,7 @@ public final class Constants {
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
         static public final Pose2d DFLT_START_POSE = new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0),
-                Rotation2d.fromDegrees(0));
+                Rotation2d.fromDegrees(0.0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
                 * 2;

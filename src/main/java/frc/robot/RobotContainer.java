@@ -12,6 +12,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -90,16 +91,17 @@ public class RobotContainer {
   
     PortForwarder.add(5800, "photonvision.local", 5800);
     
-
+    PathPlannerServer.startServer(5811);
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
-        () -> xLimiter.calculate(driver.leftStick.getY()),
-        () -> yLimiter.calculate(driver.leftStick.getX()),
+        () -> xLimiter.calculate(driver.leftStick.getX()),
+        () -> yLimiter.calculate(driver.leftStick.getY()),
         () -> -driver.rightStick.getX() * Constants.DriveConstants.MAX_ROTATE_SPEED_RAD_PER_SEC));
 
     ShowInputs();
 
    
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
+    
 
     // Configure the button bindings
     configureButtonBindings();

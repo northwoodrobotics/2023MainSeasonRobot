@@ -8,6 +8,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.hardware.VisionLEDMode;
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 
 import com.pathplanner.lib.PathConstraints;
@@ -26,6 +27,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.VisionConstants;
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -66,8 +68,11 @@ public class PhotonCams extends SubsystemBase{
 
           final AprilTag tag01 = new AprilTag(1,
           new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(7.75)), Rotation2d.fromDegrees(180))));
+          final AprilTag tag02 = new AprilTag(2,
+          new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(40.25)), Rotation2d.fromDegrees(180))));
         ArrayList<AprilTag> list = new ArrayList<>();
-        list.add(tag01);   
+        list.add(tag01); 
+        list.add(tag02);  
         layout = new AprilTagFieldLayout(list, Units.inchesToMeters(118), Units.inchesToMeters(86));
 
         this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, VisionConstants.robotToCam );
@@ -97,7 +102,12 @@ public class PhotonCams extends SubsystemBase{
 
     @Override 
     public void periodic(){
-        
+        Optional<EstimatedRobotPose> result =
+        getEstimatedGlobalPose(RobotContainer.m_SwerveSubsystem.dt.getPose());
+        if (result.isPresent()){
+            Logger.getInstance().recordOutput("VisionPose", result.get().estimatedPose.toPose2d());
+        }
+     
     }
 
 }

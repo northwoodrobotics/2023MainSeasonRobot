@@ -35,6 +35,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem(SwerveDrivetrainModel dt) {
     this.dt = dt;
     modules = dt.getRealModules();
+    dt.setKnownPose(SwerveConstants.DFLT_START_POSE);
   }  
 
   @Override

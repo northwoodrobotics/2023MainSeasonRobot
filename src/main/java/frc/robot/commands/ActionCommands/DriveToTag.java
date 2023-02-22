@@ -43,7 +43,7 @@ public class DriveToTag extends CommandBase{
         // feeds all data into path generation software
         Route2Tag = PathPlanner.generatePath(
             // these are acceleration and velocity constraints, in m/s and m/s squared
-            new PathConstraints(2, 4), 
+            new PathConstraints(1, 0.5), 
             // PathPoints have 3 values, the cordinates of the intial point, the heading of the desired vector, and the "holonomic rotation" of the robot
             new PathPoint(m_Swerve.dt.getPose().getTranslation(),robotToTag.getRotation(),m_Swerve.dt.getGyroscopeRotation() ), 
             new PathPoint(m_targetPose.getTranslation(), robotToTag.getRotation(), m_targetPose.getRotation())
