@@ -56,14 +56,10 @@ public class SwerveSubsystem extends SubsystemBase {
     dt.setModulePositions();
     positions = dt.getModulePositions();
 
-
+    dt.update(false, 13.2);
    
       
 
-      for (int i = 0; i<4; i++){
-        simModules.get(i).updateInputs(simInputs[i]);
-        Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), simInputs[i]);
-      }
 
     
 

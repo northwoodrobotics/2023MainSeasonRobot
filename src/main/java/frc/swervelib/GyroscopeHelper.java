@@ -26,6 +26,10 @@ public final class GyroscopeHelper {
         return new PigeonFactoryBuilder().build(pigeon);
     
     }
+    public static Gyroscope createGyro(){
+        return new GyroSim().build();
+        }
+    
     public static Gyroscope createPigeon2CAN(Integer id) {
         WPI_Pigeon2 pigeon = new WPI_Pigeon2(id);
         return new Pigeon2FactoryBuilder().build(pigeon);
@@ -35,6 +39,7 @@ public final class GyroscopeHelper {
         AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 200);
         return new navXFactoryBuilder().build(navx);
     }
+
 
     public static Gyroscope createnavXUSB() {
         AHRS navx = new AHRS(SerialPort.Port.kUSB, SerialDataType.kProcessedData, (byte) 200);

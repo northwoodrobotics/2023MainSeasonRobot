@@ -45,6 +45,12 @@ public final class Mk4iSwerveModuleHelper {
                         .withReadingUpdatePeriod(100)
                         .build());
     }
+    private static SteerControllerFactory<?, Integer> getSteerSimFactory(Mk4ModuleConfiguration configuration){
+        return new Falcon500SteerSim().createSteerSim().build();
+    }
+    private static DriveControllerFactory<?, Integer> getDriveSimFactory(Mk4ModuleConfiguration configuration){
+        return new FalconDriveSim().createSim().build();
+    }
 
     /**
      * Creates a Mk4i swerve module that uses Falcon 500s for driving and steering.
@@ -83,6 +89,35 @@ public final class Mk4iSwerveModuleHelper {
                 namePrefix
         );
     }
+    public static SwerveModule createFalcon500Sim(
+        ShuffleboardLayout container,
+        Mk4ModuleConfiguration configuration,
+        GearRatio gearRatio,
+        int driveMotorPort,
+        int steerMotorPort,
+        int steerEncoderPort,
+        double steerOffset,
+        String namePrefix
+) {
+    return new SwerveModuleFactory<>(
+            gearRatio.getConfiguration(),
+            getDriveSimFactory(configuration),
+            getSteerSimFactory(configuration)
+    ).create(driveMotorPort, steerMotorPort, namePrefix);
+}
+public static SwerveModule createFalcon500Sim(
+        ShuffleboardLayout container,
+        GearRatio gearRatio,
+        int driveMotorPort,
+        int steerMotorPort,
+        int steerEncoderPort,
+        double steerOffset,
+        String namePrefix
+) {
+    return createFalcon500Sim(container, 
+    new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset, namePrefix);
+}
+
 
     /**
      * Creates a Mk4i swerve module that uses Falcon 500s for driving and steering.

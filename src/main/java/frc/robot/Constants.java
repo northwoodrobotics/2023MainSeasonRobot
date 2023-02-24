@@ -78,7 +78,7 @@ public final class Constants {
   }
   public static final boolean tuningMode = true;
   public static boolean invalidRobotAlertSent = false;
-  private static final RobotType robot = RobotType.ROBOT_2023C;
+  private static final RobotType robot = RobotType.ROBOT_SIMBOT;
   
   public static double loopPeriodSeconds = 0.02;
   public static double MinVoltage = 8.0;

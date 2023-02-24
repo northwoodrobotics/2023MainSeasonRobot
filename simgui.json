@@ -8,15 +8,26 @@
   },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auto Routine": "String Chooser",
+      "/SmartDashboard/Orientation Chooser": "String Chooser"
     }
   },
   "NetworkTables": {
-    "Persistent Values": {
+    "Retained Values": {
       "open": false
     },
     "transitory": {
-      "FMSInfo": {
+      "AdvantageKit": {
+        "RealOutputs": {
+          "LoggedRobot": {
+            "open": true
+          },
+          "Logger": {
+            "open": true
+          },
+          "open": true
+        },
         "open": true
       },
       "LiveWindow": {
@@ -29,6 +40,12 @@
         "Alerts": {
           "open": true
         },
+        "Auto Routine": {
+          "open": true
+        },
+        "open": true
+      },
+      "photonvision": {
         "open": true
       }
     }

@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.PortForwarder;
 import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox;
 import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
+import frc.robot.Constants.Mode;
 import frc.robot.commands.ActionCommands.DriveToRamp;
 import frc.robot.commands.AutoCommands.ThreeCube;
 import frc.robot.commands.DriveCommands.AutoDrive;
@@ -98,7 +99,25 @@ public class RobotContainer {
   public RobotContainer() {
     // create drivetrain from our file, utilizing the libary to do position
     // tracking, path following, and a couple of other tricks.
-    dt = DrivetrainSubsystem.createSwerveModel();
+    if (Constants.getMode() != Mode.REPLAY) {
+      switch (Constants.getRobot()) {
+        case ROBOT_2023C:
+        dt = DrivetrainSubsystem.createSwerveModel();
+        m_SuperStructure = new SuperStructure();
+        m_cams = new PhotonCams();
+          break;
+        case ROBOT_2023P:
+        dt = DrivetrainSubsystem.createSwerveModel();
+         
+          break;
+        case ROBOT_SIMBOT:
+          dt = DrivetrainSubsystem.createSimSwerveModel();
+          m_cams = new PhotonCams();
+
+          break;
+      }
+    }
+   
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     m_cams = new PhotonCams();
     m_SuperStructure = new SuperStructure();

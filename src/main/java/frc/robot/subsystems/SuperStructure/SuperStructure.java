@@ -16,7 +16,7 @@ import frc.robot.Constants.SuperStructureConstants;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 
-public class SuperStructure extends SubsystemBase{
+public class SuperStructure extends SuperStructureBase{
 
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
@@ -29,24 +29,14 @@ public class SuperStructure extends SubsystemBase{
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
     //State Machine Logic Objects:     
-    private ControlState controlState;
-    private endEffectorState intakeControlState;
-    private SuperStructureState wantedState;
-    private boolean hasGamePiece;
-    private boolean intakeStateHasChanged;
-    private double timeStateEntered;
-    private double adjustedWristAngle;
-    private double adjustedElevatorPosition;
-    private double lastElevatorPosition;
-    private double lastWristAngle;
 
 
 
     public SuperStructure(){  
         hasGamePiece = true;
         intakeStateHasChanged = false;
+        controlState = ControlState.preset;
         wantedState = SuperStructurePresets.stowed;
-
         intakeControlState = endEffectorState.holding;
 
         //configure Elevator Motion Profile
@@ -95,14 +85,7 @@ public class SuperStructure extends SubsystemBase{
     
 
     
-    public enum endEffectorState{
-        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1.0), empty(0.0);
-        public double output;
-        private endEffectorState(double output){
-            this.output = output;
 
-        }
-    }
     public boolean hasGamePiece(){
         return hasGamePiece;
     }
@@ -126,11 +109,7 @@ public class SuperStructure extends SubsystemBase{
         setEndEffectorState(targetState);
     }
 
-    private enum ControlState{
-        preset, 
-        wristAdjust,
-        heightAdjust,
-    }
+
   
 
     public void adjustWristAngle(double adjustmentDemandDegrees){  
@@ -148,9 +127,7 @@ public class SuperStructure extends SubsystemBase{
         adjustedElevatorPosition = (elevatorMotor.getPosition()+ adjustmentRadians);
 
     }
-    public void updateData(){
-        
-    }
+
     
 
 

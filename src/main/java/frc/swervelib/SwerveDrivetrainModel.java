@@ -193,15 +193,15 @@ public class SwerveDrivetrainModel {
 
         // Update each encoder
         for(int idx = 0; idx < QuadSwerveSim.NUM_MODULES; idx++){
-            double azmthShaftPos = modules.get(idx).getAzimuthEncoderPositionRev();
+            //double azmthShaftPos = modules.get(idx).getAzimuthEncoderPositionRev();
             double steerMotorPos = modules.get(idx).getAzimuthMotorPositionRev();
             double wheelPos = modules.get(idx).getWheelEncoderPositionRev();
 
-            double azmthShaftVel = modules.get(idx).getAzimuthEncoderVelocityRPM();
+           // double azmthShaftVel = modules.get(idx).getAzimuthEncoderVelocityRPM();
             double steerVelocity = modules.get(idx).getAzimuthMotorVelocityRPM();
             double wheelVelocity = modules.get(idx).getWheelEncoderVelocityRPM();
 
-            realModules.get(idx).getAbsoluteEncoder().setAbsoluteEncoder(azmthShaftPos, azmthShaftVel);
+            //realModules.get(idx).getAbsoluteEncoder().setAbsoluteEncoder(azmthShaftPos, azmthShaftVel);
             realModules.get(idx).getSteerController().setSteerEncoder(steerMotorPos, steerVelocity);
             realModules.get(idx).getDriveController().setDriveEncoder(wheelPos, wheelVelocity);
         }
