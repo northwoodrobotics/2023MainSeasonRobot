@@ -14,7 +14,6 @@ public class SuperStructureSim extends SuperStructureBase{
     private Mechanism2d base;
     private MechanismRoot2d root;
     private MechanismLigament2d elevator;
-    private MechanismRoot2d carraidge;
     private MechanismLigament2d wrist;
     SuperStructureSim(){
         root = base.getRoot("ElevatorBase", Units.inchesToMeters(26.134), Units.inchesToMeters(9.116));
@@ -25,6 +24,7 @@ public class SuperStructureSim extends SuperStructureBase{
                 )
             );
         wrist = elevator.append(new MechanismLigament2d("Wrist", Units.inchesToMeters(12.0),90.0));
+
 
     }
 
