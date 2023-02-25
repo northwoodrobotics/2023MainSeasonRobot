@@ -56,7 +56,7 @@ public class PhotonCams extends SubsystemBase{
         visionCam.setDriverMode(false);
         // turns off LEDs
         visionCam.setLED(VisionLEDMode.kOff);
-      /*  try {
+        try {
             layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
             var alliance = DriverStation.getAlliance();
             layout.setOrigin(alliance == Alliance.Blue ?
@@ -64,16 +64,16 @@ public class PhotonCams extends SubsystemBase{
           } catch(IOException e) {
             DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
             layout = null;
-          } */
+          } 
 
-          final AprilTag tag01 = new AprilTag(1,
+        /*  final AprilTag tag01 = new AprilTag(1,
           new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(7.75)), Rotation2d.fromDegrees(180))));
           final AprilTag tag02 = new AprilTag(2,
           new Pose3d(new Pose2d(new Translation2d(Units.inchesToMeters(118), Units.inchesToMeters(40.25)), Rotation2d.fromDegrees(180))));
         ArrayList<AprilTag> list = new ArrayList<>();
         list.add(tag01); 
         list.add(tag02);  
-        layout = new AprilTagFieldLayout(list, Units.inchesToMeters(118), Units.inchesToMeters(86));
+        layout = new AprilTagFieldLayout(list, Units.inchesToMeters(118), Units.inchesToMeters(86)); */
 
         this.poseEstimator = new PhotonPoseEstimator(layout, PoseStrategy.AVERAGE_BEST_TARGETS, visionCam, VisionConstants.robotToCam );
 

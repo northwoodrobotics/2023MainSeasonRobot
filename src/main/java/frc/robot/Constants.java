@@ -88,7 +88,7 @@ public final class Constants {
   
   public static boolean disableHAL = false;
   public static final Map<RobotType, String> logFolders =
-      Map.of(RobotType.ROBOT_2023C, " /media/sda1/");
+      Map.of(RobotType.ROBOT_2023C, "/media/sda1/");
  
 
 
@@ -174,7 +174,7 @@ public final class Constants {
         // SENSOR CONSTANTS
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
-        static public final Pose2d DFLT_START_POSE = new Pose2d(Units.feetToMeters(0), Units.feetToMeters(0),
+        static public final Pose2d DFLT_START_POSE = new Pose2d(1.76, 1.04,
                 Rotation2d.fromDegrees(0.0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
