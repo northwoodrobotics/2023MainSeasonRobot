@@ -142,6 +142,7 @@ public class RobotContainer {
 
     autoChooser.addDefaultOption("Do Nothing", null);
     autoChooser.addOption("1 Cube 2 Cone", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption(null, getAutonomousCommand());
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
 
 
