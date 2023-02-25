@@ -38,7 +38,7 @@ public class TeleopDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_SwerveSubsystem.dt.driveClean(-m_translationXSupplier.getAsDouble()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS, -m_translationYSupplier.getAsDouble()*Constants.DriveConstants.MAX_STRAFE_SPEED_MPS, m_rotationSupplier.getAsDouble());
+    m_SwerveSubsystem.dt.driveClean(m_translationXSupplier.getAsDouble()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS, m_translationYSupplier.getAsDouble()*Constants.DriveConstants.MAX_STRAFE_SPEED_MPS, m_rotationSupplier.getAsDouble());
 
   }
 

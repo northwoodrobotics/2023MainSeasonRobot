@@ -18,10 +18,17 @@ import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 public class SuperStructure extends SuperStructureBase{
 
+    private final double FALCON_TICKS_PER_REV = 2048;
+
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
+    private double elevatorEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1.0/12.0);
+    
+
+
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
+    private double wristEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1/64* 16/34);
 
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
@@ -84,8 +91,6 @@ public class SuperStructure extends SuperStructureBase{
     }
     
 
-    
-
     public boolean hasGamePiece(){
         return hasGamePiece;
     }
@@ -137,18 +142,18 @@ public class SuperStructure extends SuperStructureBase{
 
         switch (controlState){
             case preset: 
-            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand(), 0, 0);
+            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand()* elevatorEncoderPositionCoefficient, 0, 0);
             lastElevatorPosition = wantedState.getHeightDemand();
-            wristMotor.setMotionMagicPosition(lastWristAngle, 0, 0);
+            wristMotor.setMotionMagicPosition(wantedState.getWristAngleRadians()* wristEncoderPositionCoefficient, 0, 0);
             lastWristAngle = wantedState.getWristAngleRadians();
             break;
             case wristAdjust:
-            elevatorMotor.setMotionMagicPosition(lastElevatorPosition, 0, 0);
+            elevatorMotor.setMotionMagicPosition(lastElevatorPosition* elevatorEncoderPositionCoefficient, 0, 0);
             wristMotor.setMotionMagicPosition(adjustedWristAngle, 0, 0);
             break; 
             case heightAdjust: 
-            elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition, 0, 0);
-            wristMotor.setMotionMagicPosition(lastWristAngle, 0, 0);
+            elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition* elevatorEncoderPositionCoefficient, 0, 0);
+            wristMotor.setMotionMagicPosition(lastWristAngle* wristEncoderPositionCoefficient, 0, 0);
             break;
         }
 
@@ -182,7 +187,7 @@ public class SuperStructure extends SuperStructureBase{
         
 
 
-
+        
 
         elevatorMotor.updateInputs(elevatorLog);
         Logger.getInstance().processInputs("ElevatorMotor", elevatorLog);

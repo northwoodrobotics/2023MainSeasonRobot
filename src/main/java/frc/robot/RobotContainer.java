@@ -127,8 +127,8 @@ public class RobotContainer {
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
-        () -> xLimiter.calculate(driver.leftStick.getX()),
-        () -> yLimiter.calculate(driver.leftStick.getY()),
+        () -> xLimiter.calculate(driver.leftStick.getY()),
+        () -> yLimiter.calculate(driver.leftStick.getX()),
         () -> -driver.rightStick.getX()));
 
         ShowInputs();
@@ -163,7 +163,6 @@ public class RobotContainer {
     driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
-    driver.Dpad.Down.onTrue(new LowDrop(m_SuperStructure));
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
     

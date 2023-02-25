@@ -19,31 +19,31 @@ import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
 
 public class ThreeCube extends SequentialCommandGroup{
-    //public final PathPlannerTrajectory ThreeCube = PathPlanner.loadPath("3Cube", new PathConstraints(Units.feetToMeters(3), Units.feetToMeters(3)));
-    public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3Cube", 4, 2);
+    
+    public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3Cube", 4, 4);
     HashMap<String, Command> eventMap = new HashMap<>();
     HashMap<String, Command> eventMapTwo = new HashMap<>();
-    HashMap<String, Command> eventMapThree = new HashMap<>();
+
     
     
 
     public ThreeCube(SwerveSubsystem swerve, SuperStructure structure){
-        eventMap.put("ElevatorToMax", new HighCone(structure));
-        eventMapTwo.put("IntakeDown1", new GroundIntake(structure));
-        eventMapTwo.put("HighCube", new HighCube(structure));
-        eventMapThree.put("IntakeGround2", new GroundIntake(structure));
-        eventMapThree.put("CubeMid", new MidCube(structure));
+        eventMap.put("IntakeDown1", new GroundIntake(structure));
+        eventMap.put("HighCube", new HighCube(structure));
+        eventMapTwo.put("IntakeGround2", new GroundIntake(structure));
+        eventMapTwo.put("CubeMid", new MidCube(structure));
         FollowPathWithEvents firstCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(0), swerve), ThreeCube.get(0).getMarkers(), eventMap);
         FollowPathWithEvents secondCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(1), swerve), ThreeCube.get(1).getMarkers(), eventMapTwo);
-        FollowPathWithEvents thirdCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(2), swerve), ThreeCube.get(2).getMarkers(), eventMapThree);
+        
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),
+        new HighCone(structure),
+        new EjectAndReturnToBottom(structure),
         firstCommand,
         new EjectAndReturnToBottom(structure),
         secondCommand,
-        new EjectAndReturnToBottom(structure),
-        thirdCommand,
-        new EjectAndReturnToBottom(structure)        
+        new EjectAndReturnToBottom(structure)    
+ 
         );
         
     }

@@ -10,6 +10,7 @@ import frc.wpiClasses.QuadSwerveSim;
 import frc.wpiClasses.SwerveModuleSim;
 import frc.wpiClasses.simModuleInputsAutoLogged;
 import frc.wpiClasses.SwerveModuleSim.simModuleInputs;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -97,11 +98,18 @@ public class SwerveSubsystem extends SubsystemBase {
         modules.get(i).updateInputs(inputs[i]);
         Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), inputs[i]);
       }
-      for (int i = 0; i<4; i++){
+      
         
-        Logger.getInstance().recordOutput("SwerveModuleStates", states[i].toSwerveModuleState());
-      }
+        Logger.getInstance().recordOutput("SwerveModuleStates", new SwerveModuleState[]{
+          states[0].toSwerveModuleState(),
+          states[1].toSwerveModuleState(),
+          states[2].toSwerveModuleState(),
+          states[3].toSwerveModuleState()
+
+        });
+      
       Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());  
+      Logger.getInstance().recordOutput("3D Pose", new Pose3d(dt.getPose()));  
     }
 
     }

@@ -1,5 +1,7 @@
 package frc.swervelib;
 
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -10,8 +12,8 @@ public class SwerveConstants {
     public static double MAX_STRAFE_SPEED_MPS;
     public static double MAX_ROTATE_SPEED_RAD_PER_SEC;
     public static double MAX_VOLTAGE;
-    public static Pose2d DFLT_START_POSE;
     
+    public static Pose2d DFLT_START_POSE;
     public static double THETACONTROLLERkP;
     public static double TRAJECTORYXkP;
     public static double TRAJECTORYYkP;

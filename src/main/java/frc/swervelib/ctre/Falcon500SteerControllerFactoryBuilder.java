@@ -140,8 +140,8 @@ public final class Falcon500SteerControllerFactoryBuilder {
             );
 
             return new ControllerImplementation(motor,
-                    sensorPositionCoefficient,
-                    sensorVelocityCoefficient,
+                sensorPositionCoefficient,
+                sensorVelocityCoefficient,
                     hasMotionMagic() ? TalonFXControlMode.MotionMagic : TalonFXControlMode.Position,
                     absoluteEncoder);
         }
