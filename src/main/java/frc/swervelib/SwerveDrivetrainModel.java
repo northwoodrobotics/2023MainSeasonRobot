@@ -9,6 +9,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.numbers.N5;
 import edu.wpi.first.math.numbers.N7;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 
@@ -378,11 +379,11 @@ public class SwerveDrivetrainModel {
     }
 
     public Rotation2d getGyroscopeRotation() {
-        SmartDashboard.putNumber("Gyro Angle", gyro.getGyroHeading().getDegrees());
+        SmartDashboard.putNumber("Gyro Angle", MathUtil.inputModulus(gyro.getGyroHeading().getDegrees(), -180.0, 180.0));
         return gyro.getGyroHeading();
     }
 
-    public Double GyroRoll(){
+    public double GyroRoll(){
         return gyro.getGyroRoll();
     }
 

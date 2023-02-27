@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Map;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
@@ -78,7 +80,7 @@ public final class Constants {
   }
   public static final boolean tuningMode = true;
   public static boolean invalidRobotAlertSent = false;
-  private static final RobotType robot = RobotType.ROBOT_SIMBOT;
+  private static final RobotType robot = RobotType.ROBOT_2023C;
   
   public static double loopPeriodSeconds = 0.02;
   public static double MinVoltage = 8.0;
@@ -197,6 +199,19 @@ public final class Constants {
         // Tape Measure out 1 Meter and Drive back and forth on it, change this number
         // until odometry says 0-1m.
         public static final double TractionConstant = Units.feetToMeters(19.00);
+        public static final TrapezoidProfile.Constraints BalanceConstraints = 
+        new Constraints(
+          1.0, // velocity in meters per second that the robot is allowed to pursue when balancing 
+          1.0 // maximum acceleration the robot can follow
+          );
+
+        public static final double BalanceP = 0.01; 
+        public static final double BalanceI = 0.00;
+        public static final double BalanceD = 0.00;
+        public static final SimpleMotorFeedforward BalanceFeedForward = 
+        new SimpleMotorFeedforward(DriveKS, DriveKV);
+        public static final double BalanceTolerableAngle = 0.0;
+
 
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints THETACONTROLLERCONSTRAINTS = new TrapezoidProfile.Constraints(

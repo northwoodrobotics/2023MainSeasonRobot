@@ -44,7 +44,7 @@ public class TeleopDriveCommand extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-  
+    m_SwerveSubsystem.dt.driveClean(0, 0, 0);
 
   }
 
