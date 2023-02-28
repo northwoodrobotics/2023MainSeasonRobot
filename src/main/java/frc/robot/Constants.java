@@ -92,9 +92,9 @@ public final class Constants {
     public static final class VisionConstants {
         public static final Transform3d robotToCam = (
             new Transform3d(new Translation3d(
-                Units.inchesToMeters(-9), // X Translation
-                Units.inchesToMeters(-6), //Y Translation
-                Units.inchesToMeters(6.5)), // Z Translation
+                Units.inchesToMeters(6.722), // X Translation
+                Units.inchesToMeters(-6.933), //Y Translation
+                Units.inchesToMeters(-29.4)), // Z Translation
                 new Rotation3d(
                     0, 
                     0,

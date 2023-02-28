@@ -6,6 +6,8 @@ package frc.swervelib;
 
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
+import frc.ExternalLib.NorthwoodLib.Math.FieldRelativeAccel;
+import frc.ExternalLib.NorthwoodLib.Math.FieldRelativeVelocity;
 import frc.wpiClasses.QuadSwerveSim;
 import frc.wpiClasses.SwerveModuleSim;
 import frc.wpiClasses.simModuleInputsAutoLogged;
@@ -31,23 +33,19 @@ public class SwerveSubsystem extends SubsystemBase {
     new swerveModuleIOInputsAutoLogged(), 
     new swerveModuleIOInputsAutoLogged(),
   };
-  private simModuleInputsAutoLogged[] simInputs = new simModuleInputsAutoLogged[]{
-    new simModuleInputsAutoLogged(), 
-    new simModuleInputsAutoLogged(), 
-    new simModuleInputsAutoLogged(), 
-    new simModuleInputsAutoLogged(),
-  };
-  
  
   private ArrayList<SwerveModule> modules = new ArrayList<SwerveModule>(QuadSwerveSim.NUM_MODULES);
-  private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
+  //private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
 
-  public SwerveDrivetrainModel dt;
+  public SwerveDrivetrainModel dt;  
+  public FieldRelativeVelocity m_fieldRelativeVelocity;
+  public FieldRelativeAccel m_fieldRelativeAccel;
+  private FieldRelativeVelocity m_lastFieldRelVel;
 
   public SwerveSubsystem(SwerveDrivetrainModel dt) {
     this.dt = dt;
     modules = dt.getRealModules();
-    simModules = dt.getModules();
+    //asimModules = dt.getModules();
   }  
 
   @Override
@@ -56,11 +54,11 @@ public class SwerveSubsystem extends SubsystemBase {
     states = dt.getSwerveModuleStates();
     dt.setModulePositions();
     positions = dt.getModulePositions();
-
-    dt.update(false, 13.2);
    
       
-
+    m_fieldRelativeVelocity = dt.getFieldRelativeSpeeds();
+    m_fieldRelativeAccel = new FieldRelativeAccel(m_fieldRelativeVelocity, m_lastFieldRelVel, 0.02);
+   m_lastFieldRelVel = m_fieldRelativeVelocity;
 
     
 

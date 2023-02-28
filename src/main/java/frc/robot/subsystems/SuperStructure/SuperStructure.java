@@ -28,7 +28,7 @@ public class SuperStructure extends SuperStructureBase{
 
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
-    private double wristEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1/64* 16/34);
+    private double wristEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1/64* 12/24);
 
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();

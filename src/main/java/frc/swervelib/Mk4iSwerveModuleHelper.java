@@ -16,16 +16,21 @@ public final class Mk4iSwerveModuleHelper {
         return new Falcon500DriveControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withCurrentLimit(configuration.getDriveCurrentLimit())
+                .withCanivore(configuration.getCanivoreName())
                 .build();
     }
+
+
 
     private static SteerControllerFactory<?, Falcon500SteerConfiguration<CanCoderAbsoluteConfiguration>> getFalcon500SteerFactory(Mk4ModuleConfiguration configuration) {
         return new Falcon500SteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(0.2, 0.0, 0.1)
                 .withCurrentLimit(configuration.getSteerCurrentLimit())
+                .withCanivore(configuration.getCanivoreName())
                 .build(new CanCoderFactoryBuilder()
                         .withReadingUpdatePeriod(100)
+                        .withCanivore(configuration.getCanivoreName())
                         .build());
     }
 

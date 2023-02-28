@@ -1,5 +1,7 @@
 package frc.swervelib.ctre;
 
+import java.util.Optional;
+
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -15,7 +17,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
     private static final int STATUS_FRAME_GENERAL_PERIOD_MS = 250;
 
     private static final double TICKS_PER_ROTATION = 2048.0;
-
+    private Optional<String> canivoreName = Optional.empty();
     // PID configuration
     private double proportionalConstant = Double.NaN;
     private double integralConstant = Double.NaN;
@@ -38,6 +40,10 @@ public final class Falcon500SteerControllerFactoryBuilder {
 
     public boolean hasPidConstants() {
         return Double.isFinite(proportionalConstant) && Double.isFinite(integralConstant) && Double.isFinite(derivativeConstant);
+    }
+    public Falcon500SteerControllerFactoryBuilder withCanivore(Optional<String> canivoreName) {
+        this.canivoreName = canivoreName;
+        return this;
     }
 
     public Falcon500SteerControllerFactoryBuilder withMotionMagic(double velocityConstant, double accelerationConstant, double staticConstant) {
@@ -117,7 +123,9 @@ public final class Falcon500SteerControllerFactoryBuilder {
                 motorConfiguration.supplyCurrLimit.enable = true;
             }
 
-            WPI_TalonFX motor = new WPI_TalonFX(steerConfiguration.getMotorPort());
+            WPI_TalonFX motor;
+            if (canivoreName.isPresent()) motor = new WPI_TalonFX(steerConfiguration.getMotorPort(), canivoreName.get());
+            else motor = new WPI_TalonFX(steerConfiguration.getMotorPort());
             motor.configAllSettings(motorConfiguration, CAN_TIMEOUT_MS);
 
             if (hasVoltageCompensation()) {
