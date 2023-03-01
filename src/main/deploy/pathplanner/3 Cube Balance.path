@@ -245,5 +245,30 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.3499999999999999,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 3.8045454545454493,
+      "names": [
+        "ElevatorToCube"
+      ]
+    },
+    {
+      "position": 4.418181818181814,
+      "names": [
+        "IntakeMode2"
+      ]
+    },
+    {
+      "position": 7.118181818181798,
+      "names": [
+        "ElevatorToCone"
+      ]
+    }
+  ]
 }

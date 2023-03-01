@@ -2,7 +2,8 @@ package frc.robot.subsystems.SuperStructure;
 
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
-
+import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 //import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
@@ -26,7 +27,7 @@ public class SuperStructure extends SuperStructureBase{
     
 
 
-    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);
+    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, false,30 );
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
     private double wristEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1/64* 12/24);
 
@@ -35,15 +36,14 @@ public class SuperStructure extends SuperStructureBase{
     private LoggedMotorIOInputsAutoLogged wristLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
-    //State Machine Logic Objects:     
-
+    private LoggedDashboardNumber wristAngleDegrees;
 
 
     public SuperStructure(){  
         hasGamePiece = true;
         intakeStateHasChanged = false;
-        controlState = ControlState.preset;
-        wantedState = SuperStructurePresets.stowed;
+            controlState = ControlState.preset;
+            wantedState = SuperStructurePresets.stowed;
         intakeControlState = endEffectorState.holding;
 
         //configure Elevator Motion Profile
@@ -195,6 +195,7 @@ public class SuperStructure extends SuperStructureBase{
         Logger.getInstance().processInputs("WristLog", wristLog);
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("ElevatorMotor", intakeLog);
+        wristAngleDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()*(1/64* 12/24)) );
 
 
    

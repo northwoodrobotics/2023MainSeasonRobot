@@ -43,7 +43,7 @@ public final class Constants {
                   .set(true);
               invalidRobotAlertSent = true;
             }
-            return RobotType.ROBOT_2023C;
+            return RobotType.ROBOT_SIMBOT;
           } else {
             return robot;
           }

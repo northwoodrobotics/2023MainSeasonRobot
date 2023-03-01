@@ -46,6 +46,8 @@ import frc.robot.commands.TuningCommands.WristAdjust;
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
+import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
+import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.swervelib.SwerveSubsystem;
@@ -66,6 +68,7 @@ public class RobotContainer {
   public static PhotonCams m_cams;
   public static PhotonCamera camera;
   public static SuperStructure m_SuperStructure;
+  private ObjectiveTracker objectiveTracker;
 
   public static final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
 
@@ -105,6 +108,7 @@ public class RobotContainer {
         dt = DrivetrainSubsystem.createSwerveModel();
         m_SuperStructure = new SuperStructure();
         m_cams = new PhotonCams();
+        objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
           break;
         case ROBOT_2023P:
         dt = DrivetrainSubsystem.createSwerveModel();
@@ -113,6 +117,7 @@ public class RobotContainer {
         case ROBOT_SIMBOT:
           dt = DrivetrainSubsystem.createSimSwerveModel();
           m_cams = new PhotonCams();
+          objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
 
           break;
       }
