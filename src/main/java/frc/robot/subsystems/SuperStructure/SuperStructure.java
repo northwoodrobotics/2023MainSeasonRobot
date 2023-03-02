@@ -46,7 +46,7 @@ public class SuperStructure extends SubsystemBase{
         hasGamePiece = true;
         intakeStateHasChanged = false;
         wantedState = SuperStructurePresets.stowed;
-
+        controlState = ControlState.preset;
         intakeControlState = endEffectorState.holding;
 
         //configure Elevator Motion Profile

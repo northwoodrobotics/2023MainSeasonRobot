@@ -128,22 +128,22 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5; // FIXME Set front left module drive motor ID
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; // FIXME Set front left module steer motor ID
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 6; // FIXME Set front left steer encoder ID
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(2.021); // FIXME Measure and
                                                                                                     // set front left steer offset
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 8; // FIXME Set front right drive motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 7; // FIXME Set front right steer motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 9; // FIXME Set front right steer encoder ID
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and set
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.74); // FIXME Measure and set
                                                                                                 // front right stee steer offset
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11; // FIXME Set back left drive motor ID
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 10; // FIXME Set back left steer motor ID
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 12; // FIXME Set back left steer encoder ID
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and set
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(10.19); // FIXME Measure and set
                                                                                              // back left steer offset
         public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 15; // FIXME Set back right drive motor ID
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 14; // FIXME Set back right steer motor ID
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 16; // FIXME Set back right steer encoder ID
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(0.0); // FIXME Measure and set
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(72.59); // FIXME Measure and set
                                                                                              // back right steer offset
         // Drivetrain Performance Mechanical limits
         static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(8);
@@ -206,23 +206,24 @@ public final class Constants {
     public static final class SuperStructureConstants{
         public static final int ElevatorMotorID = 1; 
         public static final int WristMotorID = 2; 
-        public static final int EndEffectorMotorID = 3; 
+        public static final int EndEffectorMotorID = 31
+        ; 
 
         public static final double intakeCurrentSpikeThreashhold = 0.0; //FIXME value in Amps
         public static final double intakeHoldingPercentOutput = 0.0; //FIXME value 
 
         public static final double initalWristAngleRadians = 0.0; //FIXME Preset
 
-        public static final double MotionProfileElevatorP = 0.5; // FIXME set PIDF constant for Elevator
-        public static final double MotionProfileElevatorD = 0.0; // FIXME set PIDF constant for Elevator
+        public static final double MotionProfileElevatorP = 0.05; // FIXME set PIDF constant for Elevator
+        public static final double MotionProfileElevatorD = 0.02; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorI = 0.0; // FIXME set PIDF constant for Elevator
-        public static final double MotionProfileElevatorF = 0.045; // FIXME set PIDF constant for Elevator 
+        public static final double MotionProfileElevatorF = 0.1; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorP = 0.5; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorD = 0.0; // FIXME set PIDF constant for Elevator
         public static final double ElevatorI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorF = 0.045; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionAccel = 2048; // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionVelocity =2048;  // FIXME set PIDF constant for Elevator
         public static final int ElevatorCurrentLimit = 30; //FIXME set Current Limit
         public static final double WristP = 0.5; // FIXME set PIDF constant for Wrist
         public static final double WristF = 0.045; // FIXME set PIDF constant for Elevator

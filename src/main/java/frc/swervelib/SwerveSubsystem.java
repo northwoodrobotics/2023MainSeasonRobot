@@ -60,10 +60,7 @@ public class SwerveSubsystem extends SubsystemBase {
    
       
 
-      for (int i = 0; i<4; i++){
-        simModules.get(i).updateInputs(simInputs[i]);
-        Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), simInputs[i]);
-      }
+
 
     
 

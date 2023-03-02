@@ -9,6 +9,7 @@ public class ReturnToStowed extends CommandBase{
     
     public ReturnToStowed(SuperStructure superStructure){
         this.m_superStructure = superStructure;
+        addRequirements(superStructure);
     }
     @Override
     public void initialize(){
