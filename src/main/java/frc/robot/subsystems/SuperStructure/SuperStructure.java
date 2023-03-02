@@ -1,15 +1,12 @@
 package frc.robot.subsystems.SuperStructure;
 
-import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 //import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedFalcon500;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedNeo;
@@ -19,17 +16,17 @@ import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 public class SuperStructure extends SuperStructureBase{
 
-    private final double FALCON_TICKS_PER_REV = 2048;
+
 
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
-    private double elevatorEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1.0/12.0);
+    private double elevatorEncoderPositionCoefficient =(1.0/12.0);
     
 
 
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, false,30 );
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
-    private double wristEncoderPositionCoefficient = 2.0 * Math.PI / FALCON_TICKS_PER_REV * (1/64* 12/24);
+    private double wristEncoderPositionCoefficient = (1/64* 12/24);
 
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
@@ -39,6 +36,7 @@ public class SuperStructure extends SuperStructureBase{
     private LoggedDashboardNumber wristAngleDegrees;
 
 
+
     public SuperStructure(){  
         hasGamePiece = true;
         intakeStateHasChanged = false;
@@ -46,7 +44,8 @@ public class SuperStructure extends SuperStructureBase{
             wantedState = SuperStructurePresets.stowed;
         intakeControlState = endEffectorState.holding;
 
-        //configure Elevator Motion Profile
+        elevatorMotor.setEncoder(0.0);
+        wristMotor.setEncoder(Units.degreesToRadians(90.0)/wristEncoderPositionCoefficient);
         /* Motion Profiles: Using "Motion Planning" as our control method is analagous to how one travels from place to place on a car or bike. 
          * When you are close to where you want to be, you pre-emtively slow down, comming to a stop exactly where you intend to. 
          * In order to make our control of a mechanism (in this case an elevator) perfom controlably, predicatbly and smoothly, we use the 
@@ -139,7 +138,7 @@ public class SuperStructure extends SuperStructureBase{
 
     @Override 
     public void periodic(){
-
+        
         switch (controlState){
             case preset: 
             elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand()* elevatorEncoderPositionCoefficient, 0, 0);
@@ -196,8 +195,7 @@ public class SuperStructure extends SuperStructureBase{
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("ElevatorMotor", intakeLog);
         wristAngleDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()*(1/64* 12/24)) );
-
-
+        
    
 
     }

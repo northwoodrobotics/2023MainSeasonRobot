@@ -236,15 +236,15 @@ public final class Constants {
         public static final double ElevatorD = 0.0; // FIXME set PIDF constant for Elevator
         public static final double ElevatorI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorF = 0.045; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionAccel = 4096.0; // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionVelocity =4096.0;  // FIXME set PIDF constant for Elevator
         public static final int ElevatorCurrentLimit = 30; //FIXME set Current Limit
         public static final double WristP = 0.5; // FIXME set PIDF constant for Wrist
         public static final double WristF = 0.045; // FIXME set PIDF constant for Elevator
         public static final double WristD = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
-        public static final double WristMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
-        public static final double WristMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final double WristMotionAccel = 4096.0; // FIXME set PIDF constant for Elevator
+        public static final double WristMotionVelocity =4096.0;  // FIXME set PIDF constant for Elevator
         public static final int WristCurrentLimit = 30; //FIXME Current Limit
 
 
@@ -287,7 +287,7 @@ public final class Constants {
                 );
             public static final SuperStructureState stowed  = new SuperStructureState(
                 0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                Units.degreesToRadians(90.0) // FIXME Measure
                 );
             public static final SuperStructureState init = new SuperStructureState(
                 0.0, // FIXME Measure

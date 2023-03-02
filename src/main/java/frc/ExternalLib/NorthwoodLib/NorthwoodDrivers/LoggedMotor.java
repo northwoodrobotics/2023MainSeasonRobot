@@ -32,6 +32,10 @@ public interface LoggedMotor {
     /*Move to position using internal PIDF controller */
     public default void setPosition(double positionRad, int slotID){   
     }
+    /* Set internal Encoder Value */
+    public default void setEncoder(double positionRad){
+        
+    }
   
     /** Stop in open loop. */
     public default void stop() {

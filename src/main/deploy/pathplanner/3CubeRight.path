@@ -223,5 +223,30 @@
   "maxVelocity": 3.0,
   "maxAcceleration": 3.0,
   "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 1.272727272727263,
+      "names": [
+        "IntakeMode1"
+      ]
+    },
+    {
+      "position": 3.709090909090903,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 5.054545454545442,
+      "names": [
+        "IntakeMode2"
+      ]
+    },
+    {
+      "position": 7.45454545454543,
+      "names": [
+        "HighCone"
+      ]
+    }
+  ]
 }

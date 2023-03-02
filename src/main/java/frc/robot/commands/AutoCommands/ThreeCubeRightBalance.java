@@ -13,41 +13,39 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.commands.ActionCommands.AutoBalance;
-import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.SuperStructureCommands.EjectAndReturnToBottom;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
 
-public class ThreeCubeBalance extends SequentialCommandGroup{
-    
-    public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3 Cube Balance", 4, 4);
+public class ThreeCubeRightBalance extends SequentialCommandGroup{
+    //public final PathPlannerTrajectory ThreeCube = PathPlanner.loadPath("3Cube", new PathConstraints(Units.feetToMeters(3), Units.feetToMeters(3)));
+    public final List<PathPlannerTrajectory> ThreeCubeRight = PathPlanner.loadPathGroup("2PlusBalance", 4, 2);
     HashMap<String, Command> eventMap = new HashMap<>();
     HashMap<String, Command> eventMapTwo = new HashMap<>();
-
     
     
 
-    public ThreeCubeBalance(SwerveSubsystem swerve, SuperStructure structure){
+    public ThreeCubeRightBalance(SwerveSubsystem swerve, SuperStructure structure){
         eventMap.put("IntakeMode1", new GroundIntake(structure));
         eventMap.put("ElevatorToCube", new HighCube(structure));
         eventMapTwo.put("IntakeMode2", new GroundIntake(structure));
         eventMapTwo.put("ElevatorToCone", new HighCone(structure));
-        FollowPathWithEvents firstCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(0), swerve), ThreeCube.get(0).getMarkers(), eventMap);
-        FollowPathWithEvents secondCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(1), swerve), ThreeCube.get(1).getMarkers(), eventMapTwo);
+
+
+        FollowPathWithEvents firstCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCubeRight.get(0), swerve), ThreeCubeRight.get(0).getMarkers(), eventMap);
+        FollowPathWithEvents secondCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCubeRight.get(1), swerve), ThreeCubeRight.get(1).getMarkers(), eventMapTwo);
         
         addCommands(
-        new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),
+        new InstantCommand(()-> swerve.dt.setKnownState(ThreeCubeRight.get(0).getInitialState())),
         new HighCone(structure),
         new EjectAndReturnToBottom(structure),
-        firstCommand,
+        firstCommand,   
         new EjectAndReturnToBottom(structure),
         secondCommand,
-        new EjectAndReturnToBottom(structure),    
-        new AutoDrive(swerve, ThreeCube.get(2)),
+        new EjectAndReturnToBottom(structure),
+        swerve.dt.createCommandForTrajectory(ThreeCubeRight.get(2), swerve),
         new AutoBalance(swerve)
-
- 
         );
         
     }

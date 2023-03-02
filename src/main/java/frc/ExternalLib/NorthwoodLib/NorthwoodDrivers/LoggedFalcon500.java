@@ -85,11 +85,18 @@ public class LoggedFalcon500 implements LoggedMotor{
     motor.set(ControlMode.Position, positionFalconUnits);
   }
   
-
+  /*
+   * Sets Falcon Motor Position in radians 
+   * This use the internal motion profile follower and generator. 
+   */
   public void setMotionMagicPosition(double positionRad, double ff, int slotID){
     motor.selectProfileSlot(slotID, 0);
     double positionFalconUnits = Units.radiansToRotations(positionRad)*TICKS_PER_REV;
     motor.set(ControlMode.MotionMagic, positionFalconUnits, DemandType.ArbitraryFeedForward, ff);
+  }
+  @Override
+  public void setEncoder(double positionRad){
+    motor.setSelectedSensorPosition(Units.radiansToRotations(positionRad)*TICKS_PER_REV);
   }
 
 

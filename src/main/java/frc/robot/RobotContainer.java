@@ -29,6 +29,7 @@ import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
 import frc.robot.Constants.Mode;
 import frc.robot.commands.ActionCommands.DriveToRamp;
 import frc.robot.commands.AutoCommands.ThreeCube;
+import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
@@ -146,8 +147,8 @@ public class RobotContainer {
 
 
     autoChooser.addDefaultOption("Do Nothing", null);
-    autoChooser.addOption("1 Cube 2 Cone", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
-    autoChooser.addOption(null, getAutonomousCommand());
+    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
 
 

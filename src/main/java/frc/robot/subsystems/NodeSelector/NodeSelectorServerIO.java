@@ -34,7 +34,7 @@ public class NodeSelectorServerIO implements NodeSelectorIO {
                             .toString(),
                         Location.EXTERNAL);
                   });
-          app.start(5800);
+          app.start(5810);
         }
       
         public void updateInputs(NodeSelectorIOInputs inputs) {
