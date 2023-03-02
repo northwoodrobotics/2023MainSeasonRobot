@@ -1,5 +1,7 @@
 package frc.swervelib.ctre;
 
+import java.util.Optional;
+
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -16,9 +18,13 @@ public class CanCoderFactoryBuilder {
     private Direction direction = Direction.COUNTER_CLOCKWISE;
     private int periodMilliseconds = 10;
     private static double angle = 0;
-
+    private Optional<String> canivoreName = Optional.empty();
     public CanCoderFactoryBuilder withReadingUpdatePeriod(int periodMilliseconds) {
         this.periodMilliseconds = periodMilliseconds;
+        return this;
+    }
+    public CanCoderFactoryBuilder withCanivore(Optional<String> canivoreName) {
+        this.canivoreName = canivoreName;
         return this;
     }
 
@@ -37,7 +43,9 @@ public class CanCoderFactoryBuilder {
             config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
             //config.initializationStrategy = configuration.getInitStrategy();
 
-            WPI_CANCoder encoder = new WPI_CANCoder(configuration.getId());
+            WPI_CANCoder encoder;
+            if (canivoreName.isPresent()) encoder = new WPI_CANCoder(configuration.getId(), canivoreName.get());
+            else encoder= new WPI_CANCoder(configuration.getId());
             
             encoder.configAllSettings(config, 250);
 

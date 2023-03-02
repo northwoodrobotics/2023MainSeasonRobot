@@ -16,16 +16,21 @@ public final class Mk4iSwerveModuleHelper {
         return new Falcon500DriveControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withCurrentLimit(configuration.getDriveCurrentLimit())
+                .withCanivore(configuration.getCanivoreName())
                 .build();
     }
+
+
 
     private static SteerControllerFactory<?, Falcon500SteerConfiguration<CanCoderAbsoluteConfiguration>> getFalcon500SteerFactory(Mk4ModuleConfiguration configuration) {
         return new Falcon500SteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(0.2, 0.0, 0.1)
                 .withCurrentLimit(configuration.getSteerCurrentLimit())
+                .withCanivore(configuration.getCanivoreName())
                 .build(new CanCoderFactoryBuilder()
                         .withReadingUpdatePeriod(100)
+                        .withCanivore(configuration.getCanivoreName())
                         .build());
     }
 
@@ -44,6 +49,12 @@ public final class Mk4iSwerveModuleHelper {
                 .build(new CanCoderFactoryBuilder()
                         .withReadingUpdatePeriod(100)
                         .build());
+    }
+    private static SteerControllerFactory<?, Integer> getSteerSimFactory(Mk4ModuleConfiguration configuration){
+        return new Falcon500SteerSim().createSteerSim().build();
+    }
+    private static DriveControllerFactory<?, Integer> getDriveSimFactory(Mk4ModuleConfiguration configuration){
+        return new FalconDriveSim().createSim().build();
     }
 
     /**
@@ -83,6 +94,35 @@ public final class Mk4iSwerveModuleHelper {
                 namePrefix
         );
     }
+    public static SwerveModule createFalcon500Sim(
+        ShuffleboardLayout container,
+        Mk4ModuleConfiguration configuration,
+        GearRatio gearRatio,
+        int driveMotorPort,
+        int steerMotorPort,
+        int steerEncoderPort,
+        double steerOffset,
+        String namePrefix
+) {
+    return new SwerveModuleFactory<>(
+            gearRatio.getConfiguration(),
+            getDriveSimFactory(configuration),
+            getSteerSimFactory(configuration)
+    ).create(driveMotorPort, steerMotorPort, namePrefix);
+}
+public static SwerveModule createFalcon500Sim(
+        ShuffleboardLayout container,
+        GearRatio gearRatio,
+        int driveMotorPort,
+        int steerMotorPort,
+        int steerEncoderPort,
+        double steerOffset,
+        String namePrefix
+) {
+    return createFalcon500Sim(container, 
+    new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, steerOffset, namePrefix);
+}
+
 
     /**
      * Creates a Mk4i swerve module that uses Falcon 500s for driving and steering.

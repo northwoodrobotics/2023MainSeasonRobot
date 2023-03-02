@@ -3,7 +3,7 @@ package frc.wpiClasses;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 
-class MotorGearboxWheelSim {
+public class MotorGearboxWheelSim {
 
     DCMotor m_motor;
     double m_gearRatio;
@@ -30,7 +30,7 @@ class MotorGearboxWheelSim {
      *      with white lithium grease, make it positive if your team maybe
      *      forget the grease sometimes.
      */
-    MotorGearboxWheelSim(DCMotor motor, 
+    public MotorGearboxWheelSim(DCMotor motor, 
                          double gearRatio, 
                          double wheelRadiusM, 
                          double gearboxFricCoefNmPerRadPerSec) {

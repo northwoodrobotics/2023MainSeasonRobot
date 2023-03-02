@@ -6,10 +6,13 @@ package frc.swervelib;
 
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
 import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
+import frc.ExternalLib.NorthwoodLib.Math.FieldRelativeAccel;
+import frc.ExternalLib.NorthwoodLib.Math.FieldRelativeVelocity;
 import frc.wpiClasses.QuadSwerveSim;
 import frc.wpiClasses.SwerveModuleSim;
 import frc.wpiClasses.simModuleInputsAutoLogged;
 import frc.wpiClasses.SwerveModuleSim.simModuleInputs;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -30,23 +33,19 @@ public class SwerveSubsystem extends SubsystemBase {
     new swerveModuleIOInputsAutoLogged(), 
     new swerveModuleIOInputsAutoLogged(),
   };
-  private simModuleInputsAutoLogged[] simInputs = new simModuleInputsAutoLogged[]{
-    new simModuleInputsAutoLogged(), 
-    new simModuleInputsAutoLogged(), 
-    new simModuleInputsAutoLogged(), 
-    new simModuleInputsAutoLogged(),
-  };
-  
  
   private ArrayList<SwerveModule> modules = new ArrayList<SwerveModule>(QuadSwerveSim.NUM_MODULES);
-  private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
+  //private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
 
-  public SwerveDrivetrainModel dt;
+  public SwerveDrivetrainModel dt;  
+  public FieldRelativeVelocity m_fieldRelativeVelocity;
+  public FieldRelativeAccel m_fieldRelativeAccel;
+  private FieldRelativeVelocity m_lastFieldRelVel;
 
   public SwerveSubsystem(SwerveDrivetrainModel dt) {
     this.dt = dt;
     modules = dt.getRealModules();
-    simModules = dt.getModules();
+    //asimModules = dt.getModules();
   }  
 
   @Override
@@ -55,12 +54,11 @@ public class SwerveSubsystem extends SubsystemBase {
     states = dt.getSwerveModuleStates();
     dt.setModulePositions();
     positions = dt.getModulePositions();
-
-
    
       
-
-
+    m_fieldRelativeVelocity = dt.getFieldRelativeSpeeds();
+    m_fieldRelativeAccel = new FieldRelativeAccel(m_fieldRelativeVelocity, m_lastFieldRelVel, 0.02);
+   m_lastFieldRelVel = m_fieldRelativeVelocity;
 
     
 
@@ -98,11 +96,18 @@ public class SwerveSubsystem extends SubsystemBase {
         modules.get(i).updateInputs(inputs[i]);
         Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), inputs[i]);
       }
-      for (int i = 0; i<4; i++){
+      
         
-        Logger.getInstance().recordOutput("SwerveModuleStates", states[i].toSwerveModuleState());
-      }
+        Logger.getInstance().recordOutput("SwerveModuleStates", new SwerveModuleState[]{
+          states[0].toSwerveModuleState(),
+          states[1].toSwerveModuleState(),
+          states[2].toSwerveModuleState(),
+          states[3].toSwerveModuleState()
+
+        });
+      
       Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());  
+      Logger.getInstance().recordOutput("3D Pose", new Pose3d(dt.getPose()));  
     }
 
     }

@@ -78,15 +78,11 @@ public class TalonSteerFactoryBuilder {
         return Double.isFinite(currentLimit);
     }
     public <T> EnclosedSteerControllerFactory<ControllerImplementation, TalonSteerConfiguration<T>>build(AbsoluteEncoderFactory<T> absoluteEncoderFactory){
-        return new FactoryImplementation<>(absoluteEncoderFactory);
+        return new FactoryImplementation();
     } 
 
     private class FactoryImplementation<T> implements EnclosedSteerControllerFactory<ControllerImplementation, TalonSteerConfiguration<T>> {
-        private final AbsoluteEncoderFactory<T> encoderFactory;
-
-        private FactoryImplementation(AbsoluteEncoderFactory<T> encoderFactory) {
-            this.encoderFactory = encoderFactory;
-        }
+    
 
     
         @Override

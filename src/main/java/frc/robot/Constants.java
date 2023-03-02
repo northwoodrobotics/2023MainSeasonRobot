@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Map;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
@@ -41,7 +43,7 @@ public final class Constants {
                   .set(true);
               invalidRobotAlertSent = true;
             }
-            return RobotType.ROBOT_2023C;
+            return RobotType.ROBOT_SIMBOT;
           } else {
             return robot;
           }
@@ -90,9 +92,9 @@ public final class Constants {
     public static final class VisionConstants {
         public static final Transform3d robotToCam = (
             new Transform3d(new Translation3d(
-                Units.inchesToMeters(-9), // X Translation
-                Units.inchesToMeters(-6), //Y Translation
-                Units.inchesToMeters(6.5)), // Z Translation
+                Units.inchesToMeters(6.722), // X Translation
+                Units.inchesToMeters(-6.933), //Y Translation
+                Units.inchesToMeters(-29.4)), // Z Translation
                 new Rotation3d(
                     0, 
                     0,
@@ -159,8 +161,8 @@ public final class Constants {
         // SENSOR CONSTANTS
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
-        static public final Pose2d DFLT_START_POSE = new Pose2d(Units.feetToMeters(24.0), Units.feetToMeters(10.0),
-                Rotation2d.fromDegrees(0));
+        static public final Pose2d DFLT_START_POSE = new Pose2d(1.76, 1.84,
+                Rotation2d.fromDegrees(180));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
                 * 2;
@@ -197,6 +199,19 @@ public final class Constants {
         // Tape Measure out 1 Meter and Drive back and forth on it, change this number
         // until odometry says 0-1m.
         public static final double TractionConstant = Units.feetToMeters(19.00);
+        public static final TrapezoidProfile.Constraints BalanceConstraints = 
+        new Constraints(
+          1.0, // velocity in meters per second that the robot is allowed to pursue when balancing 
+          1.0 // maximum acceleration the robot can follow
+          );
+
+        public static final double BalanceP = 0.01; 
+        public static final double BalanceI = 0.00;
+        public static final double BalanceD = 0.00;
+        public static final SimpleMotorFeedforward BalanceFeedForward = 
+        new SimpleMotorFeedforward(DriveKS, DriveKV);
+        public static final double BalanceTolerableAngle = 0.0;
+
 
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints THETACONTROLLERCONSTRAINTS = new TrapezoidProfile.Constraints(
@@ -229,8 +244,8 @@ public final class Constants {
         public static final double WristF = 0.045; // FIXME set PIDF constant for Elevator
         public static final double WristD = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
-        public static final double WristMotionAccel = 2.0; // FIXME set PIDF constant for Elevator
-        public static final double WristMotionVelocity =2.0;  // FIXME set PIDF constant for Elevator
+        public static final double WristMotionAccel = 4096.0; // FIXME set PIDF constant for Elevator
+        public static final double WristMotionVelocity =4096.0;  // FIXME set PIDF constant for Elevator
         public static final int WristCurrentLimit = 30; //FIXME Current Limit
 
 
@@ -273,7 +288,7 @@ public final class Constants {
                 );
             public static final SuperStructureState stowed  = new SuperStructureState(
                 0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                Units.degreesToRadians(90.0) // FIXME Measure
                 );
             public static final SuperStructureState init = new SuperStructureState(
                 0.0, // FIXME Measure

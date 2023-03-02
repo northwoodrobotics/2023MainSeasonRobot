@@ -16,6 +16,7 @@ public class LoggedFalcon500 implements LoggedMotor{
     private final TalonFX motor;
     private final TalonFXConfiguration config;
     private int supplyCurrentLimit;
+
     
     public LoggedFalcon500(int motorID){
         this.motorID = motorID;
@@ -25,6 +26,7 @@ public class LoggedFalcon500 implements LoggedMotor{
         this.config.statorCurrLimit.enable = true;
         this.config.statorCurrLimit.currentLimit = 40;
         this.config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+
         motor.setInverted(false);
         motor.configAllSettings(this.config);
     }
@@ -78,16 +80,25 @@ public class LoggedFalcon500 implements LoggedMotor{
   }
   @Override
   public void setPosition(double positionRad, int slotID){
-    motor.selectProfileSlot(slotID, slotID);
+    motor.selectProfileSlot(slotID, 0);
     double positionFalconUnits = Units.radiansToRotations(positionRad)*TICKS_PER_REV;
     motor.set(ControlMode.Position, positionFalconUnits);
   }
-
+  
+  /*
+   * Sets Falcon Motor Position in radians 
+   * This use the internal motion profile follower and generator. 
+   */
   public void setMotionMagicPosition(double positionRad, double ff, int slotID){
-    motor.selectProfileSlot(slotID, slotID);
+    motor.selectProfileSlot(slotID, 0);
     double positionFalconUnits = Units.radiansToRotations(positionRad)*TICKS_PER_REV;
     motor.set(ControlMode.MotionMagic, positionFalconUnits, DemandType.ArbitraryFeedForward, ff);
   }
+  @Override
+  public void setEncoder(double positionRad){
+    motor.setSelectedSensorPosition(Units.radiansToRotations(positionRad)*TICKS_PER_REV);
+  }
+
 
   @Override
   public void configurePID(double kP, double kI, double kD, double ff, int slotID) {
@@ -104,6 +115,7 @@ public class LoggedFalcon500 implements LoggedMotor{
     
 
   }
+
   @Override
   public double getPosition(){
     return Units.rotationsToRadians(motor.getSelectedSensorPosition() / TICKS_PER_REV);

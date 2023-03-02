@@ -26,8 +26,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.PortForwarder;
 import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox;
 import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
+import frc.robot.Constants.Mode;
 import frc.robot.commands.ActionCommands.DriveToRamp;
 import frc.robot.commands.AutoCommands.ThreeCube;
+import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
@@ -45,6 +47,8 @@ import frc.robot.commands.TuningCommands.WristAdjust;
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
+import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
+import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.swervelib.SwerveSubsystem;
@@ -65,6 +69,7 @@ public class RobotContainer {
   public static PhotonCams m_cams;
   public static PhotonCamera camera;
   public static SuperStructure m_SuperStructure;
+  private ObjectiveTracker objectiveTracker;
 
   public static final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
 
@@ -98,7 +103,27 @@ public class RobotContainer {
   public RobotContainer() {
     // create drivetrain from our file, utilizing the libary to do position
     // tracking, path following, and a couple of other tricks.
-    dt = DrivetrainSubsystem.createSwerveModel();
+    if (Constants.getMode() != Mode.REPLAY) {
+      switch (Constants.getRobot()) {
+        case ROBOT_2023C:
+        dt = DrivetrainSubsystem.createSwerveModel();
+        m_SuperStructure = new SuperStructure();
+        m_cams = new PhotonCams();
+        objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+          break;
+        case ROBOT_2023P:
+        dt = DrivetrainSubsystem.createSwerveModel();
+         
+          break;
+        case ROBOT_SIMBOT:
+          dt = DrivetrainSubsystem.createSimSwerveModel();
+          m_cams = new PhotonCams();
+          objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+
+          break;
+      }
+    }
+   
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     m_cams = new PhotonCams();
     m_SuperStructure = new SuperStructure();
@@ -108,8 +133,8 @@ public class RobotContainer {
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
-        () -> xLimiter.calculate(driver.leftStick.getX()),
-        () -> yLimiter.calculate(driver.leftStick.getY()),
+        () -> xLimiter.calculate(driver.leftStick.getY()),
+        () -> yLimiter.calculate(driver.leftStick.getX()),
         () -> -driver.rightStick.getX()));
 
         ShowInputs();
@@ -122,7 +147,8 @@ public class RobotContainer {
 
 
     autoChooser.addDefaultOption("Do Nothing", null);
-    autoChooser.addOption("1 Cube 2 Cone", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
 
 
@@ -144,7 +170,6 @@ public class RobotContainer {
     driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
-    driver.Dpad.Down.onTrue(new LowDrop(m_SuperStructure));
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
     

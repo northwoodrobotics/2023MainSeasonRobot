@@ -9,6 +9,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.numbers.N5;
 import edu.wpi.first.math.numbers.N7;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 
@@ -122,15 +123,15 @@ public class SwerveDrivetrainModel {
         // Trustworthiness of the internal model of how motors should be moving
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var stateStdDevs = VecBuilder.fill(0.1, 0.1, Units.degreesToRadians(0.5),0.005, 0.005, 0.005, 0.005);
+        var stateStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.05),0.0005, 0.0005, 0.0005, 0.0005);
 
         // Trustworthiness of gyro in radians of standard deviation.
-        var localMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.1),0.01,0.01,0.01,0.01);
+        var localMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.01),0.001,0.001,0.001,0.001);
 
         // Trustworthiness of the vision system
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var visionMeasurementStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(1));
+        var visionMeasurementStdDevs = VecBuilder.fill(0.001, 0.001, Units.degreesToRadians(0.01));
 
         m_poseEstimator = 
         new HuskyPoseEstimator<N7,N7,N5>(
@@ -193,15 +194,15 @@ public class SwerveDrivetrainModel {
 
         // Update each encoder
         for(int idx = 0; idx < QuadSwerveSim.NUM_MODULES; idx++){
-            double azmthShaftPos = modules.get(idx).getAzimuthEncoderPositionRev();
+            //double azmthShaftPos = modules.get(idx).getAzimuthEncoderPositionRev();
             double steerMotorPos = modules.get(idx).getAzimuthMotorPositionRev();
             double wheelPos = modules.get(idx).getWheelEncoderPositionRev();
 
-            double azmthShaftVel = modules.get(idx).getAzimuthEncoderVelocityRPM();
+           // double azmthShaftVel = modules.get(idx).getAzimuthEncoderVelocityRPM();
             double steerVelocity = modules.get(idx).getAzimuthMotorVelocityRPM();
             double wheelVelocity = modules.get(idx).getWheelEncoderVelocityRPM();
 
-            realModules.get(idx).getAbsoluteEncoder().setAbsoluteEncoder(azmthShaftPos, azmthShaftVel);
+            //realModules.get(idx).getAbsoluteEncoder().setAbsoluteEncoder(azmthShaftPos, azmthShaftVel);
             realModules.get(idx).getSteerController().setSteerEncoder(steerMotorPos, steerVelocity);
             realModules.get(idx).getDriveController().setDriveEncoder(wheelPos, wheelVelocity);
         }
@@ -378,11 +379,11 @@ public class SwerveDrivetrainModel {
     }
 
     public Rotation2d getGyroscopeRotation() {
-        SmartDashboard.putNumber("Gyro Angle", gyro.getGyroHeading().getDegrees());
+        SmartDashboard.putNumber("Gyro Angle", MathUtil.inputModulus(gyro.getGyroHeading().getDegrees(), -180.0, 180.0));
         return gyro.getGyroHeading();
     }
 
-    public Double GyroRoll(){
+    public double GyroRoll(){
         return gyro.getGyroRoll();
     }
 

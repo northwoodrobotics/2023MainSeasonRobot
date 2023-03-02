@@ -32,6 +32,10 @@ public interface LoggedMotor {
     /*Move to position using internal PIDF controller */
     public default void setPosition(double positionRad, int slotID){   
     }
+    /* Set internal Encoder Value */
+    public default void setEncoder(double positionRad){
+        
+    }
   
     /** Stop in open loop. */
     public default void stop() {
@@ -40,6 +44,7 @@ public interface LoggedMotor {
     /** Set velocity PID constants. */
     public default void configurePID(double kP, double kI, double kD, double ff, int slotID) {
     }
+    
     /** Returns Current Motor Velocity in Radians per second */
     public double getVelocity();
     /** Returns Current Motor Positon in Radians */

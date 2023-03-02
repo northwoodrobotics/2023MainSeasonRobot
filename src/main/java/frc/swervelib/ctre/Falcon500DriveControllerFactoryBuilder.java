@@ -1,5 +1,7 @@
 package frc.swervelib.ctre;
 
+import java.util.Optional;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -22,6 +24,8 @@ public final class Falcon500DriveControllerFactoryBuilder {
     private static final int STATUS_FRAME_GENERAL_PERIOD_MS = 250;
     private static final int CAN_TIMEOUT_MS_SIM = 100;
     private static final int STATUS_FRAME_GENERAL_PERIOD_MS_SIM = 100;
+    
+    private Optional<String> canivoreName = Optional.empty();
 
     // PID configuration
     private double proportionalConstant = Double.NaN;
@@ -41,6 +45,11 @@ public final class Falcon500DriveControllerFactoryBuilder {
     public boolean hasPidConstants() {
         return Double.isFinite(proportionalConstant) && Double.isFinite(integralConstant) && Double.isFinite(derivativeConstant);
     }
+    public Falcon500DriveControllerFactoryBuilder withCanivore(Optional<String> canivoreName) {
+        this.canivoreName = canivoreName;
+        return this;
+    }
+    
 
     public Falcon500DriveControllerFactoryBuilder withVoltageCompensation(double nominalVoltage) {
         this.nominalVoltage = nominalVoltage;
@@ -87,7 +96,9 @@ public final class Falcon500DriveControllerFactoryBuilder {
                 motorConfiguration.supplyCurrLimit.enable = true;
             }
 
-            WPI_TalonFX motor = new WPI_TalonFX(driveConfiguration);
+            WPI_TalonFX motor;
+            if (canivoreName.isPresent()) motor = new WPI_TalonFX(driveConfiguration, canivoreName.get());
+            else motor = new WPI_TalonFX(driveConfiguration);
             motor.configAllSettings(motorConfiguration);
 
             if (hasVoltageCompensation()) {

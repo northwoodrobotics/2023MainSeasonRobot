@@ -1,14 +1,12 @@
 package frc.robot.subsystems.SuperStructure;
 
-import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.Logger;
-
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 //import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedFalcon500;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedNeo;
@@ -16,29 +14,26 @@ import frc.robot.Constants.SuperStructureConstants;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 
-public class SuperStructure extends SubsystemBase{
+public class SuperStructure extends SuperStructureBase{
+
+
 
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
-    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID);
+    private double elevatorEncoderPositionCoefficient =(1.0/12.0);
+    
+
+
+    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, false,30 );
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
+    private double wristEncoderPositionCoefficient = (1/64* 12/24);
 
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged wristLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
-    //State Machine Logic Objects:     
-    private ControlState controlState;
-    private endEffectorState intakeControlState;
-    private SuperStructureState wantedState;
-    private boolean hasGamePiece;
-    private boolean intakeStateHasChanged;
-    private double timeStateEntered;
-    private double adjustedWristAngle;
-    private double adjustedElevatorPosition;
-    private double lastElevatorPosition;
-    private double lastWristAngle;
+    private LoggedDashboardNumber wristAngleDegrees;
 
 
 
@@ -49,7 +44,8 @@ public class SuperStructure extends SubsystemBase{
         controlState = ControlState.preset;
         intakeControlState = endEffectorState.holding;
 
-        //configure Elevator Motion Profile
+        elevatorMotor.setEncoder(0.0);
+        wristMotor.setEncoder(Units.degreesToRadians(90.0)/wristEncoderPositionCoefficient);
         /* Motion Profiles: Using "Motion Planning" as our control method is analagous to how one travels from place to place on a car or bike. 
          * When you are close to where you want to be, you pre-emtively slow down, comming to a stop exactly where you intend to. 
          * In order to make our control of a mechanism (in this case an elevator) perfom controlably, predicatbly and smoothly, we use the 
@@ -94,15 +90,6 @@ public class SuperStructure extends SubsystemBase{
     }
     
 
-    
-    public enum endEffectorState{
-        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1.0), empty(0.0);
-        public double output;
-        private endEffectorState(double output){
-            this.output = output;
-
-        }
-    }
     public boolean hasGamePiece(){
         return hasGamePiece;
     }
@@ -126,11 +113,7 @@ public class SuperStructure extends SubsystemBase{
         setEndEffectorState(targetState);
     }
 
-    private enum ControlState{
-        preset, 
-        wristAdjust,
-        heightAdjust,
-    }
+
   
 
     public void adjustWristAngle(double adjustmentDemandDegrees){  
@@ -148,30 +131,28 @@ public class SuperStructure extends SubsystemBase{
         adjustedElevatorPosition = (elevatorMotor.getPosition()+ adjustmentRadians);
 
     }
-    public void updateData(){
-        
-    }
+
     
 
 
 
     @Override 
     public void periodic(){
-
+        
         switch (controlState){
             case preset: 
-            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand(), 0, 0);
+            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand()* elevatorEncoderPositionCoefficient, 0, 0);
             lastElevatorPosition = wantedState.getHeightDemand();
-            wristMotor.setMotionMagicPosition(lastWristAngle, 0, 0);
+            wristMotor.setMotionMagicPosition(wantedState.getWristAngleRadians()* wristEncoderPositionCoefficient, 0, 0);
             lastWristAngle = wantedState.getWristAngleRadians();
             break;
             case wristAdjust:
-            elevatorMotor.setMotionMagicPosition(lastElevatorPosition, 0, 0);
+            elevatorMotor.setMotionMagicPosition(lastElevatorPosition* elevatorEncoderPositionCoefficient, 0, 0);
             wristMotor.setMotionMagicPosition(adjustedWristAngle, 0, 0);
             break; 
             case heightAdjust: 
-            elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition, 0, 0);
-            wristMotor.setMotionMagicPosition(lastWristAngle, 0, 0);
+            elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition* elevatorEncoderPositionCoefficient, 0, 0);
+            wristMotor.setMotionMagicPosition(lastWristAngle* wristEncoderPositionCoefficient, 0, 0);
             break;
         }
 
@@ -205,7 +186,7 @@ public class SuperStructure extends SubsystemBase{
         
 
 
-
+        
 
         elevatorMotor.updateInputs(elevatorLog);
         Logger.getInstance().processInputs("ElevatorMotor", elevatorLog);
@@ -213,8 +194,8 @@ public class SuperStructure extends SubsystemBase{
         Logger.getInstance().processInputs("WristLog", wristLog);
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("ElevatorMotor", intakeLog);
-
-
+        wristAngleDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()*(1/64* 12/24)) );
+        
    
 
     }

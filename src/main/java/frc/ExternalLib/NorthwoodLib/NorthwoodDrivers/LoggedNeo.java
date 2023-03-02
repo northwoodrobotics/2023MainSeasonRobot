@@ -27,6 +27,7 @@ public class LoggedNeo implements LoggedMotor{
         motor.setSmartCurrentLimit(30);
         controller.setFeedbackDevice(encoder);
         encoder.setPositionConversionFactor(gearRatio);
+        encoder.setMeasurementPeriod(8);
 
     }
     public LoggedNeo(int motorID, boolean motorInvert, int currentLimit){
@@ -40,8 +41,9 @@ public class LoggedNeo implements LoggedMotor{
       motor.setSmartCurrentLimit(currentLimit);
       controller.setFeedbackDevice(encoder);
       encoder.setPositionConversionFactor(gearRatio);
+      encoder.setMeasurementPeriod(8);
 
-  }
+  } 
   public LoggedNeo(int motorID, boolean motorInvert, int currentLimit, double gearRatio){
     this.motorID = motorID;
     this.gearRatio = gearRatio;
@@ -53,6 +55,7 @@ public class LoggedNeo implements LoggedMotor{
     motor.setSmartCurrentLimit(currentLimit);
     controller.setFeedbackDevice(encoder);
     encoder.setPositionConversionFactor(gearRatio);
+    encoder.setMeasurementPeriod(8);
 
 }
     @Override

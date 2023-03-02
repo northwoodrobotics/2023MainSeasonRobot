@@ -1,6 +1,7 @@
 package frc.swervelib;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 
@@ -14,6 +15,7 @@ public class Mk4ModuleConfiguration {
     private double nominalVoltage = 12.0;
     private double driveCurrentLimit = 80.0;
     private double steerCurrentLimit = 20.0;
+    private Optional<String> canivoreName = Optional.empty();
 
     private DCMotor driveMotor;
     private DCMotor steerMotor;
@@ -54,6 +56,10 @@ public class Mk4ModuleConfiguration {
      */
     public DCMotor getSteerMotor() {
         return steerMotor;
+    }
+    
+    public Optional<String> getCanivoreName() {
+        return canivoreName;
     }
 
     /**
