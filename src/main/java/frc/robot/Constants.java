@@ -240,9 +240,9 @@ public final class Constants {
         public static final double ElevatorMotionAccel = 2048; // FIXME set PIDF constant for Elevator
         public static final double ElevatorMotionVelocity =2048;  // FIXME set PIDF constant for Elevator
         public static final int ElevatorCurrentLimit = 30; //FIXME set Current Limit
-        public static final double WristP = 0.5; // FIXME set PIDF constant for Wrist
-        public static final double WristF = 0.045; // FIXME set PIDF constant for Elevator
-        public static final double WristD = 0.0; // FIXME set PIDF constant for Elevator 
+        public static final double WristP = 0.05; // FIXME set PIDF constant for Wrist
+        public static final double WristF = 0.1; // FIXME set PIDF constant for Elevator
+        public static final double WristD = 0.2; // FIXME set PIDF constant for Elevator 
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double WristMotionAccel = 4096.0; // FIXME set PIDF constant for Elevator
         public static final double WristMotionVelocity =4096.0;  // FIXME set PIDF constant for Elevator

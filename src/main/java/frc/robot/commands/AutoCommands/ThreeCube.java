@@ -19,13 +19,8 @@ import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
 
 public class ThreeCube extends SequentialCommandGroup{
-<<<<<<< HEAD
     //public final PathPlannerTrajectory ThreeCube = PathPlanner.loadPath("3Cube", new PathConstraints(Units.feetToMeters(3), Units.feetToMeters(3)));
     public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3 Cube", 4, 2);
-=======
-    
-    public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3Cube", 4, 4);
->>>>>>> ac405a9ecaa9284d533d0838d53ce31b233b9f53
     HashMap<String, Command> eventMap = new HashMap<>();
     HashMap<String, Command> eventMapTwo = new HashMap<>();
 
