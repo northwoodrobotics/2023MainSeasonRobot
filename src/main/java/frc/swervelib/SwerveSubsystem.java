@@ -78,7 +78,13 @@ public class SwerveSubsystem extends SubsystemBase {
       }
       for (int i = 0; i<4; i++){
         
-        Logger.getInstance().recordOutput("SwerveModuleStates", states[i].toSwerveModuleState());
+        Logger.getInstance().recordOutput("SwerveModuleStates", 
+       new SwerveModuleState[]{
+          states[0].toSwerveModuleState(),
+          states[1].toSwerveModuleState(),
+          states[2].toSwerveModuleState(),
+          states[3].toSwerveModuleState()
+        });
       }
       Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());
   
