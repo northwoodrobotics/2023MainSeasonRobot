@@ -17,14 +17,7 @@ public class SuperStructureBase extends SubsystemBase{
     public double adjustedElevatorPosition;
     public double lastElevatorPosition;
     public double lastWristAngle;
-    @AutoLog
-    public class SuperStructureLog{
-        public double positionRad = 0.0;
-        public double velocityRadPerSec = 0.0;
-        public double appliedVolts =0.0; 
-        public double[] statorAmps = new double[]{}; 
-        public double[] statorTempCelcius = new double[]{};
-    } 
+
 
     public SuperStructureBase(){
 

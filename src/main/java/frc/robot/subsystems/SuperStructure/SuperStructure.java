@@ -3,6 +3,9 @@ package frc.robot.subsystems.SuperStructure;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 //import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
@@ -24,7 +27,7 @@ public class SuperStructure extends SuperStructureBase{
     
 
 
-    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, false,30 );
+    private CANSparkMax intakeMotor = new CANSparkMax(SuperStructureConstants.EndEffectorMotorID, MotorType.kBrushless );
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
     private double wristEncoderPositionCoefficient = (1/64* 12/24);
 
@@ -33,11 +36,11 @@ public class SuperStructure extends SuperStructureBase{
     private LoggedMotorIOInputsAutoLogged wristLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
-    private LoggedDashboardNumber wristAngleDegrees;
 
 
 
     public SuperStructure(){  
+        
         hasGamePiece = true;
         intakeStateHasChanged = false;
         wantedState = SuperStructurePresets.stowed;
@@ -109,7 +112,7 @@ public class SuperStructure extends SuperStructureBase{
     }
 
     public void conformEndEffectorState(endEffectorState targetState){
-        intakeMotor.setPercentOutput(targetState.output);
+        intakeMotor.set(targetState.output);
         setEndEffectorState(targetState);
     }
 
@@ -167,7 +170,7 @@ public class SuperStructure extends SuperStructureBase{
             }
             break;
             case intaking:
-            if (intakeMotor.getCurrentAmps() > SuperStructureConstants.initalWristAngleRadians){
+            if (intakeMotor.getOutputCurrent() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
                 hasGamePiece = true;
                 if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
                     setEndEffectorState(endEffectorState.holding);
@@ -192,9 +195,7 @@ public class SuperStructure extends SuperStructureBase{
         Logger.getInstance().processInputs("ElevatorMotor", elevatorLog);
         wristMotor.updateInputs(wristLog);
         Logger.getInstance().processInputs("WristLog", wristLog);
-        intakeMotor.updateInputs(intakeLog);
-        Logger.getInstance().processInputs("ElevatorMotor", intakeLog);
-        wristAngleDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()*(1/64* 12/24)) );
+        //wristAngleDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()*(1/64* 12/24)) );
         
    
 

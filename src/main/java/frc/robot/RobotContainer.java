@@ -69,7 +69,7 @@ public class RobotContainer {
   public static PhotonCams m_cams;
   public static PhotonCamera camera;
   public static SuperStructure m_SuperStructure;
-  private ObjectiveTracker objectiveTracker;
+  //private ObjectiveTracker objectiveTracker;
 
   public static final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
 
@@ -109,7 +109,7 @@ public class RobotContainer {
         dt = DrivetrainSubsystem.createSwerveModel();
         m_SuperStructure = new SuperStructure();
         m_cams = new PhotonCams();
-        objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+       // objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
           break;
         case ROBOT_2023P:
         dt = DrivetrainSubsystem.createSwerveModel();
@@ -118,15 +118,14 @@ public class RobotContainer {
         case ROBOT_SIMBOT:
           dt = DrivetrainSubsystem.createSimSwerveModel();
           m_cams = new PhotonCams();
-          objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+          //objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
 
           break;
       }
     }
    
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
-    m_cams = new PhotonCams();
-    m_SuperStructure = new SuperStructure();
+    //m_SuperStructure = new SuperStructure();
     PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 

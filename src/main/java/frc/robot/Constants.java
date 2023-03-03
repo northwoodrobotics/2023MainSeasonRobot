@@ -224,7 +224,7 @@ public final class Constants {
         public static final int EndEffectorMotorID = 31
         ; 
 
-        public static final double intakeCurrentSpikeThreashhold = 0.0; //FIXME value in Amps
+        public static final double intakeCurrentSpikeThreashhold = 15; //FIXME value in Amps
         public static final double intakeHoldingPercentOutput = 0.0; //FIXME value 
 
         public static final double initalWristAngleRadians = 0.0; //FIXME Preset
