@@ -56,9 +56,7 @@ public class SwerveSubsystem extends SubsystemBase {
     positions = dt.getModulePositions();
    
       
-    m_fieldRelativeVelocity = dt.getFieldRelativeSpeeds();
-    m_fieldRelativeAccel = new FieldRelativeAccel(m_fieldRelativeVelocity, m_lastFieldRelVel, 0.02);
-   m_lastFieldRelVel = m_fieldRelativeVelocity;
+    
 
     
 

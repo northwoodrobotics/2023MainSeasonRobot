@@ -103,6 +103,7 @@ public class RobotContainer {
   public RobotContainer() {
     // create drivetrain from our file, utilizing the libary to do position
     // tracking, path following, and a couple of other tricks.
+    /*
     if (Constants.getMode() != Mode.REPLAY) {
       switch (Constants.getRobot()) {
         case ROBOT_2023C:
@@ -122,12 +123,14 @@ public class RobotContainer {
 
           break;
       }
-    }
-   
+    } */
+    dt = DrivetrainSubsystem.createSwerveModel();
+
+    m_SuperStructure = new SuperStructure();
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     //m_SuperStructure = new SuperStructure();
     PortForwarder.add(5800, "photonvision.local", 5800);
-    m_cams.setDefaultCommand(new AddVisionPose(m_cams));
+    //m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
    
 
