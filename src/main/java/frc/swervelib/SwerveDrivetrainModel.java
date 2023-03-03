@@ -123,16 +123,15 @@ public class SwerveDrivetrainModel {
         // Trustworthiness of the internal model of how motors should be moving
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var stateStdDevs = VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(0.05),0.0005, 0.0005, 0.0005, 0.0005);
+        var stateStdDevs = VecBuilder.fill(0.0005, 0.0005, Units.degreesToRadians(0.005),0.0005, 0.0005, 0.0005, 0.0005);
 
         // Trustworthiness of gyro in radians of standard deviation.
-        var localMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.01),0.001,0.001,0.001,0.001);
+        var localMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.1),0.01,0.01,0.01,0.01);
 
         // Trustworthiness of the vision system
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var visionMeasurementStdDevs = VecBuilder.fill(0.001, 0.001, Units.degreesToRadians(0.01));
-
+        var visionMeasurementStdDevs = VecBuilder.fill(((5.83* Math.E)-5), ((5.83* Math.E)-5), ((5.83* Math.E)-5));
         m_poseEstimator = 
         new HuskyPoseEstimator<N7,N7,N5>(
             Nat.N7(), 
