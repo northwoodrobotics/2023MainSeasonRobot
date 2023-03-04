@@ -30,7 +30,7 @@ public class SuperStructureBase extends SubsystemBase{
     }
 
     public enum endEffectorState{
-        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1.0), empty(0.0);
+        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1), empty(0.0);
         public double output;
         private endEffectorState(double output){
             this.output = output;

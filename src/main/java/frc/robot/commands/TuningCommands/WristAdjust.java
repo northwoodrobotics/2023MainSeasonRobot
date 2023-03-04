@@ -17,7 +17,7 @@ public class WristAdjust extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.tuningPreset);
+        
     }
     
     @Override

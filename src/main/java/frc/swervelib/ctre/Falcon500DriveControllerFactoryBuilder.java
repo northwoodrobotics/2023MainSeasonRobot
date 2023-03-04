@@ -99,17 +99,20 @@ public final class Falcon500DriveControllerFactoryBuilder {
             WPI_TalonFX motor;
             if (canivoreName.isPresent()) motor = new WPI_TalonFX(driveConfiguration, canivoreName.get());
             else motor = new WPI_TalonFX(driveConfiguration);
-            motor.configAllSettings(motorConfiguration);
-
+    
+            CtreUtils.checkCtreError(motor.configAllSettings(motorConfiguration), "Failed to configure Falcon 500");
             if (hasVoltageCompensation()) {
                 // Enable voltage compensation
                 motor.enableVoltageCompensation(true);
             }
+            
 
             motor.setNeutralMode(NeutralMode.Brake);
 
             motor.setInverted(moduleConfiguration.isDriveInverted() ? TalonFXInvertType.Clockwise : TalonFXInvertType.CounterClockwise);
             motor.setSensorPhase(true);
+
+            
 
             // Reduce CAN status frame rates
             if (RobotBase.isSimulation()) {
@@ -155,7 +158,7 @@ public final class Falcon500DriveControllerFactoryBuilder {
         }
         @Override 
         public double getStateMeters(){
-            return motor.getSelectedSensorPosition()/sensorPositionCoefficient;
+            return motor.getSelectedSensorPosition()*sensorPositionCoefficient;
         }
 
         @Override

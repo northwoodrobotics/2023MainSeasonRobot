@@ -5,11 +5,15 @@
 package frc.robot;
 
 import java.io.IOException;
+import frc.robot.subsystems.SuperStructure.SuperStructureBase.endEffectorState;
 
+import org.eclipse.jetty.jndi.local.localContextRoot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 import org.photonvision.PhotonCamera;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
@@ -27,6 +31,7 @@ import edu.wpi.first.net.PortForwarder;
 import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox;
 import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
 import frc.robot.Constants.Mode;
+import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.commands.ActionCommands.DriveToRamp;
 import frc.robot.commands.AutoCommands.ThreeCube;
 import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
@@ -44,11 +49,11 @@ import frc.robot.commands.SuperStructureCommands.MidCube;
 import frc.robot.commands.SuperStructureCommands.ReturnToStowed;
 import frc.robot.commands.SuperStructureCommands.WaitToRecieve;
 import frc.robot.commands.TuningCommands.WristAdjust;
+import frc.robot.commands.TuningCommands.ElevatorAdjust;
+
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
-import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
-import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.swervelib.SwerveSubsystem;
@@ -82,7 +87,7 @@ public class RobotContainer {
   public static SpectrumXbox driver = new SpectrumXbox(0, 0.1, 0.21);
   public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
-
+    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3CubeRight", new PathConstraints(3, 3));
 
 
 
@@ -127,6 +132,7 @@ public class RobotContainer {
     dt = DrivetrainSubsystem.createSwerveModel();
 
     m_SuperStructure = new SuperStructure();
+    m_SuperStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     //m_SuperStructure = new SuperStructure();
     PortForwarder.add(5800, "photonvision.local", 5800);
@@ -140,7 +146,7 @@ public class RobotContainer {
         () -> -driver.rightStick.getX()));
 
         ShowInputs();
-    m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
+    //m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
     
 
 
@@ -152,7 +158,12 @@ public class RobotContainer {
     autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
     autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
-
+    autoChooser.addOption("Right Full Link Just Path", 
+    
+    new SequentialCommandGroup(
+      new InstantCommand(()-> dt.setKnownState(testRight3gamePiece.getInitialState())),
+      new AutoDrive(m_SwerveSubsystem, testRight3gamePiece)
+    ));
 
   }
 
@@ -167,16 +178,18 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
     driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
-    driver.aButton.onTrue(new GroundIntake(m_SuperStructure));
-    driver.leftTriggerButton.onTrue(new HighCone(m_SuperStructure));
+    driver.xButton.onTrue(new GroundIntake(m_SuperStructure));
+    driver.aButton.onTrue(new ReturnToStowed(m_SuperStructure));
+    /*driver.leftTriggerButton.onTrue(new HighCone(m_SuperStructure));
     driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
-    
+    */
     coDriver.aButton.toggleOnTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
-    coDriver.bButton.toggleOnTrue(new WristAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
+    coDriver.bButton.toggleOnTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
+   
   }
 
   /**

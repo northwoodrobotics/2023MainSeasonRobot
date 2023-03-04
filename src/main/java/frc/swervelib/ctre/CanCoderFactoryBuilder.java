@@ -41,15 +41,11 @@ public class CanCoderFactoryBuilder {
             config.magnetOffsetDegrees = Math.toDegrees(configuration.getOffset());
             config.sensorDirection = direction == Direction.CLOCKWISE;
             config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-            //config.initializationStrategy = configuration.getInitStrategy();
 
-            WPI_CANCoder encoder;
-            if (canivoreName.isPresent()) encoder = new WPI_CANCoder(configuration.getId(), canivoreName.get());
-            else encoder= new WPI_CANCoder(configuration.getId());
-            
-            encoder.configAllSettings(config, 250);
+         WPI_CANCoder encoder = new WPI_CANCoder(configuration.getId());
+            CtreUtils.checkCtreError(encoder.configAllSettings(config, 250), "Failed to configure CANCoder");
 
-            encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, periodMilliseconds, 250);
+            CtreUtils.checkCtreError(encoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, periodMilliseconds, 250), "Failed to configure CANCoder update rate");
 
             return new EncoderImplementation(encoder);
         };

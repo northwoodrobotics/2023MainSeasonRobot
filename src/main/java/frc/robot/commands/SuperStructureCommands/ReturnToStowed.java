@@ -13,12 +13,12 @@ public class ReturnToStowed extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
+       
     }
     
     @Override
     public void execute(){
-        
+        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
        
     }
     @Override

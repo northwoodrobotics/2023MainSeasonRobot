@@ -12,13 +12,13 @@ public class GroundIntake extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
-        m_superStructure.setEndEffectorState(endEffectorState.intaking);
+
     }
     
     @Override
     public void execute(){
-        
+        m_superStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
+        m_superStructure.conformEndEffectorState(endEffectorState.intaking);
        
     }
     @Override
@@ -28,7 +28,7 @@ public class GroundIntake extends CommandBase{
         
     }
     public boolean isFinished(){
-        return m_superStructure.getIntakeStateChange();
+        return m_superStructure.hasGamePiece;
     }
 
 }

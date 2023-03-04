@@ -101,6 +101,7 @@ public final class Constants {
                     Units.degreesToRadians(0) // yaw
                     )
                 )
+                
             );
 
     }
@@ -130,27 +131,27 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5; // FIXME Set front left module drive motor ID
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; // FIXME Set front left module steer motor ID
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 6; // FIXME Set front left steer encoder ID
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(2.021); // FIXME Measure and
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(2.109); // FIXME Measure and
                                                                                                     // set front left steer offset
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 8; // FIXME Set front right drive motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 7; // FIXME Set front right steer motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 9; // FIXME Set front right steer encoder ID
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.74); // FIXME Measure and set
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.66); // FIXME Measure and set
                                                                                                 // front right stee steer offset
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11; // FIXME Set back left drive motor ID
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 10; // FIXME Set back left steer motor ID
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 12; // FIXME Set back left steer encoder ID
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(10.19); // FIXME Measure and set
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(126.82); // FIXME Measure and set
                                                                                              // back left steer offset
         public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 15; // FIXME Set back right drive motor ID
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 14; // FIXME Set back right steer motor ID
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 16; // FIXME Set back right steer encoder ID
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(72.59); // FIXME Measure and set
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(72.77); // FIXME Measure and set
                                                                                              // back right steer offset
         // Drivetrain Performance Mechanical limits
         static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(8);
         static public final double MAX_STRAFE_SPEED_MPS = Units.feetToMeters(8);
-        static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(90);
+        static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(180);
         static public final double MAX_TRANSLATE_ACCEL_MPS2 = MAX_FWD_REV_SPEED_MPS / 0.25; // 0-full time of 0.25
                                                                                             // second
         static public final double MAX_ROTATE_ACCEL_RAD_PER_SEC_2 = MAX_ROTATE_SPEED_RAD_PER_SEC / 0.25; // 0-full time
@@ -161,8 +162,8 @@ public final class Constants {
         // SENSOR CONSTANTS
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
-        static public final Pose2d DFLT_START_POSE = new Pose2d(1.76, 1.84,
-                Rotation2d.fromDegrees(180));
+        static public final Pose2d DFLT_START_POSE = new Pose2d(1.81, 1.11,
+                Rotation2d.fromDegrees(0.0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
                 * 2;
@@ -198,7 +199,7 @@ public final class Constants {
         // software
         // Tape Measure out 1 Meter and Drive back and forth on it, change this number
         // until odometry says 0-1m.
-        public static final double TractionConstant = Units.feetToMeters(19.00);
+        public static final double TractionConstant = Units.feetToMeters(13.5);
         public static final TrapezoidProfile.Constraints BalanceConstraints = 
         new Constraints(
           1.0, // velocity in meters per second that the robot is allowed to pursue when balancing 
@@ -224,12 +225,12 @@ public final class Constants {
         public static final int EndEffectorMotorID = 31
         ; 
 
-        public static final double intakeCurrentSpikeThreashhold = 15; //FIXME value in Amps
-        public static final double intakeHoldingPercentOutput = 0.0; //FIXME value 
+        public static final double intakeCurrentSpikeThreashhold = 30; //FIXME value in Amps
+        public static final double intakeHoldingPercentOutput = 0.2; //FIXME value 
 
         public static final double initalWristAngleRadians = 0.0; //FIXME Preset
 
-        public static final double MotionProfileElevatorP = 0.05; // FIXME set PIDF constant for Elevator
+        public static final double MotionProfileElevatorP = 0.07; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorD = 0.02; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorI = 0.0; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorF = 0.1; // FIXME set PIDF constant for Elevator 
@@ -255,8 +256,8 @@ public final class Constants {
 
         public static final class SuperStructurePresets{
             public static final SuperStructureState groundIntake = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                20.9, // FIXME Measure
+                208.0  // FIXME Measure
                 ); 
             public static final SuperStructureState lowDrop = new SuperStructureState(
                 0.0, // FIXME Measure
@@ -287,8 +288,8 @@ public final class Constants {
                 0.0 // FIXME Measure
                 );
             public static final SuperStructureState stowed  = new SuperStructureState(
-                0.0, // FIXME Measure
-                Units.degreesToRadians(90.0) // FIXME Measure
+                20.9, // FIXME Measure
+                160 // FIXME Measure
                 );
             public static final SuperStructureState init = new SuperStructureState(
                 0.0, // FIXME Measure

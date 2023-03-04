@@ -3,6 +3,7 @@ package frc.ExternalLib.NorthwoodLib.NorthwoodDrivers;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
@@ -26,7 +27,7 @@ public class LoggedFalcon500 implements LoggedMotor{
         this.config.statorCurrLimit.enable = true;
         this.config.statorCurrLimit.currentLimit = 40;
         this.config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-
+        motor.setNeutralMode(NeutralMode.Brake);
         motor.setInverted(false);
         motor.configAllSettings(this.config);
     }
@@ -92,7 +93,7 @@ public class LoggedFalcon500 implements LoggedMotor{
   public void setMotionMagicPosition(double positionRad, double ff, int slotID){
     motor.selectProfileSlot(slotID, 0);
     double positionFalconUnits = Units.radiansToRotations(positionRad)*TICKS_PER_REV;
-    motor.set(ControlMode.MotionMagic, positionFalconUnits, DemandType.ArbitraryFeedForward, ff);
+    motor.set(ControlMode.MotionMagic, positionFalconUnits);
   }
   @Override
   public void setEncoder(double positionRad){
@@ -102,10 +103,11 @@ public class LoggedFalcon500 implements LoggedMotor{
 
   @Override
   public void configurePID(double kP, double kI, double kD, double ff, int slotID) {
-    motor.config_kP(slotID, kP);
-    motor.config_kI(slotID, kI);
-    motor.config_kD(slotID, kD);
-    motor.config_kF(slotID, ff);
+    this.config.slot0.kP = kP;
+    this.config.slot0.kI = kI;
+    this.config.slot0.kD = kD;
+    this.config.slot0.kF = ff;
+    motor.configAllSettings(config);
   }
   public void configureMotionMagic(double maxVelocity, double maxAcceleration, int curveStrength){
     this.config.motionCurveStrength = curveStrength;

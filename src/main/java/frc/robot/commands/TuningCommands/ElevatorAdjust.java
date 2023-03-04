@@ -17,7 +17,7 @@ public class ElevatorAdjust extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.tuningPreset);
+       
     }
     
     @Override
@@ -28,7 +28,7 @@ public class ElevatorAdjust extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-
+        
     }
     
 }

@@ -28,7 +28,7 @@ public class EjectAndReturnToBottom extends CommandBase{
         
     }
     public boolean isFinished(){
-        return m_superStructure.getIntakeStateChange();
+        return true;
     }
 
     
