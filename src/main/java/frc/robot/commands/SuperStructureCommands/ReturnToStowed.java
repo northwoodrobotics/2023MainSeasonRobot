@@ -18,7 +18,7 @@ public class ReturnToStowed extends CommandBase{
     
     @Override
     public void execute(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
+        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed.getHeightDemand(), SuperStructurePresets.stowed.getWristAngleRadians());
        
     }
     @Override

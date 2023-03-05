@@ -13,7 +13,8 @@ public class HighCube extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.highCube);
+        m_superStructure.setSuperStructureState(SuperStructurePresets.highCube.getHeightDemand(), SuperStructurePresets.highCube.getWristAngleRadians());
+
     }
     
     @Override

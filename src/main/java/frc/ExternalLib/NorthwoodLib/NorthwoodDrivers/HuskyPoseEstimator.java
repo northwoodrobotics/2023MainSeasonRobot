@@ -21,6 +21,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
 import frc.ExternalLib.GrassHopperLib.SecondOrderKinematics;
+import frc.ExternalLib.NorthwoodLib.Math.BetterSwerveModuleState;
 
 import java.util.function.BiConsumer;
 
@@ -362,7 +363,7 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
    */
   public Pose2d update(
       Rotation2d gyroAngle,
-      SwerveModuleState[] moduleStates,
+      BetterSwerveModuleState[] moduleStates,
       SwerveModulePosition[] modulePositions) {
     return updateWithTime(WPIUtilJNI.now() * 1.0e-6, gyroAngle, moduleStates, modulePositions);
   }
@@ -381,7 +382,7 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
   public Pose2d updateWithTime(
       double currentTimeSeconds,
       Rotation2d gyroAngle,
-      SwerveModuleState[] moduleStates,
+      BetterSwerveModuleState[] moduleStates,
       SwerveModulePosition[] modulePositions) {
     double dt = m_prevTimeSeconds >= 0 ? currentTimeSeconds - m_prevTimeSeconds : m_nominalDt;
     m_prevTimeSeconds = currentTimeSeconds;

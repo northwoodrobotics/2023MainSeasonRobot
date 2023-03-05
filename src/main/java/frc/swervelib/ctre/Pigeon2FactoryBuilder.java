@@ -29,7 +29,7 @@ public class Pigeon2FactoryBuilder {
         private GyroscopeImplementation(WPI_Pigeon2 pigeon) {
             this.pigeon = pigeon;
             this.pigeon.zeroGyroBiasNow();
-            this.pigeon.setYaw(0.0);
+            
         }
      
         @Override

@@ -32,7 +32,8 @@ public class DriveToRamp extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_SuperStructure.setSuperStructureState(SuperStructurePresets.ramp);
+        m_SuperStructure.setSuperStructureState(SuperStructurePresets.ramp.getHeightDemand(), SuperStructurePresets.ramp.getWristAngleRadians());
+
 
 
 

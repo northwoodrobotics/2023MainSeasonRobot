@@ -12,7 +12,7 @@ public WaitToRecieve(SuperStructure superStructure){
     }
     @Override
     public void initialize(){
-        m_superStructure.setEndEffectorState(endEffectorState.intaking);
+       // m_superStructure.setEndEffectorState(endEffectorState.intaking);
     }
 
     @Override
@@ -22,7 +22,7 @@ public WaitToRecieve(SuperStructure superStructure){
     }
     @Override
         public void end(boolean interrupted){
-    m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
+  //  m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
     
     
     }

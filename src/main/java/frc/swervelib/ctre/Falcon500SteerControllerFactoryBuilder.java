@@ -10,6 +10,7 @@ import frc.robot.Constants;
 import frc.swervelib.*;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 
 import static frc.swervelib.ctre.CtreUtils.checkCtreError;
@@ -130,7 +131,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
             motor.setSensorPhase(true);
             motor.setInverted(moduleConfiguration.isSteerInverted() ? TalonFXInvertType.CounterClockwise : TalonFXInvertType.Clockwise);
             motor.setNeutralMode(NeutralMode.Brake);
-            
+            Timer.delay(1);
             checkCtreError(motor.setSelectedSensorPosition(absoluteEncoder.getAbsoluteAngleRetry() / sensorPositionCoefficient, 0, CAN_TIMEOUT_MS), "Failed to set Falcon 500 encoder position");
 
             // Reduce CAN status frame rates
@@ -237,6 +238,7 @@ public final class Falcon500SteerControllerFactoryBuilder {
             // Divide by 600 to go from RPM to Rotations per 100ms.  Multiply by encoder ticks per revolution.
             motor.getSimCollection().setIntegratedSensorVelocity((int) (velocity / 600 * 2048));
         }
+
 
         @Override
         public double getStateAngle() {

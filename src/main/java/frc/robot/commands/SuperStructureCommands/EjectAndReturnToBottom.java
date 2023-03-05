@@ -23,7 +23,8 @@ public class EjectAndReturnToBottom extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
+        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed.getHeightDemand(), SuperStructurePresets.stowed.getWristAngleRadians());
+
         
         
     }

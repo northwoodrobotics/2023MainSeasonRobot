@@ -92,13 +92,13 @@ public final class Constants {
     public static final class VisionConstants {
         public static final Transform3d robotToCam = (
             new Transform3d(new Translation3d(
-                Units.inchesToMeters(6.675197), // X Translation
-                Units.inchesToMeters(10.252), //Y Translation
+                Units.inchesToMeters(-6.675197), // X Translation
+                Units.inchesToMeters(-10.252), //Y Translation
                 Units.inchesToMeters(-7.216)), // Z Translation
                 new Rotation3d(
                     0, 
                     0,
-                    Units.degreesToRadians(0) // yaw
+                    Units.degreesToRadians(180.0) // yaw
                     )
                 )
                 
@@ -131,22 +131,22 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5; // FIXME Set front left module drive motor ID
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; // FIXME Set front left module steer motor ID
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 6; // FIXME Set front left steer encoder ID
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(2.109); // FIXME Measure and
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(2.109+180); // FIXME Measure and
                                                                                                     // set front left steer offset
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 8; // FIXME Set front right drive motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 7; // FIXME Set front right steer motor ID
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 9; // FIXME Set front right steer encoder ID
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.66); // FIXME Measure and set
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(356.66+180); // FIXME Measure and set
                                                                                                 // front right stee steer offset
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11; // FIXME Set back left drive motor ID
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 10; // FIXME Set back left steer motor ID
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 12; // FIXME Set back left steer encoder ID
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(126.82); // FIXME Measure and set
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(126.82+180); // FIXME Measure and set
                                                                                              // back left steer offset
         public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 15; // FIXME Set back right drive motor ID
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 14; // FIXME Set back right steer motor ID
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 16; // FIXME Set back right steer encoder ID
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(72.77); // FIXME Measure and set
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(72.77+180); // FIXME Measure and set
                                                                                              // back right steer offset
         // Drivetrain Performance Mechanical limits
         static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(8);
@@ -162,8 +162,8 @@ public final class Constants {
         // SENSOR CONSTANTS
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
-        static public final Pose2d DFLT_START_POSE = new Pose2d(1.81, 1.11,
-                Rotation2d.fromDegrees(0.0));
+        static public final Pose2d DFLT_START_POSE = new Pose2d(1.78, 2.67,
+                Rotation2d.fromDegrees(180.0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
                 * 2;

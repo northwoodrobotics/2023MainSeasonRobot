@@ -51,7 +51,10 @@ public class SuperStructure extends SuperStructureBase{
         
         hasGamePiece = false;
         intakeStateHasChanged = false;
-        wantedState = new SuperStructureState();
+        //wantedState = new SuperStructureState();
+        presetElevatorHeight = 0.0;
+        presetWristAngle = SuperStructurePresets.stowed.getWristAngleRadians();
+        
         controlState = ControlState.preset;
         intakeControlState = endEffectorState.holding;
         wristPositionDegrees.setDefault(90.0);
@@ -135,10 +138,10 @@ public class SuperStructure extends SuperStructureBase{
         adjustedWristAngle = (wristMotor.getPosition()+ adjustmentRadians);
     }
     @Override
-    public void setSuperStructureState(SuperStructureState targetState){
+    public void setSuperStructureState(double elevatorPosition, double wristPosition){
         
-        wantedState.elevatorPositionRadians = targetState.getHeightDemand();
-        wantedState.wristAngleRadians = targetState.getWristAngleRadians();
+        presetElevatorHeight = elevatorPosition;
+        presetWristAngle = wristPosition;
         controlState = ControlState.preset;
     }
     @Override
@@ -158,10 +161,10 @@ public class SuperStructure extends SuperStructureBase{
         
         switch (controlState){
             case preset: 
-            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand(), 0, 0);
-            lastElevatorPosition = wantedState.getHeightDemand();
-            wristMotor.setMotionMagicPosition(wantedState.getWristAngleRadians(), 0, 0);
-            lastWristAngle = wantedState.getWristAngleRadians();
+            elevatorMotor.setMotionMagicPosition(presetElevatorHeight, 0, 0);
+            lastElevatorPosition = presetElevatorHeight;
+            wristMotor.setMotionMagicPosition(presetWristAngle, 0, 0);
+            lastWristAngle = presetWristAngle;
             break;
             case wristAdjust:
             elevatorMotor.setMotionMagicPosition(elevatorMotor.getPosition() , 0, 0);
@@ -213,8 +216,8 @@ public class SuperStructure extends SuperStructureBase{
         Logger.getInstance().processInputs("IntakeLog", intakeLog);
         wristPositionDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()));
         elevatorPositionRadians.set(elevatorMotor.getPosition());
-        wristTargetPositionRadians.set(wantedState.wristAngleRadians);
-        wantedElevatorPos.set(wantedState.elevatorPositionRadians);
+        wristTargetPositionRadians.set(presetWristAngle);
+        wantedElevatorPos.set(presetWristAngle);
         DashboardhasGamePiece.set(hasGamePiece);
         
         

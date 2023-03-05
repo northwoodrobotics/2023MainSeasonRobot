@@ -13,7 +13,8 @@ public class HumanPlayerPickup extends CommandBase{
     @Override
     public void initialize(){
         m_superStructure.setEndEffectorState(endEffectorState.intaking);
-        m_superStructure.setSuperStructureState(SuperStructurePresets.humanPlayer);
+        m_superStructure.setSuperStructureState(SuperStructurePresets.humanPlayer.getHeightDemand(), SuperStructurePresets.humanPlayer.getWristAngleRadians());
+
     }
     
     @Override
@@ -23,7 +24,8 @@ public class HumanPlayerPickup extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed);
+        m_superStructure.setSuperStructureState(SuperStructurePresets.humanPlayer.getHeightDemand(), SuperStructurePresets.humanPlayer.getWristAngleRadians());
+
         
         
     }

@@ -13,7 +13,7 @@ public class LowDrop extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.lowDrop);
+        //m_superStructure.setSuperStructureState(SuperStructurePresets.lowDrop);
     }
     
     @Override

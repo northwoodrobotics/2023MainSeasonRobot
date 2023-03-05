@@ -9,7 +9,9 @@ import frc.robot.Constants.SuperStructureConstants;
 public class SuperStructureBase extends SubsystemBase{
     public ControlState controlState;
     public endEffectorState intakeControlState;
-    public SuperStructureState wantedState;
+    public double presetElevatorHeight;
+    public double presetWristAngle;
+
     public boolean hasGamePiece;
     public boolean intakeStateHasChanged;
     public double timeStateEntered;
@@ -67,9 +69,12 @@ public class SuperStructureBase extends SubsystemBase{
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
         adjustedWristAngle = (lastWristAngle+ adjustmentRadians);
     }
-    public void setSuperStructureState(SuperStructureState targetState){
+    public void setSuperStructureState(double elevatorPosition, double wristPosition){
+        presetElevatorHeight = elevatorPosition;
+        presetWristAngle = wristPosition;
+        //wantedState.setHeightDemand(targetState.getHeightDemand()); 
+        //wantedState.setWristAngleRadians(targetState.getWristAngleRadians());
         controlState = ControlState.preset;
-        wantedState = targetState;
     }
     public void adjustElevatorPosition(double adjustmentDemandDegrees){
         controlState = ControlState.heightAdjust;
@@ -87,9 +92,9 @@ public class SuperStructureBase extends SubsystemBase{
         switch (controlState){
             case preset: 
             
-            lastElevatorPosition = wantedState.getHeightDemand();
+        //    lastElevatorPosition = wantedState.getHeightDemand();
             
-            lastWristAngle = wantedState.getWristAngleRadians();
+         //   lastWristAngle = wantedState.getWristAngleRadians();
             break;
             case wristAdjust:
             

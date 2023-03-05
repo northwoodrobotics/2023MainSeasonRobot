@@ -13,7 +13,7 @@ public class MidCone extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.midCone);
+       // m_superStructure.setSuperStructureState(SuperStructurePresets.midCone);
     }
     
     @Override

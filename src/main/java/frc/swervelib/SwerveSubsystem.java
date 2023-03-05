@@ -108,6 +108,7 @@ public class SwerveSubsystem extends SubsystemBase {
       
       Logger.getInstance().recordOutput("Pose Estimator", dt.getPose());  
       Logger.getInstance().recordOutput("3D Pose", new Pose3d(dt.getPose()));  
+      Logger.getInstance().recordOutput("Gyro Angle", dt.getGyroscopeRotation().getDegrees());
     }
 
     }

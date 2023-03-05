@@ -13,7 +13,7 @@ public class MidCube extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.midCube);
+        //m_superStructure.setSuperStructureState(SuperStructurePresets.midCube);
     }
     
     @Override
