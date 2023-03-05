@@ -24,6 +24,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.ExternalLib.AdvantageLib.VirtualSubsystem;
 import frc.ExternalLib.SpectrumLib.util.Alert;
 import frc.ExternalLib.SpectrumLib.util.Alert.AlertType;
 import frc.robot.Constants.RobotType;
@@ -160,6 +161,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotPeriodic() {
+    VirtualSubsystem.periodicAll();
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or

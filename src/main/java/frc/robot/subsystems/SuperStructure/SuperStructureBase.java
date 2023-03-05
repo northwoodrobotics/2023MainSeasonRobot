@@ -77,9 +77,6 @@ public class SuperStructureBase extends SubsystemBase{
         adjustedElevatorPosition = (lastElevatorPosition+ adjustmentRadians);
 
     }
-    public void updateData(){
-        
-    }
     
 
 
@@ -91,7 +88,7 @@ public class SuperStructureBase extends SubsystemBase{
             case preset: 
             
             lastElevatorPosition = wantedState.getHeightDemand();
-           
+            
             lastWristAngle = wantedState.getWristAngleRadians();
             break;
             case wristAdjust:

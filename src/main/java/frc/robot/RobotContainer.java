@@ -54,6 +54,8 @@ import frc.robot.commands.TuningCommands.ElevatorAdjust;
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
+import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
+import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.swervelib.SwerveSubsystem;
@@ -74,7 +76,7 @@ public class RobotContainer {
   public static PhotonCams m_cams;
   public static PhotonCamera camera;
   public static SuperStructure m_SuperStructure;
-  //private ObjectiveTracker objectiveTracker;
+  private ObjectiveTracker objectiveTracker;
 
   public static final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
 
@@ -108,14 +110,14 @@ public class RobotContainer {
   public RobotContainer() {
     // create drivetrain from our file, utilizing the libary to do position
     // tracking, path following, and a couple of other tricks.
-    /*
+    
     if (Constants.getMode() != Mode.REPLAY) {
       switch (Constants.getRobot()) {
         case ROBOT_2023C:
         dt = DrivetrainSubsystem.createSwerveModel();
         m_SuperStructure = new SuperStructure();
         m_cams = new PhotonCams();
-       // objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+        objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
           break;
         case ROBOT_2023P:
         dt = DrivetrainSubsystem.createSwerveModel();
@@ -124,19 +126,20 @@ public class RobotContainer {
         case ROBOT_SIMBOT:
           dt = DrivetrainSubsystem.createSimSwerveModel();
           m_cams = new PhotonCams();
-          //objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+          m_SuperStructure = new SuperStructure();
+          objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
 
           break;
       }
-    } */
-    dt = DrivetrainSubsystem.createSwerveModel();
+    } 
+    //dt = DrivetrainSubsystem.createSwerveModel();
 
-    m_SuperStructure = new SuperStructure();
-    m_SuperStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
+    //m_SuperStructure = new SuperStructure();
+    //m_SuperStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     //m_SuperStructure = new SuperStructure();
     PortForwarder.add(5800, "photonvision.local", 5800);
-    //m_cams.setDefaultCommand(new AddVisionPose(m_cams));
+    m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
    
 

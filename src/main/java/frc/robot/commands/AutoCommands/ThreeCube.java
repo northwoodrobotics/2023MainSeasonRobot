@@ -20,7 +20,7 @@ import frc.swervelib.SwerveSubsystem;
 
 public class ThreeCube extends SequentialCommandGroup{
     //public final PathPlannerTrajectory ThreeCube = PathPlanner.loadPath("3Cube", new PathConstraints(Units.feetToMeters(3), Units.feetToMeters(3)));
-    public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3 Cube", 4, 2);
+    public final List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("3Cube", 4, 2);
     HashMap<String, Command> eventMap = new HashMap<>();
     HashMap<String, Command> eventMapTwo = new HashMap<>();
 

@@ -128,18 +128,20 @@ public class SuperStructure extends SuperStructureBase{
 
 
   
-
+    @Override
     public void adjustWristAngle(double adjustmentDemandDegrees){  
         controlState = ControlState.wristAdjust; 
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
         adjustedWristAngle = (wristMotor.getPosition()+ adjustmentRadians);
     }
+    @Override
     public void setSuperStructureState(SuperStructureState targetState){
         
         wantedState.elevatorPositionRadians = targetState.getHeightDemand();
         wantedState.wristAngleRadians = targetState.getWristAngleRadians();
         controlState = ControlState.preset;
     }
+    @Override
     public void adjustElevatorPosition(double adjustmentDemandDegrees){
         controlState = ControlState.heightAdjust;
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
@@ -156,9 +158,9 @@ public class SuperStructure extends SuperStructureBase{
         
         switch (controlState){
             case preset: 
-            elevatorMotor.setMotionMagicPosition(wantedState.elevatorPositionRadians, 0, 0);
+            elevatorMotor.setMotionMagicPosition(wantedState.getHeightDemand(), 0, 0);
             lastElevatorPosition = wantedState.getHeightDemand();
-            wristMotor.setMotionMagicPosition(wantedState.wristAngleRadians, 0, 0);
+            wristMotor.setMotionMagicPosition(wantedState.getWristAngleRadians(), 0, 0);
             lastWristAngle = wantedState.getWristAngleRadians();
             break;
             case wristAdjust:

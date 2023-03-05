@@ -35,7 +35,7 @@ public class SwerveSubsystem extends SubsystemBase {
   };
  
   private ArrayList<SwerveModule> modules = new ArrayList<SwerveModule>(QuadSwerveSim.NUM_MODULES);
-  //private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
+  private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
 
   public SwerveDrivetrainModel dt;  
   public FieldRelativeVelocity m_fieldRelativeVelocity;
@@ -45,7 +45,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem(SwerveDrivetrainModel dt) {
     this.dt = dt;
     modules = dt.getRealModules();
-    //asimModules = dt.getModules();
+    
   }  
 
   @Override
@@ -54,6 +54,8 @@ public class SwerveSubsystem extends SubsystemBase {
     states = dt.getSwerveModuleStates();
     dt.setModulePositions();
     positions = dt.getModulePositions();
+
+   
    
       
     

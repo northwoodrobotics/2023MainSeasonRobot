@@ -417,6 +417,7 @@ public class SwerveDrivetrainModel {
                 thetaController,
                 // feed states into controller
                 commandStates -> this.states = commandStates,
+                true,
                 m_drive);
         return swerveControllerCommand.andThen(() -> setModuleStates(new SwerveInput(0,0,0)));
     }

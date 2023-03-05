@@ -11,6 +11,13 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Auto Routine": "String Chooser",
       "/SmartDashboard/Orientation Chooser": "String Chooser"
+    },
+    "windows": {
+      "/SmartDashboard/Auto Routine": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
@@ -19,6 +26,9 @@
     },
     "transitory": {
       "AdvantageKit": {
+        "IntakeLog": {
+          "open": true
+        },
         "RealOutputs": {
           "LoggedRobot": {
             "open": true
@@ -26,16 +36,9 @@
           "Logger": {
             "open": true
           }
-        },
-        "open": true
-      },
-      "FMSInfo": {
-        "open": true
+        }
       },
       "LiveWindow": {
-        "open": true
-      },
-      "Shuffleboard": {
         "open": true
       },
       "SmartDashboard": {
@@ -45,6 +48,11 @@
         "Auto Routine": {
           "open": true
         },
+        "Orientation Chooser": {
+          "open": true
+        }
+      },
+      "nodeselector": {
         "open": true
       },
       "photonvision": {
