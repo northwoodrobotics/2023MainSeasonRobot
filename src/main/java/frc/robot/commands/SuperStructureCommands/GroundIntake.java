@@ -23,15 +23,16 @@ public class GroundIntake extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.stowed.getHeightDemand(), SuperStructurePresets.stowed.getWristAngleRadians());
-        m_superStructure.conformEndEffectorState(endEffectorState.holding);
+        //m_superStructure.setSuperStructureState(SuperStructurePresets.stowed.getHeightDemand(), SuperStructurePresets.stowed.getWristAngleRadians());
+        //m_superStructure.conformEndEffectorState(endEffectorState.holding);
         
         
     }
+    /*
     @Override
     public boolean isFinished(){
         return m_superStructure.hasGamePiece = true;
-    }
+    } */
 
 
 }

@@ -185,15 +185,17 @@ public class RobotContainer {
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
     driver.xButton.whileTrue(new GroundIntake(m_SuperStructure));
     driver.aButton.whileTrue(new ReturnToStowed(m_SuperStructure));
-    /*driver.leftTriggerButton.onTrue(new HighCone(m_SuperStructure));
-    driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
+    driver.bButton.whileTrue(new HighCube(m_SuperStructure));
+    driver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.ejecting)));
+
+   /* driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
-    */
+     */
     coDriver.xButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.intaking)));
-    coDriver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.ejecting)));
+    coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
     coDriver.aButton.whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
     coDriver.bButton.whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
    
