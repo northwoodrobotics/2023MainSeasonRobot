@@ -13,12 +13,13 @@ public class GyroSim {
 
 
         private GyroscopeImplementation() {
-                  
+                gyro = new AnalogGyroSim(0);
         }
 
         @Override
         public Rotation2d getGyroHeading() {
-          return Rotation2d.fromDegrees(gyro.getAngle() + 0.0);
+            
+          return Rotation2d.fromDegrees(gyro.getAngle());
             
         }
 

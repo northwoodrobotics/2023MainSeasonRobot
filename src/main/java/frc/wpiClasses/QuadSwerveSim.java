@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
 
 public class QuadSwerveSim {
 
@@ -71,6 +73,7 @@ public class QuadSwerveSim {
         this.m_robotMOI = robotMOI;
 
     }
+   
 
     /**
      * Resets the robot to a non-moving state somewhere on the field.

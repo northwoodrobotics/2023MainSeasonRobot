@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.swervelib.Gyroscope;
 
 public class Pigeon2FactoryBuilder {
@@ -29,6 +30,7 @@ public class Pigeon2FactoryBuilder {
         private GyroscopeImplementation(WPI_Pigeon2 pigeon) {
             this.pigeon = pigeon;
             this.pigeon.zeroGyroBiasNow();
+       
             
         }
      

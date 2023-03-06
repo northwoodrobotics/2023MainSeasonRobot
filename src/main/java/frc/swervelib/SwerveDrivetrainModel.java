@@ -22,6 +22,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -334,7 +335,8 @@ public class SwerveDrivetrainModel {
     }
     
     public void setKnownState(PathPlannerState initialState) {
-        Pose2d startingPose = new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation);
+        PathPlannerState tranformedState = PathPlannerTrajectory.transformStateForAlliance(initialState, DriverStation.getAlliance());
+        Pose2d startingPose = new Pose2d(tranformedState.poseMeters.getTranslation(), tranformedState.holonomicRotation);
         setKnownPose(startingPose);
         
     }

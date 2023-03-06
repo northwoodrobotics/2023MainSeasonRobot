@@ -41,16 +41,16 @@
       "LiveWindow": {
         "open": true
       },
-      "SmartDashboard": {
-        "Alerts": {
-          "open": true
-        },
-        "Auto Routine": {
-          "open": true
-        },
-        "Orientation Chooser": {
+      "Shuffleboard": {
+        ".recording": {
           "open": true
         }
+      },
+      "SmartDashboard": {
+        "Orientation Chooser": {
+          "open": true
+        },
+        "open": true
       },
       "nodeselector": {
         "open": true

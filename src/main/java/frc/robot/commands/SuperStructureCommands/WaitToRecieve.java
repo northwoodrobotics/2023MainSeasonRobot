@@ -3,7 +3,7 @@ package frc.robot.commands.SuperStructureCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
-import frc.robot.subsystems.SuperStructure.SuperStructureBase.endEffectorState;
+import frc.robot.subsystems.SuperStructure.SuperStructure.endEffectorState;
 public class WaitToRecieve extends CommandBase{
 private final SuperStructure m_superStructure;
     

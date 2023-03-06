@@ -80,7 +80,7 @@ public final class Constants {
   }
   public static final boolean tuningMode = true;
   public static boolean invalidRobotAlertSent = false;
-  private static final RobotType robot = RobotType.ROBOT_2023C;
+  private static final RobotType robot = RobotType.ROBOT_SIMBOT;
   
   public static double loopPeriodSeconds = 0.02;
   public static double MinVoltage = 8.0;
@@ -113,13 +113,13 @@ public final class Constants {
          *
          * Should be measured from center to center.
          */
-        public static final double TRACKWIDTH_METERS = Units.inchesToMeters(22.750); // FIXME Measure set trackwidth
+        public static final double TRACKWIDTH_METERS = Units.inchesToMeters(22.750); 
         /**
          * The front-to-back distance between the drivetrain wheels.
          *
          * Should be measured from center to center.
          */
-        public static final double WHEELBASE_METERS = Units.inchesToMeters(22.750); // FIXME Measure set wheelbase
+        public static final double WHEELBASE_METERS = Units.inchesToMeters(22.750); 
         public static final SecondOrderKinematics KINEMATICS = new SecondOrderKinematics(
                 new Translation2d(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0),
                 new Translation2d(TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0),
@@ -127,9 +127,9 @@ public final class Constants {
                 new Translation2d(-TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0));
         public static final double WHEEL_DIAMETER_METERS = 0.10033; // .10033 = ~4 inches
         public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
-        public static final int PIGEON_ID = 28; // FIXME Set Pigeon ID
-        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5; // FIXME Set front left module drive motor ID
-        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; // FIXME Set front left module steer motor ID
+        public static final int PIGEON_ID = 28;
+        public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 5; 
+        public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4; 
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 6; // FIXME Set front left steer encoder ID
         public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(2.109+180); // FIXME Measure and
                                                                                                     // set front left steer offset
@@ -225,10 +225,10 @@ public final class Constants {
         public static final int EndEffectorMotorID = 31
         ; 
 
-        public static final double intakeCurrentSpikeThreashhold = 30; //FIXME value in Amps
-        public static final double intakeHoldingPercentOutput = 0.2; //FIXME value 
+        public static final double intakeCurrentSpikeThreashhold = 30; 
+        public static final double intakeHoldingPercentOutput = 0.1; 
 
-        public static final double initalWristAngleRadians = 0.0; //FIXME Preset
+       // public static final double initalWristAngleRadians = 0.0; //FIXME Preset
 
         public static final double MotionProfileElevatorP = 0.07; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorD = 0.02; // FIXME set PIDF constant for Elevator
@@ -238,8 +238,8 @@ public final class Constants {
         public static final double ElevatorD = 0.0; // FIXME set PIDF constant for Elevator
         public static final double ElevatorI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorF = 0.045; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionAccel = 2048; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionVelocity =2048;  // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionAccel = 4096; // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionVelocity =4096;  // FIXME set PIDF constant for Elevator
         public static final int ElevatorCurrentLimit = 30; //FIXME set Current Limit
         public static final double WristP = 0.05; // FIXME set PIDF constant for Wrist
         public static final double WristF = 0.1; // FIXME set PIDF constant for Elevator

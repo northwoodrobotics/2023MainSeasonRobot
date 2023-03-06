@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedFalcon500;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedNeo;
@@ -19,9 +20,20 @@ import frc.robot.Constants.SuperStructureConstants;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 
-public class SuperStructure extends SuperStructureBase{
+public class SuperStructure extends SubsystemBase{
 
+    public ControlState controlState;
+    public endEffectorState intakeControlState;
+    public double presetElevatorHeight;
+    public double presetWristAngle;
 
+    public boolean hasGamePiece;
+    public boolean intakeStateHasChanged;
+    public double timeStateEntered;
+    public double adjustedWristAngle;
+    public double adjustedElevatorPosition;
+    public double lastElevatorPosition;
+    public double lastWristAngle;
 
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
@@ -39,7 +51,7 @@ public class SuperStructure extends SuperStructureBase{
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
 
-    private LoggedDashboardNumber wristPositionDegrees = new LoggedDashboardNumber("WristPosition Degrees");
+    private LoggedDashboardNumber wristPositionRadians = new LoggedDashboardNumber("WristPosition Radians");
     private LoggedDashboardNumber elevatorPositionRadians= new LoggedDashboardNumber("ElevatorPosition");
     private LoggedDashboardNumber wristTargetPositionRadians = new LoggedDashboardNumber("Targed Wrist Radians");
     private LoggedDashboardBoolean DashboardhasGamePiece = new LoggedDashboardBoolean("Has Game Piece");
@@ -57,11 +69,11 @@ public class SuperStructure extends SuperStructureBase{
         
         controlState = ControlState.preset;
         intakeControlState = endEffectorState.holding;
-        wristPositionDegrees.setDefault(90.0);
+        wristPositionRadians.setDefault(SuperStructurePresets.stowed.wristAngleRadians);
         elevatorPositionRadians.setDefault(0.0);
         wristTargetPositionRadians.setDefault(0.0);
         elevatorMotor.setEncoder(0.0);
-        wristMotor.setEncoder(SuperStructurePresets.stowed.wristAngleRadians);
+        wristMotor.setEncoder(SuperStructurePresets.stowed.getWristAngleRadians());
         /* Motion Profiles: Using "Motion Planning" as our control method is analagous to how one travels from place to place on a car or bike. 
          * When you are close to where you want to be, you pre-emtively slow down, comming to a stop exactly where you intend to. 
          * In order to make our control of a mechanism (in this case an elevator) perfom controlably, predicatbly and smoothly, we use the 
@@ -112,6 +124,19 @@ public class SuperStructure extends SuperStructureBase{
     public boolean getIntakeStateChange(){
         return intakeStateHasChanged;
     }
+    public enum ControlState{
+        preset, 
+        wristAdjust,
+        heightAdjust,
+    }
+    public enum endEffectorState{
+        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1), empty(0.0);
+        public double output;
+        private endEffectorState(double output){
+            this.output = output;
+
+        }
+    }
     
 
     public synchronized void setEndEffectorState(endEffectorState newState) {
@@ -131,20 +156,26 @@ public class SuperStructure extends SuperStructureBase{
 
 
   
-    @Override
+
     public void adjustWristAngle(double adjustmentDemandDegrees){  
         controlState = ControlState.wristAdjust; 
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
         adjustedWristAngle = (wristMotor.getPosition()+ adjustmentRadians);
     }
-    @Override
+
+    public boolean isAtTargetHeight(){
+        return (Math.abs(presetElevatorHeight-elevatorMotor.getPosition())< 0.2);
+    }
+    public boolean isAtTargetAngle(){
+        return (Math.abs(presetWristAngle-wristMotor.getPosition())< 0.2);
+    }
+
     public void setSuperStructureState(double elevatorPosition, double wristPosition){
         
-        presetElevatorHeight = elevatorPosition;
-        presetWristAngle = wristPosition;
+        this.presetElevatorHeight = elevatorPosition;
+        this.presetWristAngle = wristPosition;
         controlState = ControlState.preset;
     }
-    @Override
     public void adjustElevatorPosition(double adjustmentDemandDegrees){
         controlState = ControlState.heightAdjust;
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
@@ -214,10 +245,10 @@ public class SuperStructure extends SuperStructureBase{
         Logger.getInstance().processInputs("WristLog", wristLog);
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("IntakeLog", intakeLog);
-        wristPositionDegrees.set(Units.radiansToDegrees(wristMotor.getPosition()));
+        wristPositionRadians.set(wristMotor.getPosition());
         elevatorPositionRadians.set(elevatorMotor.getPosition());
         wristTargetPositionRadians.set(presetWristAngle);
-        wantedElevatorPos.set(presetWristAngle);
+        wantedElevatorPos.set(presetElevatorHeight);
         DashboardhasGamePiece.set(hasGamePiece);
         
         

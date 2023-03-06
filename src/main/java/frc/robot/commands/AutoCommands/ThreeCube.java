@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
+import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.SuperStructureCommands.EjectAndReturnToBottom;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.commands.SuperStructureCommands.MidCube;
@@ -32,8 +33,8 @@ public class ThreeCube extends SequentialCommandGroup{
         eventMap.put("HighCube", new HighCube(structure));
         eventMapTwo.put("IntakeGround2", new GroundIntake(structure));
         eventMapTwo.put("CubeMid", new MidCube(structure));
-        FollowPathWithEvents firstCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(0), swerve), ThreeCube.get(0).getMarkers(), eventMap);
-        FollowPathWithEvents secondCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(1), swerve), ThreeCube.get(1).getMarkers(), eventMapTwo);
+        FollowPathWithEvents firstCommand = new FollowPathWithEvents(new AutoDrive(swerve, ThreeCube.get(0)), ThreeCube.get(0).getMarkers(), eventMap);
+        FollowPathWithEvents secondCommand = new FollowPathWithEvents(new AutoDrive(swerve, ThreeCube.get(1)), ThreeCube.get(1).getMarkers(), eventMapTwo);
         
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),

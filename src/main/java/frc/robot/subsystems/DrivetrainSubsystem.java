@@ -144,7 +144,7 @@ public class DrivetrainSubsystem {
                                 Constants.DriveConstants.BACK_RIGHT_MODULE_STEER_ENCODER,
                                 Constants.DriveConstants.BACK_RIGHT_MODULE_STEER_OFFSET, "BR");
 
-                Gyroscope gyro = GyroscopeHelper.createPigeon2CAN(DriveConstants.PIGEON_ID);
+                Gyroscope gyro = GyroscopeHelper.createGyro();
 
                 modules.add(m_frontLeftModule);
                 modules.add(m_frontRightModule);

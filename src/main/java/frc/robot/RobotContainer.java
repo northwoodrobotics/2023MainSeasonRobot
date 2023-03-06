@@ -5,7 +5,7 @@
 package frc.robot;
 
 import java.io.IOException;
-import frc.robot.subsystems.SuperStructure.SuperStructureBase.endEffectorState;
+import frc.robot.subsystems.SuperStructure.SuperStructure.endEffectorState;
 
 import org.eclipse.jetty.jndi.local.localContextRoot;
 import org.littletonrobotics.junction.Logger;
@@ -18,8 +18,10 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -89,7 +91,7 @@ public class RobotContainer {
   public static SpectrumXbox driver = new SpectrumXbox(0, 0.1, 0.21);
   public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
-    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3CubeRight", new PathConstraints(3, 3));
+    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3CubeRightBalance", new PathConstraints(3, 3));
 
 
 
@@ -127,7 +129,7 @@ public class RobotContainer {
           dt = DrivetrainSubsystem.createSimSwerveModel();
           m_cams = new PhotonCams();
           m_SuperStructure = new SuperStructure();
-          objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+         // objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
 
           break;
       }
@@ -144,8 +146,8 @@ public class RobotContainer {
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
-        () -> xLimiter.calculate(driver.leftStick.getY()),
-        () -> yLimiter.calculate(driver.leftStick.getX()),
+        () -> xLimiter.calculate(-driver.leftStick.getY()),
+        () -> yLimiter.calculate(-driver.leftStick.getX()),
         () -> -driver.rightStick.getX()));
 
         ShowInputs();
@@ -158,9 +160,9 @@ public class RobotContainer {
 
 
     autoChooser.addDefaultOption("Do Nothing", null);
-    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
-    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
-    autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
+    //utoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
+    //autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
+    //autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
     autoChooser.addOption("Right Full Link Just Path", 
     
     new SequentialCommandGroup(
@@ -181,8 +183,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
-    driver.xButton.toggleOnTrue(new GroundIntake(m_SuperStructure));
-    driver.aButton.toggleOnTrue(new ReturnToStowed(m_SuperStructure));
+    driver.xButton.whileTrue(new GroundIntake(m_SuperStructure));
+    driver.aButton.whileTrue(new ReturnToStowed(m_SuperStructure));
     /*driver.leftTriggerButton.onTrue(new HighCone(m_SuperStructure));
     driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
@@ -190,10 +192,10 @@ public class RobotContainer {
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
     */
-    coDriver.xButton.onTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.intaking)));
-    coDriver.yButton.onTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.ejecting)));
-    coDriver.aButton.toggleOnTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
-    coDriver.bButton.toggleOnTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
+    coDriver.xButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.intaking)));
+    coDriver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.ejecting)));
+    coDriver.aButton.whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
+    coDriver.bButton.whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
    
   }
 
@@ -204,7 +206,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new ThreeCube(m_SwerveSubsystem, m_SuperStructure);
+    return autoChooser.get();
   }
   
 

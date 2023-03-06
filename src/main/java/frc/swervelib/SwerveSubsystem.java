@@ -33,6 +33,12 @@ public class SwerveSubsystem extends SubsystemBase {
     new swerveModuleIOInputsAutoLogged(), 
     new swerveModuleIOInputsAutoLogged(),
   };
+  private simModuleInputsAutoLogged[] simInputs = new simModuleInputsAutoLogged[]{
+    new simModuleInputsAutoLogged(), 
+    new simModuleInputsAutoLogged(), 
+    new simModuleInputsAutoLogged(), 
+    new simModuleInputsAutoLogged(),
+  };
  
   private ArrayList<SwerveModule> modules = new ArrayList<SwerveModule>(QuadSwerveSim.NUM_MODULES);
   private ArrayList<SwerveModuleSim> simModules = new ArrayList<SwerveModuleSim>(QuadSwerveSim.NUM_MODULES);
@@ -45,6 +51,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public SwerveSubsystem(SwerveDrivetrainModel dt) {
     this.dt = dt;
     modules = dt.getRealModules();
+    simModules = dt.getModules();
     
   }  
 
@@ -54,7 +61,7 @@ public class SwerveSubsystem extends SubsystemBase {
     states = dt.getSwerveModuleStates();
     dt.setModulePositions();
     positions = dt.getModulePositions();
-
+    dt.update(false, 13.2);
    
    
       
@@ -119,5 +126,11 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     dt.update(DriverStation.isDisabled(), 13.2);
+    
+    for (int i = 0; i<4; i++){
+      simModules.get(i).updateInputs(simInputs[i]);
+      Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), simInputs[i]);
+    }
+
   }
 }
