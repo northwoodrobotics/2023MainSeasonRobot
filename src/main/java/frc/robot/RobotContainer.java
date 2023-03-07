@@ -143,7 +143,7 @@ public class RobotContainer {
     //m_SuperStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
     //m_SuperStructure = new SuperStructure();
-    PortForwarder.add(5800, "photonvision.local", 5800);
+   // PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
    
@@ -188,9 +188,11 @@ public class RobotContainer {
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
     driver.xButton.whileTrue(new GroundIntake(m_SuperStructure));
     driver.aButton.whileTrue(new ReturnToStowed(m_SuperStructure));
-    driver.bButton.whileTrue(new HighCube(m_SuperStructure));
+    
     driver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
     driver.rightBumper.whileTrue(new MidCone(m_SuperStructure));
+    driver.leftBumper.whileTrue(new HighCone(m_SuperStructure));
+    driver.leftTriggerButton.whileTrue(new HighCube(m_SuperStructure));
    /* driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));

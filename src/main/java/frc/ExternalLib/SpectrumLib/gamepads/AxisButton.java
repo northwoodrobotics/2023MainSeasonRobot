@@ -2,12 +2,13 @@
 
 package frc.ExternalLib.SpectrumLib.gamepads;
 
-import edu.wpi.first.wpilibj2.command.button.Button;
+
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox.XboxAxis;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class AxisButton extends Button {
+public class AxisButton extends Trigger {
 	private final GenericHID joy;
 	private final int axis;
 	private double targetVal;

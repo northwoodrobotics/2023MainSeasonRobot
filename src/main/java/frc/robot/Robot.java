@@ -5,12 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.hal.AllianceStationID;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -170,6 +173,19 @@ public class Robot extends LoggedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+        // Log list of NT clients
+    List<String> clientNames = new ArrayList<>();
+    List<String> clientAddresses = new ArrayList<>();
+    for (var client : NetworkTableInstance.getDefault().getConnections()) {
+      clientNames.add(client.remote_id);
+      clientAddresses.add(client.remote_ip);
+    }
+    Logger.getInstance()
+        .recordOutput("NTClients/Names", clientNames.toArray(new String[clientNames.size()]));
+    Logger.getInstance()
+        .recordOutput(
+            "NTClients/Addresses", clientAddresses.toArray(new String[clientAddresses.size()]));
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

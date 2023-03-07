@@ -272,8 +272,8 @@ public final class Constants {
                 190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCone = new SuperStructureState(
-                440.0, // FIXME Measure
-                150.0 // FIXME Measure
+                437.0, // FIXME Measure
+                245.0 // FIXME Measure
                 );
             public static final SuperStructureState highCube = new SuperStructureState(
                 392.2, // FIXME Measure
