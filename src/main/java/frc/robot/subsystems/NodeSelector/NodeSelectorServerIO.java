@@ -27,14 +27,18 @@ public class NodeSelectorServerIO implements NodeSelectorIO {
           var app =
               Javalin.create(
                   config -> {
+                   
                     config.staticFiles.add(
                         Paths.get(
                                 Filesystem.getDeployDirectory().getAbsolutePath().toString(),
                                 "nodeselector")
                             .toString(),
+
                         Location.EXTERNAL);
+                      
                   });
-          app.start(5800);
+      
+          app.start("192.168.1.247",5800);
         }
       
         public void updateInputs(NodeSelectorIOInputs inputs) {
