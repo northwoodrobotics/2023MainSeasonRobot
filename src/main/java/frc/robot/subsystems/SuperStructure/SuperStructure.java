@@ -8,6 +8,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardString;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
+
 //import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
@@ -192,9 +194,10 @@ public class SuperStructure extends SubsystemBase{
         
         switch (controlState){
             case preset: 
+            
             elevatorMotor.setMotionMagicPosition(presetElevatorHeight, 0, 0);
             lastElevatorPosition = presetElevatorHeight;
-            wristMotor.setMotionMagicPosition(presetWristAngle, 0, 0);
+            wristMotor.setMotionMagicPosition(MathUtil.clamp(presetWristAngle, SuperStructureConstants.intakeMinAngle, SuperStructureConstants.intakeMaxAngle), 0, 0);
             lastWristAngle = presetWristAngle;
             break;
             case wristAdjust:

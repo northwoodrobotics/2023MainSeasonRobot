@@ -228,25 +228,26 @@ public final class Constants {
         public static final double intakeCurrentSpikeThreashhold = 30; 
         public static final double intakeHoldingPercentOutput = 0.1; 
 
-       // public static final double initalWristAngleRadians = 0.0; //FIXME Preset
+        public static final double intakeMinAngle = 400.0;
+        public static final double intakeMaxAngle = 120.0;
 
         public static final double MotionProfileElevatorP = 0.07; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorD = 0.02; // FIXME set PIDF constant for Elevator
         public static final double MotionProfileElevatorI = 0.0; // FIXME set PIDF constant for Elevator
-        public static final double MotionProfileElevatorF = 0.1; // FIXME set PIDF constant for Elevator 
+        public static final double MotionProfileElevatorF = 0.15; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorP = 0.5; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorD = 0.0; // FIXME set PIDF constant for Elevator
         public static final double ElevatorI = 0.0; // FIXME set PIDF constant for Elevator 
         public static final double ElevatorF = 0.045; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionAccel = 4096; // FIXME set PIDF constant for Elevator
-        public static final double ElevatorMotionVelocity =4096;  // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionAccel = 20480; // FIXME set PIDF constant for Elevator
+        public static final double ElevatorMotionVelocity =20480;  // FIXME set PIDF constant for Elevator
         public static final int ElevatorCurrentLimit = 30; //FIXME set Current Limit
         public static final double WristP = 0.05; // FIXME set PIDF constant for Wrist
         public static final double WristF = 0.1; // FIXME set PIDF constant for Elevator
         public static final double WristD = 0.2; // FIXME set PIDF constant for Elevator 
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
-        public static final double WristMotionAccel = 4096.0; // FIXME set PIDF constant for Elevator
-        public static final double WristMotionVelocity =4096.0;  // FIXME set PIDF constant for Elevator
+        public static final double WristMotionAccel = 20480.0; // FIXME set PIDF constant for Elevator
+        public static final double WristMotionVelocity =20480.0;  // FIXME set PIDF constant for Elevator
         public static final int WristCurrentLimit = 30; //FIXME Current Limit
 
 

@@ -91,7 +91,7 @@ public class RobotContainer {
   public static SpectrumXbox driver = new SpectrumXbox(0, 0.1, 0.21);
   public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
-    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3CubeRightBalance", new PathConstraints(3, 3));
+    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 3));
 
 
 
@@ -134,12 +134,8 @@ public class RobotContainer {
           break;
       }
     } 
-    //dt = DrivetrainSubsystem.createSwerveModel();
-
-    //m_SuperStructure = new SuperStructure();
-    //m_SuperStructure.setSuperStructureState(SuperStructurePresets.groundIntake);
+   
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
-    //m_SuperStructure = new SuperStructure();
     PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
@@ -160,9 +156,9 @@ public class RobotContainer {
 
 
     autoChooser.addDefaultOption("Do Nothing", null);
-    //utoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
-    //autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
-    //autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
+    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
     autoChooser.addOption("Right Full Link Just Path", 
     
     new SequentialCommandGroup(
