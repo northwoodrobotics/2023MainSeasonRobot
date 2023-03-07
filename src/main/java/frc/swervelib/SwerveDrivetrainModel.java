@@ -124,7 +124,7 @@ public class SwerveDrivetrainModel {
         // Trustworthiness of the internal model of how motors should be moving
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var stateStdDevs = VecBuilder.fill(0.0005, 0.0005, Units.degreesToRadians(0.005),0.0005, 0.0005, 0.0005, 0.0005);
+        var stateStdDevs = VecBuilder.fill(0.00005, 0.00005, Units.degreesToRadians(0.005),0.00005, 0.00005, 0.00005, 0.00005);
 
         // Trustworthiness of gyro in radians of standard deviation.
         var localMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.1),0.01,0.01,0.01,0.01);

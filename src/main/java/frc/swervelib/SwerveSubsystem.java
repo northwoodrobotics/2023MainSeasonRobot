@@ -61,8 +61,7 @@ public class SwerveSubsystem extends SubsystemBase {
     states = dt.getSwerveModuleStates();
     dt.setModulePositions();
     positions = dt.getModulePositions();
-    dt.update(false, 13.2);
-   
+
    
       
     

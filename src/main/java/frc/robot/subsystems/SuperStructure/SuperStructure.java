@@ -36,6 +36,7 @@ public class SuperStructure extends SubsystemBase{
     public double adjustedElevatorPosition;
     public double lastElevatorPosition;
     public double lastWristAngle;
+    private boolean ejectCone;
 
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
@@ -59,10 +60,11 @@ public class SuperStructure extends SubsystemBase{
     private LoggedDashboardBoolean DashboardhasGamePiece = new LoggedDashboardBoolean("Has Game Piece");
     private LoggedDashboardNumber  wantedElevatorPos = new LoggedDashboardNumber("Wanted Elevator Rad");
     private LoggedDashboardNumber wantedWristRad = new LoggedDashboardNumber("Wrist Rad");
+    private LoggedDashboardBoolean gamePieceType = new LoggedDashboardBoolean("Cone In Intake");
 
 
     public SuperStructure(){  
-        
+        ejectCone = false;
         hasGamePiece = false;
         intakeStateHasChanged = false;
         //wantedState = new SuperStructureState();
@@ -126,13 +128,17 @@ public class SuperStructure extends SubsystemBase{
     public boolean getIntakeStateChange(){
         return intakeStateHasChanged;
     }
+    public void hasCone(boolean value){
+        ejectCone = value;
+    }
     public enum ControlState{
         preset, 
         wristAdjust,
         heightAdjust,
     }
     public enum endEffectorState{
-        holding(SuperStructureConstants.intakeHoldingPercentOutput), ejecting(-1.0), intaking(1), empty(0.0);
+        holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-1.0), intaking(1), empty(0.0),
+        coneEject(-0.2);
         public double output;
         private endEffectorState(double output){
             this.output = output;
@@ -154,6 +160,13 @@ public class SuperStructure extends SubsystemBase{
     public void conformEndEffectorState(endEffectorState targetState){
         intakeMotor.setPercentOutput(targetState.output);
         setEndEffectorState(targetState);
+    }
+    public void ejectGamePiece(){
+       
+        if (ejectCone){
+            conformEndEffectorState(endEffectorState.coneEject);
+        }else
+        conformEndEffectorState(endEffectorState.cubeEject);
     }
 
 
@@ -211,7 +224,16 @@ public class SuperStructure extends SubsystemBase{
         }
 
         switch (intakeControlState){
-            case ejecting: 
+            case cubeEject: 
+            if(intakeStateHasChanged){
+                hasGamePiece = false;
+                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
+                    conformEndEffectorState(endEffectorState.empty);
+                }
+                
+            }
+            break;
+            case coneEject: 
             if(intakeStateHasChanged){
                 hasGamePiece = false;
                 if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
@@ -221,13 +243,17 @@ public class SuperStructure extends SubsystemBase{
             }
             break;
             case intaking:
-            if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
-                hasGamePiece = true;
-                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
-                    conformEndEffectorState(endEffectorState.holding);
-                }
+          
+                if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
+                    hasGamePiece = true;
+                    
+                        conformEndEffectorState(endEffectorState.holding);
+                    
+    
+                
+            }else
 
-            }else 
+            
             
             break;
             case holding:
@@ -253,6 +279,7 @@ public class SuperStructure extends SubsystemBase{
         wristTargetPositionRadians.set(presetWristAngle);
         wantedElevatorPos.set(presetElevatorHeight);
         DashboardhasGamePiece.set(hasGamePiece);
+        gamePieceType.set(ejectCone);
         
         
 

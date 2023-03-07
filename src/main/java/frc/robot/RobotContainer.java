@@ -27,6 +27,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.PortForwarder;
@@ -40,7 +42,8 @@ import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
-import frc.robot.commands.SuperStructureCommands.EjectAndReturnToBottom;
+import frc.robot.commands.SuperStructureCommands.SmartEject;
+import frc.robot.commands.SuperStructureCommands.SwitchGamePiece;
 import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.commands.SuperStructureCommands.HighCube;
@@ -88,7 +91,7 @@ public class RobotContainer {
    * within the object parameters, the first one is the port, the second and third
    * parameters are deadzone sizes.
    **/
-  public static SpectrumXbox driver = new SpectrumXbox(0, 0.1, 0.21);
+  public static SpectrumXbox driver = new SpectrumXbox(0,0.1, 0.1);
   public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
     private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 3));
@@ -136,7 +139,8 @@ public class RobotContainer {
     } 
    
     m_SwerveSubsystem = DrivetrainSubsystem.createSwerveSubsystem(dt);
-    PortForwarder.add(5800, "photonvision.local", 5800);
+    //m_SuperStructure = new SuperStructure();
+   // PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
 
    
@@ -181,17 +185,24 @@ public class RobotContainer {
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
     driver.xButton.whileTrue(new GroundIntake(m_SuperStructure));
     driver.aButton.whileTrue(new ReturnToStowed(m_SuperStructure));
-    /*driver.leftTriggerButton.onTrue(new HighCone(m_SuperStructure));
-    driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
+    
+    driver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
+    driver.rightBumper.whileTrue(new MidCone(m_SuperStructure));
+    driver.leftBumper.whileTrue(new HighCone(m_SuperStructure));
+    driver.leftTriggerButton.whileTrue(new HighCube(m_SuperStructure));
+   /* driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
-    */
-    coDriver.xButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.intaking)));
-    coDriver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.conformEndEffectorState(endEffectorState.ejecting)));
+     */
+    coDriver.xButton.onTrue(new SwitchGamePiece(m_SuperStructure, false));
+    coDriver.yButton.onTrue(new  SwitchGamePiece(m_SuperStructure, true));
+  
+  //  coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
     coDriver.aButton.whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
     coDriver.bButton.whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
+
    
   }
 
@@ -208,7 +219,7 @@ public class RobotContainer {
 
   
   public void ShowInputs(){
-    master.addNumber("X Command", ()-> -xLimiter.calculate(driver.leftStick.getX())*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
-    master.addNumber("Y Command", () -> -yLimiter.calculate(driver.leftStick.getY()) * Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
+    //master.addNumber("X Command", ()-> -xLimiter.calculate(driver.leftStick.getX())*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
+    //master.addNumber("Y Command", () -> -yLimiter.calculate(driver.leftStick.getY()) * Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS);
   }
 }

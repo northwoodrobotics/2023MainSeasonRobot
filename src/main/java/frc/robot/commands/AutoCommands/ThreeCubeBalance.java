@@ -14,7 +14,7 @@ import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.commands.ActionCommands.AutoBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
-import frc.robot.commands.SuperStructureCommands.EjectAndReturnToBottom;
+import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
@@ -39,11 +39,11 @@ public class ThreeCubeBalance extends SequentialCommandGroup{
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),
         new HighCone(structure),
-        new EjectAndReturnToBottom(structure),
+        new SmartEject(structure),
         firstCommand,
-        new EjectAndReturnToBottom(structure),
+        new SmartEject(structure),
         secondCommand,
-        new EjectAndReturnToBottom(structure),    
+        new SmartEject(structure),    
         new AutoDrive(swerve, ThreeCube.get(2)),
         new AutoBalance(swerve)
 

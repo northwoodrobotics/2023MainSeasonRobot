@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.commands.ActionCommands.AutoBalance;
-import frc.robot.commands.SuperStructureCommands.EjectAndReturnToBottom;
+import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
@@ -39,11 +39,11 @@ public class ThreeCubeRightBalance extends SequentialCommandGroup{
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCubeRight.get(0).getInitialState())),
         new HighCone(structure),
-        new EjectAndReturnToBottom(structure),
+        new SmartEject(structure),
         firstCommand,   
-        new EjectAndReturnToBottom(structure),
+        new SmartEject(structure),
         secondCommand,
-        new EjectAndReturnToBottom(structure),
+        new SmartEject(structure),
         swerve.dt.createCommandForTrajectory(ThreeCubeRight.get(2), swerve),
         new AutoBalance(swerve)
         );

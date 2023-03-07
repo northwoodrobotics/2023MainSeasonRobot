@@ -80,7 +80,7 @@ public final class Constants {
   }
   public static final boolean tuningMode = true;
   public static boolean invalidRobotAlertSent = false;
-  private static final RobotType robot = RobotType.ROBOT_SIMBOT;
+  private static final RobotType robot = RobotType.ROBOT_2023C;
   
   public static double loopPeriodSeconds = 0.02;
   public static double MinVoltage = 8.0;
@@ -92,13 +92,13 @@ public final class Constants {
     public static final class VisionConstants {
         public static final Transform3d robotToCam = (
             new Transform3d(new Translation3d(
-                Units.inchesToMeters(-6.675197), // X Translation
-                Units.inchesToMeters(-10.252), //Y Translation
-                Units.inchesToMeters(-7.216)), // Z Translation
+                Units.inchesToMeters(6.675197), // X Translation
+                Units.inchesToMeters(10.252), //Y Translation
+                Units.inchesToMeters(7.216)), // Z Translation
                 new Rotation3d(
                     0, 
                     0,
-                    Units.degreesToRadians(180.0) // yaw
+                    Units.degreesToRadians(0.0) // yaw
                     )
                 )
                 
@@ -163,7 +163,7 @@ public final class Constants {
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
         static public final Pose2d DFLT_START_POSE = new Pose2d(1.78, 2.67,
-                Rotation2d.fromDegrees(180.0));
+                Rotation2d.fromDegrees(0.0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
                 * 2;
@@ -186,7 +186,7 @@ public final class Constants {
         public static final double TRAJECTORYXkP = 1;
         public static final double TRAJECTORYXkI = 0;
         public static final double TRAJECTORYXkD = 0;
-        public static final double TRAJECTORYYkP = 1;
+        public static final double TRAJECTORYYkP = 1  ;
         public static final double TRAJECTORYYkI = 0;
         public static final double TRAJECTORYYkD = 0;
         public static final double DriveKS = 1.1152;
@@ -258,7 +258,7 @@ public final class Constants {
         public static final class SuperStructurePresets{
             public static final SuperStructureState groundIntake = new SuperStructureState(
                 20.9, // FIXME Measure
-                208.0  // FIXME Measure
+                376.0  // FIXME Measure
                 ); 
             public static final SuperStructureState lowDrop = new SuperStructureState(
                 0.0, // FIXME Measure
@@ -269,16 +269,16 @@ public final class Constants {
                 0.0 // FIXME Measure
                 );
             public static final SuperStructureState midCone = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+              221.0, // FIXME Measure
+                190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCone = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                437.0, // FIXME Measure
+                245.0 // FIXME Measure
                 );
             public static final SuperStructureState highCube = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                392.2, // FIXME Measure
+                279.0 // FIXME Measure
                 );
             public static final SuperStructureState humanPlayer = new SuperStructureState(
                 0.0, // FIXME Measure
