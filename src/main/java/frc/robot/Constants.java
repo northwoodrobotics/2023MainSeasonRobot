@@ -257,7 +257,7 @@ public final class Constants {
         public static final class SuperStructurePresets{
             public static final SuperStructureState groundIntake = new SuperStructureState(
                 20.9, // FIXME Measure
-                282.0  // FIXME Measure
+                376.0  // FIXME Measure
                 ); 
             public static final SuperStructureState lowDrop = new SuperStructureState(
                 0.0, // FIXME Measure
@@ -268,8 +268,8 @@ public final class Constants {
                 0.0 // FIXME Measure
                 );
             public static final SuperStructureState midCone = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+              221.0, // FIXME Measure
+                190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCone = new SuperStructureState(
                 440.0, // FIXME Measure
@@ -277,7 +277,7 @@ public final class Constants {
                 );
             public static final SuperStructureState highCube = new SuperStructureState(
                 392.2, // FIXME Measure
-                215.0 // FIXME Measure
+                279.0 // FIXME Measure
                 );
             public static final SuperStructureState humanPlayer = new SuperStructureState(
                 0.0, // FIXME Measure
