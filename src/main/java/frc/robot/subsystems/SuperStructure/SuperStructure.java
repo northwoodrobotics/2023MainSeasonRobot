@@ -243,11 +243,14 @@ public class SuperStructure extends SubsystemBase{
             }
             break;
             case intaking:
-          
-                if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
-                    hasGamePiece = true;
-                    
-                        conformEndEffectorState(endEffectorState.holding);
+                hasGamePiece = false;
+                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
+                    if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
+                        hasGamePiece = true;
+                        
+                            conformEndEffectorState(endEffectorState.holding);
+                }
+               
                     
     
                 

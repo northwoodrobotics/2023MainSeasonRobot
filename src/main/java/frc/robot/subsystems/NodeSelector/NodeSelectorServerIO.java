@@ -38,7 +38,7 @@ public class NodeSelectorServerIO implements NodeSelectorIO {
                       
                   });
       
-          app.start("192.168.1.247",5800);
+          app.start(5801);
         }
       
         public void updateInputs(NodeSelectorIOInputs inputs) {

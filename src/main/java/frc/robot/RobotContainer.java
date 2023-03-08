@@ -189,7 +189,7 @@ public class RobotContainer {
     driver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
     driver.rightBumper.whileTrue(new MidCone(m_SuperStructure));
     driver.leftBumper.whileTrue(new HighCone(m_SuperStructure));
-    driver.leftTriggerButton.whileTrue(new HighCube(m_SuperStructure));
+    driver.bButton.whileTrue(new HighCube(m_SuperStructure));
    /* driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
