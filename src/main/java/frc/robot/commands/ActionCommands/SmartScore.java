@@ -1,18 +1,27 @@
 package frc.robot.commands.ActionCommands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
+
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.ExternalLib.AdvantageLib.GeomUtil;
+import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.Util.FieldConstants;
+
 import frc.robot.subsystems.NodeSelector.ObjectiveTracker.Objective;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
+import frc.robot.subsystems.SuperStructure.SuperStructureState;
 import frc.swervelib.SwerveSubsystem;
 
 public class SmartScore extends SequentialCommandGroup{
+
+
     
     public SmartScore(SwerveSubsystem drive, 
     SuperStructure structure, 
@@ -23,7 +32,45 @@ public class SmartScore extends SequentialCommandGroup{
     Supplier<Boolean> reachScoreDisable
     ){
 
+
+
+
+
     }
+    public SmartScore(
+      SuperStructure structure,
+      Objective objective,
+      BooleanSupplier ejectGamePiece
+      ){
+
+        Supplier< SuperStructureState> superStructureSupplier = 
+        ()-> getSuperStructureTarget(objective);
+        Supplier<Boolean> targetEjectType = 
+        ()-> getEjectType(objective);
+
+ 
+
+
+        var SuperStructureCommand = structure.acceptSuperStructureState(superStructureSupplier);
+        var ejectCommand = Commands.run(()-> structure.ejectOverridePiece(targetEjectType.get()), structure);
+
+        addCommands(
+          Commands.parallel(
+            SuperStructureCommand,
+            Commands.waitUntil(ejectGamePiece).andThen(
+              ejectCommand
+            )
+
+          )
+        );
+
+
+
+       }
+  
+
+
+
 
       /** Returns the position of the target node. */
   public static Translation3d getNodeTranslation(Objective objective) {
@@ -36,22 +83,60 @@ public class SmartScore extends SequentialCommandGroup{
         return FieldConstants.Grids.high3dTranslations[objective.nodeRow];
       default:
         return new Translation3d();
+      }
+  } 
+  public static boolean getEjectType(Objective target){
+    if (target.isConeNode()){
+      return true;
+    }else return false;
+      
+  }
+
+  public static SuperStructureState getSuperStructureTarget(Objective target){
+    switch (target.nodeLevel){ 
+
+      case HYBRID:
+        return SuperStructurePresets.groundIntake;
+  
+      case MID: {
+       if(target.isConeNode()){
+        return SuperStructurePresets.midCone;
+       }else
+       return SuperStructurePresets.midCube;
+       
+      }
+
+
+      case HIGH: 
+      if(target.isConeNode()){
+        return SuperStructurePresets.highCone;
+       }else
+       return SuperStructurePresets.highCube;
+
+       default: 
+       return SuperStructurePresets.stowed;
+      }
+    
+      
+      
     }
-}
+
+
+        
+         
+    
+    
+  
 
     public static Pose2d getDriveTarget(
-      Pose2d unflippedPose, Objective objective) {
-    var pose = unflippedPose;
-    var nodeTranslation = getNodeTranslation(objective);
+      Pose2d robotPose, Objective objective) {
+    var pose = robotPose;
+    var nodeTranslation = getNodeTranslation(objective).toTranslation2d();
+    
     return new Pose2d();
-//
-    // Select max arm extension
+    
 
 
-    // Calculate drive distance
-   
-
-    // Increase distance if below min x
 
 
     // Get drive pose
