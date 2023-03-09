@@ -91,8 +91,8 @@ public class RobotContainer {
    * within the object parameters, the first one is the port, the second and third
    * parameters are deadzone sizes.
    **/
-  public static SpectrumXbox driver = new SpectrumXbox(0,0.1, 0.1);
-  public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
+  public static CommandXboxController driver = new CommandXboxController(0);
+  public static CommandXboxController coDriver = new CommandXboxController(1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
     private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 3));
 
@@ -146,9 +146,9 @@ public class RobotContainer {
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
-        () -> xLimiter.calculate(-driver.leftStick.getY()),
-        () -> yLimiter.calculate(-driver.leftStick.getX()),
-        () -> -driver.rightStick.getX()));
+        () -> xLimiter.calculate(-driver.getLeftY()),
+        () -> yLimiter.calculate(-driver.getLeftX()),
+        () -> -driver.getRightX()));
 
         ShowInputs();
     //m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
@@ -183,25 +183,25 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
-    driver.xButton.whileTrue(new GroundIntake(m_SuperStructure));
-    driver.aButton.whileTrue(new ReturnToStowed(m_SuperStructure));
+    driver.x().whileTrue(new GroundIntake(m_SuperStructure));
+    driver.a().whileTrue(new ReturnToStowed(m_SuperStructure));
     
-    driver.yButton.whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
-    driver.rightBumper.whileTrue(new MidCone(m_SuperStructure));
-    driver.leftBumper.whileTrue(new HighCone(m_SuperStructure));
-    driver.bButton.whileTrue(new HighCube(m_SuperStructure));
+    driver.y().whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
+    driver.rightBumper().whileTrue(new MidCone(m_SuperStructure));
+    driver.leftBumper().whileTrue(new HighCone(m_SuperStructure));
+    driver.b().whileTrue(new HighCube(m_SuperStructure));
    /* driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
      */
-    coDriver.xButton.onTrue(new SwitchGamePiece(m_SuperStructure, false));
-    coDriver.yButton.onTrue(new  SwitchGamePiece(m_SuperStructure, true));
+    coDriver.x().onTrue(new SwitchGamePiece(m_SuperStructure, false));
+    coDriver.y().onTrue(new  SwitchGamePiece(m_SuperStructure, true));
   
   //  coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
-    coDriver.aButton.whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.leftStick.getY()));
-    coDriver.bButton.whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.rightStick.getY()));
+    coDriver.a().whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.getLeftY()));
+    coDriver.b().whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.getRightY()));
 
    
   }

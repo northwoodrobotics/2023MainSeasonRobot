@@ -1,5 +1,6 @@
 package frc.robot.commands.DriveCommands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -8,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.DriveConstants;
 import frc.swervelib.SwerveSubsystem;
 import frc.robot.Constants;
 import java.util.function.DoubleSupplier;
@@ -38,7 +40,10 @@ public class TeleopDriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_SwerveSubsystem.dt.driveClean(m_translationXSupplier.getAsDouble()*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS, m_translationYSupplier.getAsDouble()*Constants.DriveConstants.MAX_STRAFE_SPEED_MPS, m_rotationSupplier.getAsDouble());
+    m_SwerveSubsystem.dt.driveClean(
+      MathUtil.applyDeadband(m_translationXSupplier.getAsDouble(), 0.1)*Constants.DriveConstants.MAX_FWD_REV_SPEED_MPS, 
+      MathUtil.applyDeadband(m_translationYSupplier.getAsDouble(), 0.1)*Constants.DriveConstants.MAX_STRAFE_SPEED_MPS, 
+      MathUtil.applyDeadband( m_rotationSupplier.getAsDouble(), 0.1)* DriveConstants.MAX_ROTATE_SPEED_RAD_PER_SEC);
 
   }
 

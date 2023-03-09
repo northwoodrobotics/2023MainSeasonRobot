@@ -73,11 +73,10 @@ public class SuperStructure extends SubsystemBase{
         
         controlState = ControlState.preset;
         intakeControlState = endEffectorState.holding;
-        wristPositionRadians.setDefault(SuperStructurePresets.stowed.wristAngleRadians);
+        //wristPositionRadians.setDefault(SuperStructurePresets.stowed.wristAngleRadians);
         elevatorPositionRadians.setDefault(0.0);
         wristTargetPositionRadians.setDefault(0.0);
-        elevatorMotor.setEncoder(0.0);
-        wristMotor.setEncoder(SuperStructurePresets.stowed.getWristAngleRadians());
+        
         /* Motion Profiles: Using "Motion Planning" as our control method is analagous to how one travels from place to place on a car or bike. 
          * When you are close to where you want to be, you pre-emtively slow down, comming to a stop exactly where you intend to. 
          * In order to make our control of a mechanism (in this case an elevator) perfom controlably, predicatbly and smoothly, we use the 
@@ -119,6 +118,11 @@ public class SuperStructure extends SubsystemBase{
             0);
 
         wristMotor.configCurrentLimit(SuperStructureConstants.WristCurrentLimit);
+        wristMotor.setEncoder(160.0);
+
+        elevatorMotor.setEncoder(0.0);
+        
+       
     }
     
 
@@ -138,7 +142,7 @@ public class SuperStructure extends SubsystemBase{
     }
     public enum endEffectorState{
         holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-1.0), intaking(1), empty(0.0),
-        coneEject(-0.2);
+        coneEject(-0.3);
         public double output;
         private endEffectorState(double output){
             this.output = output;
@@ -277,9 +281,9 @@ public class SuperStructure extends SubsystemBase{
         Logger.getInstance().processInputs("WristLog", wristLog);
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("IntakeLog", intakeLog);
-        wristPositionRadians.set(wristMotor.getPosition());
-        elevatorPositionRadians.set(elevatorMotor.getPosition());
-        wristTargetPositionRadians.set(presetWristAngle);
+        //wristPositionRadians.set(wristMotor.getPosition());
+        //elevatorPositionRadians.set(elevatorMotor.getPosition());
+        //wristTargetPositionRadians.set(presetWristAngle);
         wantedElevatorPos.set(presetElevatorHeight);
         DashboardhasGamePiece.set(hasGamePiece);
         gamePieceType.set(ejectCone);

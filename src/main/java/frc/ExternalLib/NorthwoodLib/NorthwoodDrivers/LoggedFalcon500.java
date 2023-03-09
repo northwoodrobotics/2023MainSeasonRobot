@@ -27,6 +27,10 @@ public class LoggedFalcon500 implements LoggedMotor{
         this.config.statorCurrLimit.enable = true;
         this.config.statorCurrLimit.currentLimit = 40;
         this.config.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        motor.configFeedbackNotContinuous(true, motorID);
+        motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        motor.enableVoltageCompensation(true);
+        motor.setSensorPhase(true);
         motor.setNeutralMode(NeutralMode.Brake);
         motor.setInverted(false);
         motor.configAllSettings(this.config);
@@ -97,7 +101,8 @@ public class LoggedFalcon500 implements LoggedMotor{
   }
   @Override
   public void setEncoder(double positionRad){
-    motor.setSelectedSensorPosition(Units.radiansToRotations(positionRad)*TICKS_PER_REV);
+    motor.setSelectedSensorPosition(Units.radiansToRotations(positionRad)*TICKS_PER_REV, 0, 250);
+    
   }
 
 

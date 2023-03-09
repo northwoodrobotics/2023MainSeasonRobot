@@ -13,7 +13,7 @@ public class HighCone extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.highCone.getHeightDemand(), SuperStructurePresets.highCube.getWristAngleRadians());
+        m_superStructure.setSuperStructureState(SuperStructurePresets.highCone.getHeightDemand(), SuperStructurePresets.highCone.getWristAngleRadians());
 
     }
     

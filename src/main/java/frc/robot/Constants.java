@@ -257,7 +257,7 @@ public final class Constants {
 
         public static final class SuperStructurePresets{
             public static final SuperStructureState groundIntake = new SuperStructureState(
-                20.9, // FIXME Measure
+                35.0, // FIXME Measure
                 376.0  // FIXME Measure
                 ); 
             public static final SuperStructureState lowDrop = new SuperStructureState(
@@ -273,8 +273,8 @@ public final class Constants {
                 190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCone = new SuperStructureState(
-                457.0, // FIXME Measure
-                245.0 // FIXME Measure
+                487.0, // FIXME Measure
+                190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCube = new SuperStructureState(
                 392.2, // FIXME Measure
