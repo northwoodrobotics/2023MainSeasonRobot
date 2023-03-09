@@ -43,13 +43,13 @@ public class SuperStructure extends SubsystemBase{
     
 
 
-    private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, true, 30);
+   // private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, true, 30);
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
     
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged wristLog = new LoggedMotorIOInputsAutoLogged();
-    private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
+   
 
     // initiate Logged outputs
     private LoggedDashboardNumber wristPositionRadians = new LoggedDashboardNumber("WristPosition Radians");
@@ -161,28 +161,6 @@ public class SuperStructure extends SubsystemBase{
 
         
     }
-    // sets end effector state and give motor new output setting
-    public void conformEndEffectorState(endEffectorState targetState){
-        intakeMotor.setPercentOutput(targetState.output);
-        setEndEffectorState(targetState);
-    }
-    // smart ejection based on internal backup state state
-    public void ejectGamePiece(){
-       
-        if (ejectCone){
-            conformEndEffectorState(endEffectorState.coneEject);
-        }else
-        conformEndEffectorState(endEffectorState.cubeEject);
-    }
-    // smart ejection with mode override. Used in Smart ejection.
-    public void ejectOverridePiece(boolean coneMode){
-       
-        if (coneMode){
-            conformEndEffectorState(endEffectorState.coneEject);
-        }else
-        conformEndEffectorState(endEffectorState.cubeEject);
-    }
-
 
 
   
@@ -247,49 +225,11 @@ public class SuperStructure extends SubsystemBase{
             break;
         }
         // intake state machine smart switching on its own, without command scheduling. 
-        switch (intakeControlState){
-            case cubeEject: 
-            if(intakeStateHasChanged){
-                hasGamePiece = false;
-                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
-                    conformEndEffectorState(endEffectorState.empty);
-                }
-                
-            }
-            break;
-            case coneEject: 
-            if(intakeStateHasChanged){
-                hasGamePiece = false;
-                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
-                    conformEndEffectorState(endEffectorState.empty);
-                }
-                
-            }
-            break;
-            case intaking:
-                hasGamePiece = false;
-                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
-                    if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
-                        hasGamePiece = true;
-                        
-                            conformEndEffectorState(endEffectorState.holding);
-                }
-               
-                    
+       
+            
+        
+
     
-                
-            }else
-
-            
-            
-            break;
-            case holding:
-            break;
-            case empty:
-            break; 
-            
-        }
-
         
 
 
@@ -299,8 +239,7 @@ public class SuperStructure extends SubsystemBase{
         Logger.getInstance().processInputs("ElevatorMotor", elevatorLog);
         wristMotor.updateInputs(wristLog);
         Logger.getInstance().processInputs("WristLog", wristLog);
-        intakeMotor.updateInputs(intakeLog);
-        Logger.getInstance().processInputs("IntakeLog", intakeLog);
+       
         //wristPositionRadians.set(wristMotor.getPosition());
         //elevatorPositionRadians.set(elevatorMotor.getPosition());
         //wristTargetPositionRadians.set(presetWristAngle);

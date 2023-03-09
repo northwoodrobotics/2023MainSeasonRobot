@@ -15,6 +15,7 @@ import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.commands.ActionCommands.AutoBalance;
 import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.HighCube;
+import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
 
@@ -26,10 +27,10 @@ public class ThreeCubeRightBalance extends SequentialCommandGroup{
     
     
 
-    public ThreeCubeRightBalance(SwerveSubsystem swerve, SuperStructure structure){
-        eventMap.put("IntakeMode1", new GroundIntake(structure));
+    public ThreeCubeRightBalance(SwerveSubsystem swerve, SuperStructure structure, EndEffector effector){
+        eventMap.put("IntakeMode1", new GroundIntake(structure ,effector));
         eventMap.put("ElevatorToCube", new HighCube(structure));
-        eventMapTwo.put("IntakeMode2", new GroundIntake(structure));
+        eventMapTwo.put("IntakeMode2", new GroundIntake(structure, effector));
         eventMapTwo.put("ElevatorToCone", new HighCone(structure));
 
 
@@ -39,11 +40,11 @@ public class ThreeCubeRightBalance extends SequentialCommandGroup{
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCubeRight.get(0).getInitialState())),
         new HighCone(structure),
-        new SmartEject(structure),
+        new SmartEject(effector),
         firstCommand,   
-        new SmartEject(structure),
+        new SmartEject(effector),
         secondCommand,
-        new SmartEject(structure),
+        new SmartEject(effector),
         swerve.dt.createCommandForTrajectory(ThreeCubeRight.get(2), swerve),
         new AutoBalance(swerve)
         );

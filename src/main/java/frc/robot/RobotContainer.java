@@ -62,6 +62,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.PhotonCams;
 import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
 import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
+import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveDrivetrainModel;
 import frc.swervelib.SwerveSubsystem;
@@ -79,6 +80,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static SwerveDrivetrainModel dt;
   public static SwerveSubsystem m_SwerveSubsystem;
+  public static EndEffector m_EndEffector;
   public static PhotonCams m_cams;
   public static PhotonCamera camera;
   public static SuperStructure m_SuperStructure;
@@ -93,11 +95,7 @@ public class RobotContainer {
    * parameters are deadzone sizes.
    **/
   public static CommandXboxController driver = new CommandXboxController(0);
-<<<<<<< HEAD
   public static CommandXboxController coDriver = new CommandXboxController(1);
-=======
-  public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
->>>>>>> 703df654eedb6ec90e6d9dba8d02e5208c9e0854
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
     private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 3));
 
@@ -128,6 +126,7 @@ public class RobotContainer {
         m_SuperStructure = new SuperStructure();
         m_cams = new PhotonCams();
         objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
+        m_EndEffector = new EndEffector();
           break;
         case ROBOT_2023P:
         dt = DrivetrainSubsystem.createSwerveModel();
@@ -153,12 +152,7 @@ public class RobotContainer {
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
         () -> xLimiter.calculate(-driver.getLeftY()),
         () -> yLimiter.calculate(-driver.getLeftX()),
-<<<<<<< HEAD
         () -> -driver.getRightX()));
-=======
-        () -> -driver.getRightX()
-        ));
->>>>>>> 703df654eedb6ec90e6d9dba8d02e5208c9e0854
 
         ShowInputs();
     //m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
@@ -170,8 +164,8 @@ public class RobotContainer {
 
 
     autoChooser.addDefaultOption("Do Nothing", null);
-    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure));
-    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure));
+    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure,m_EndEffector));
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
     autoChooser.addOption("Right Full Link Just Path", 
     
@@ -193,7 +187,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
-    driver.x().whileTrue(new GroundIntake(m_SuperStructure));
+    driver.x().whileTrue(new GroundIntake(m_SuperStructure, m_EndEffector));
     driver.a().whileTrue(new ReturnToStowed(m_SuperStructure));
     
     //driver.y().whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
@@ -202,6 +196,7 @@ public class RobotContainer {
     driver.leftTrigger().whileTrue(new HighCube(m_SuperStructure));
     driver.rightTrigger().whileTrue(
       new SmartScore(m_SuperStructure, 
+      m_EndEffector,
       objectiveTracker.objective, 
       ()-> driver.y().getAsBoolean())
     );

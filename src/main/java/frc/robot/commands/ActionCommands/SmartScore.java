@@ -15,6 +15,7 @@ import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.Util.FieldConstants;
 
 import frc.robot.subsystems.NodeSelector.ObjectiveTracker.Objective;
+import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.robot.subsystems.SuperStructure.SuperStructureState;
 import frc.swervelib.SwerveSubsystem;
@@ -39,6 +40,7 @@ public class SmartScore extends SequentialCommandGroup{
     }
     public SmartScore(
       SuperStructure structure,
+      EndEffector endEffector,
       Objective objective,
       BooleanSupplier ejectGamePiece
       ){
@@ -52,7 +54,7 @@ public class SmartScore extends SequentialCommandGroup{
 
 
         var SuperStructureCommand = structure.acceptSuperStructureState(superStructureSupplier);
-        var ejectCommand = Commands.run(()-> structure.ejectOverridePiece(targetEjectType.get()), structure);
+        var ejectCommand = Commands.run(()-> endEffector.ejectOverridePiece(targetEjectType.get()), endEffector);
 
         addCommands(
           Commands.parallel(

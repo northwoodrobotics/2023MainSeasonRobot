@@ -16,6 +16,7 @@ import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.commands.SuperStructureCommands.MidCube;
+import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
 
@@ -28,10 +29,10 @@ public class ThreeCube extends SequentialCommandGroup{
     
     
 
-    public ThreeCube(SwerveSubsystem swerve, SuperStructure structure){
-        eventMap.put("IntakeDown1", new GroundIntake(structure));
+    public ThreeCube(SwerveSubsystem swerve, SuperStructure structure, EndEffector effector){
+        eventMap.put("IntakeDown1", new GroundIntake(structure,effector));
         eventMap.put("HighCube", new HighCube(structure));
-        eventMapTwo.put("IntakeGround2", new GroundIntake(structure));
+        eventMapTwo.put("IntakeGround2", new GroundIntake(structure,effector));
         eventMapTwo.put("CubeMid", new MidCube(structure));
         FollowPathWithEvents firstCommand = new FollowPathWithEvents(new AutoDrive(swerve, ThreeCube.get(0)), ThreeCube.get(0).getMarkers(), eventMap);
         FollowPathWithEvents secondCommand = new FollowPathWithEvents(new AutoDrive(swerve, ThreeCube.get(1)), ThreeCube.get(1).getMarkers(), eventMapTwo);
@@ -39,11 +40,11 @@ public class ThreeCube extends SequentialCommandGroup{
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),
         new HighCone(structure),
-        new SmartEject(structure),
+        new SmartEject(effector),
         firstCommand,
-        new SmartEject(structure),
+        new SmartEject(effector),
         secondCommand,
-        new SmartEject(structure)    
+        new SmartEject(effector)    
  
         );
         

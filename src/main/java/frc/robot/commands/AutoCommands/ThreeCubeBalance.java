@@ -16,6 +16,7 @@ import frc.robot.commands.ActionCommands.AutoBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.HighCube;
+import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.swervelib.SwerveSubsystem;
 
@@ -28,10 +29,10 @@ public class ThreeCubeBalance extends SequentialCommandGroup{
     
     
 
-    public ThreeCubeBalance(SwerveSubsystem swerve, SuperStructure structure){
-        eventMap.put("IntakeMode1", new GroundIntake(structure));
+    public ThreeCubeBalance(SwerveSubsystem swerve, SuperStructure structure, EndEffector effector){
+        eventMap.put("IntakeMode1", new GroundIntake(structure,effector));
         eventMap.put("ElevatorToCube", new HighCube(structure));
-        eventMapTwo.put("IntakeMode2", new GroundIntake(structure));
+        eventMapTwo.put("IntakeMode2", new GroundIntake(structure,effector));
         eventMapTwo.put("ElevatorToCone", new HighCone(structure));
         FollowPathWithEvents firstCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(0), swerve), ThreeCube.get(0).getMarkers(), eventMap);
         FollowPathWithEvents secondCommand = new FollowPathWithEvents(swerve.dt.createCommandForTrajectory(ThreeCube.get(1), swerve), ThreeCube.get(1).getMarkers(), eventMapTwo);
@@ -39,11 +40,11 @@ public class ThreeCubeBalance extends SequentialCommandGroup{
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),
         new HighCone(structure),
-        new SmartEject(structure),
+        new SmartEject(effector),
         firstCommand,
-        new SmartEject(structure),
+        new SmartEject(effector),
         secondCommand,
-        new SmartEject(structure),    
+        new SmartEject(effector),    
         new AutoDrive(swerve, ThreeCube.get(2)),
         new AutoBalance(swerve)
 
