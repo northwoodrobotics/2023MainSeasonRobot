@@ -25,11 +25,11 @@ import java.util.List;
  * methods to flip these values based on the current alliance color.
  */
 public final class FieldConstants {
-  public static final boolean isWPIField = false; // Red alliance
+  public static final boolean isRITField = false; // Red alliance
 
   public static final double fieldLength = Units.inchesToMeters(651.25);
   public static final double fieldWidth =
-      Units.inchesToMeters(315.5) + (isWPIField ? Units.inchesToMeters(3.0) : 0.0);
+      Units.inchesToMeters(315.5) + (isRITField ? Units.inchesToMeters(3.0) : 0.0);
   public static final double tapeWidth = Units.inchesToMeters(2.0);
 
   // Dimensions for community and charging station, including the tape.
@@ -94,7 +94,7 @@ public final class FieldConstants {
     // Y layout
     public static final int nodeRowCount = 9;
     public static final double[] nodeY =
-        isWPIField
+        isRITField
             ? new double[] {
               Units.inchesToMeters(20.19 + 22.0 * 0),
               Units.inchesToMeters(20.19 + 22.0 * 1),

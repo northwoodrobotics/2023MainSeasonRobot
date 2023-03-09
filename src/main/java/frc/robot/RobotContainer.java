@@ -37,6 +37,7 @@ import frc.ExternalLib.SpectrumLib.gamepads.mapping.ExpCurve;
 import frc.robot.Constants.Mode;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.commands.ActionCommands.DriveToRamp;
+import frc.robot.commands.ActionCommands.SmartScore;
 import frc.robot.commands.AutoCommands.ThreeCube;
 import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
@@ -92,7 +93,11 @@ public class RobotContainer {
    * parameters are deadzone sizes.
    **/
   public static CommandXboxController driver = new CommandXboxController(0);
+<<<<<<< HEAD
   public static CommandXboxController coDriver = new CommandXboxController(1);
+=======
+  public static SpectrumXbox coDriver = new SpectrumXbox(1, 0.1, 0.1);
+>>>>>>> 703df654eedb6ec90e6d9dba8d02e5208c9e0854
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
     private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 3));
 
@@ -148,7 +153,12 @@ public class RobotContainer {
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
         () -> xLimiter.calculate(-driver.getLeftY()),
         () -> yLimiter.calculate(-driver.getLeftX()),
+<<<<<<< HEAD
         () -> -driver.getRightX()));
+=======
+        () -> -driver.getRightX()
+        ));
+>>>>>>> 703df654eedb6ec90e6d9dba8d02e5208c9e0854
 
         ShowInputs();
     //m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
@@ -186,10 +196,18 @@ public class RobotContainer {
     driver.x().whileTrue(new GroundIntake(m_SuperStructure));
     driver.a().whileTrue(new ReturnToStowed(m_SuperStructure));
     
-    driver.y().whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
+    //driver.y().whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
     driver.rightBumper().whileTrue(new MidCone(m_SuperStructure));
     driver.leftBumper().whileTrue(new HighCone(m_SuperStructure));
-    driver.b().whileTrue(new HighCube(m_SuperStructure));
+    driver.leftTrigger().whileTrue(new HighCube(m_SuperStructure));
+    driver.rightTrigger().whileTrue(
+      new SmartScore(m_SuperStructure, 
+      objectiveTracker.objective, 
+      ()-> driver.y().getAsBoolean())
+    );
+
+
+
    /* driver.leftBumper.onTrue(new HighCube(m_SuperStructure));
     driver.rightBumper.onTrue(new MidCube(m_SuperStructure));
     driver.rightTriggerButton.onTrue(new MidCone(m_SuperStructure));

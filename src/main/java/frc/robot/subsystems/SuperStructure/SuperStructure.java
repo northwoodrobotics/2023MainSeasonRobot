@@ -1,19 +1,19 @@
 package frc.robot.subsystems.SuperStructure;
 
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 import org.littletonrobotics.junction.networktables.LoggedDashboardString;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 
-//import com.revrobotics.SparkMaxPIDController.AccelStrategy;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedFalcon500;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
@@ -40,34 +40,30 @@ public class SuperStructure extends SubsystemBase{
 
     // initialize motor objects
     private LoggedFalcon500 elevatorMotor = new LoggedFalcon500(SuperStructureConstants.ElevatorMotorID); 
-    private double elevatorEncoderPositionCoefficient =(1.0/12.0);
     
 
 
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, true, 30);
     private LoggedFalcon500 wristMotor = new LoggedFalcon500(SuperStructureConstants.WristMotorID);
-    private double wristEncoderPositionCoefficient = (1/64* 12/24);
-
+    
     // initiate Logging Objects
     private LoggedMotorIOInputsAutoLogged elevatorLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged wristLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
 
-
+    // initiate Logged outputs
     private LoggedDashboardNumber wristPositionRadians = new LoggedDashboardNumber("WristPosition Radians");
     private LoggedDashboardNumber elevatorPositionRadians= new LoggedDashboardNumber("ElevatorPosition");
     private LoggedDashboardNumber wristTargetPositionRadians = new LoggedDashboardNumber("Targed Wrist Radians");
     private LoggedDashboardBoolean DashboardhasGamePiece = new LoggedDashboardBoolean("Has Game Piece");
     private LoggedDashboardNumber  wantedElevatorPos = new LoggedDashboardNumber("Wanted Elevator Rad");
-    private LoggedDashboardNumber wantedWristRad = new LoggedDashboardNumber("Wrist Rad");
-    private LoggedDashboardBoolean gamePieceType = new LoggedDashboardBoolean("Cone In Intake");
+    private LoggedDashboardBoolean gamePieceType = new LoggedDashboardBoolean("Cone in Intake");
 
 
     public SuperStructure(){  
         ejectCone = false;
         hasGamePiece = false;
         intakeStateHasChanged = false;
-        //wantedState = new SuperStructureState();
         presetElevatorHeight = 0.0;
         presetWristAngle = SuperStructurePresets.stowed.getWristAngleRadians();
         
@@ -125,21 +121,26 @@ public class SuperStructure extends SubsystemBase{
        
     }
     
-
+    // returns if the intake has a game piece in it
     public boolean hasGamePiece(){
         return hasGamePiece;
     }
+    // returns if the intake state machine has swapped states
     public boolean getIntakeStateChange(){
         return intakeStateHasChanged;
     }
+    // returns if the intake will eject a cone or cube
     public void hasCone(boolean value){
         ejectCone = value;
     }
+    // list of "Control States" that the elevator and wrist can be in. 
+    // preset follows tuned values for each scoring position, wrist and height adjust are what they sound like.
     public enum ControlState{
         preset, 
         wristAdjust,
         heightAdjust,
     }
+    // list of end Effector States
     public enum endEffectorState{
         holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-1.0), intaking(1), empty(0.0),
         coneEject(-0.3);
@@ -150,7 +151,7 @@ public class SuperStructure extends SubsystemBase{
         }
     }
     
-
+        // internally changing end effector state
     public synchronized void setEndEffectorState(endEffectorState newState) {
         if (newState != intakeControlState){
             intakeStateHasChanged = true;
@@ -160,11 +161,12 @@ public class SuperStructure extends SubsystemBase{
 
         
     }
-
+    // sets end effector state and give motor new output setting
     public void conformEndEffectorState(endEffectorState targetState){
         intakeMotor.setPercentOutput(targetState.output);
         setEndEffectorState(targetState);
     }
+    // smart ejection based on internal backup state state
     public void ejectGamePiece(){
        
         if (ejectCone){
@@ -172,40 +174,58 @@ public class SuperStructure extends SubsystemBase{
         }else
         conformEndEffectorState(endEffectorState.cubeEject);
     }
+    // smart ejection with mode override. Used in Smart ejection.
+    public void ejectOverridePiece(boolean coneMode){
+       
+        if (coneMode){
+            conformEndEffectorState(endEffectorState.coneEject);
+        }else
+        conformEndEffectorState(endEffectorState.cubeEject);
+    }
+
 
 
   
-
+    // sets control state ot wrist adjust and feeds adjustment into the controller
     public void adjustWristAngle(double adjustmentDemandDegrees){  
         controlState = ControlState.wristAdjust; 
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
         adjustedWristAngle = (wristMotor.getPosition()+ adjustmentRadians);
     }
-
+    // checks if the wrist is at the correct height
     public boolean isAtTargetHeight(){
         return (Math.abs(presetElevatorHeight-elevatorMotor.getPosition())< 0.2);
     }
+    // checks if wrist is at target angle
     public boolean isAtTargetAngle(){
         return (Math.abs(presetWristAngle-wristMotor.getPosition())< 0.2);
     }
-
+    // sets elevator and wrist to preset height and wrist angle
     public void setSuperStructureState(double elevatorPosition, double wristPosition){
         
         this.presetElevatorHeight = elevatorPosition;
         this.presetWristAngle = wristPosition;
         controlState = ControlState.preset;
+        return;
     }
+    // feeds height into height adjustment.
     public void adjustElevatorPosition(double adjustmentDemandDegrees){
         controlState = ControlState.heightAdjust;
         double adjustmentRadians = Units.degreesToRadians(adjustmentDemandDegrees);
         adjustedElevatorPosition = (elevatorMotor.getPosition()+ adjustmentRadians);
 
     }
+    // accepts a superstrucure preset 
+    public Command acceptSuperStructureState(Supplier<SuperStructureState> targetState){
+        return runOnce(()->setSuperStructureState(
+            targetState.get().getHeightDemand(), 
+            targetState.get().getWristAngleRadians()));
+    }
 
     
 
 
-
+    // all control for the superstrucure is done periodcally so any ocolations or robot collisions will be corrected without having to go through the command scheduler.
     @Override 
     public void periodic(){
         
@@ -226,7 +246,7 @@ public class SuperStructure extends SubsystemBase{
             wristMotor.setMotionMagicPosition(wristMotor.getPosition(), 0, 0);
             break;
         }
-
+        // intake state machine smart switching on its own, without command scheduling. 
         switch (intakeControlState){
             case cubeEject: 
             if(intakeStateHasChanged){
@@ -274,7 +294,7 @@ public class SuperStructure extends SubsystemBase{
 
 
         
-
+        // log motor data
         elevatorMotor.updateInputs(elevatorLog);
         Logger.getInstance().processInputs("ElevatorMotor", elevatorLog);
         wristMotor.updateInputs(wristLog);
