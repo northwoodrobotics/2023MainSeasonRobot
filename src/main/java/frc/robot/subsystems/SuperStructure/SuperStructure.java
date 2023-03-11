@@ -223,10 +223,8 @@ public class SuperStructure extends SubsystemBase{
             elevatorMotor.setMotionMagicPosition(adjustedElevatorPosition, 0, 0);
             wristMotor.setMotionMagicPosition(wristMotor.getPosition(), 0, 0);
             break;
+        
         }
-        // intake state machine smart switching on its own, without command scheduling. 
-       
-            
         
 
     
@@ -240,9 +238,7 @@ public class SuperStructure extends SubsystemBase{
         wristMotor.updateInputs(wristLog);
         Logger.getInstance().processInputs("WristLog", wristLog);
        
-        //wristPositionRadians.set(wristMotor.getPosition());
-        //elevatorPositionRadians.set(elevatorMotor.getPosition());
-        //wristTargetPositionRadians.set(presetWristAngle);
+        
         wantedElevatorPos.set(presetElevatorHeight);
         DashboardhasGamePiece.set(hasGamePiece);
         gamePieceType.set(ejectCone);

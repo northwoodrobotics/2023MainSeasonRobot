@@ -12,13 +12,14 @@ public class PigeonFactoryBuilder {
 
     private static double gyroOffset = 0.0;
 
+
     public Gyroscope build(WPI_PigeonIMU pigeon) {
         return new GyroscopeImplementation(pigeon);
     }
 
     private static class GyroscopeImplementation implements Gyroscope {
         private final WPI_PigeonIMU pigeon;
-
+        private double [] xyzDPS = new double[3];
         private GyroscopeImplementation(WPI_PigeonIMU pigeon) {
             this.pigeon = pigeon;
             pigeonSim = pigeon.getSimCollection();
@@ -30,10 +31,12 @@ public class PigeonFactoryBuilder {
             return Rotation2d.fromDegrees(pigeon.getFusedHeading() + gyroOffset);
         }
         @Override 
-        public Double getGyroRoll(){
-            return pigeon.getRoll();
-        
-
+        public Rotation2d getGyroRoll(){
+            return Rotation2d.fromDegrees(pigeon.getRoll());
+        }
+        @Override 
+        public Rotation2d getGyroPitch(){
+            return Rotation2d.fromDegrees(pigeon.getPitch());
         }
 
 
@@ -51,6 +54,16 @@ public class PigeonFactoryBuilder {
         @Override
         public void setAngle(double angle) {
             pigeonSim.setRawHeading(angle);
+        }
+        @Override
+        public Double pitchVelocity(){
+           pigeon.getRawGyro(xyzDPS);
+           return xyzDPS[0];
+        }
+        @Override 
+        public Double rollVelocity(){
+            pigeon.getRawGyro(xyzDPS);
+            return xyzDPS[1];
         }
     }
 }

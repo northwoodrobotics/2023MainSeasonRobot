@@ -1,26 +1,15 @@
 package frc.robot.subsystems.SuperStructure;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.function.Supplier;
+
 
 import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
-import org.littletonrobotics.junction.networktables.LoggedDashboardString;
 
 
-import edu.wpi.first.math.MathUtil;
-
-
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedFalcon500;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedNeo;
 import frc.robot.Constants.SuperStructureConstants;
-import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 
 public class EndEffector extends SubsystemBase{
     public endEffectorState intakeControlState;
@@ -114,17 +103,14 @@ public class EndEffector extends SubsystemBase{
             break;
             case intaking:
                 hasGamePiece = false;
-                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
-                    if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
-                        hasGamePiece = true;
-                        
+                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2 && intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
+                            hasGamePiece = true;
                             conformEndEffectorState(endEffectorState.holding);
                 }
                
                     
     
-                
-            }else
+            
 
             
             
