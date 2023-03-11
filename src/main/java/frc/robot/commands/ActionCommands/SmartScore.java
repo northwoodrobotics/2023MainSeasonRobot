@@ -3,9 +3,15 @@ package frc.robot.commands.ActionCommands;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,13 +32,42 @@ public class SmartScore extends SequentialCommandGroup{
     
     public SmartScore(SwerveSubsystem drive, 
     SuperStructure structure, 
+    EndEffector endEffector,
     Objective objective,
-    Command driveCommand, 
-    Supplier<Boolean> ejectGamePiece,
-    Supplier<Boolean> driveAdjust, 
-    Supplier<Boolean> reachScoreDisable
+    BooleanSupplier ejectGamePiece,
+    Supplier<Boolean> driveAdjust
+   // Supplier<Boolean> reachScoreDisable
     ){
+      Supplier< SuperStructureState> superStructureSupplier = 
+        ()-> getSuperStructureTarget(objective);
+        Supplier<Boolean> targetEjectType = 
+        ()-> getEjectType(objective);
 
+      Supplier<PathPlannerTrajectory> targetPath = 
+      ()-> calculatedAlignmentPath(drive.dt.getPose(), objective);
+
+
+ 
+      BooleanSupplier isAtTargetPose = 
+      ()-> poseWithinBounds(drive.dt.getPose(), targetPath.get().getEndState().poseMeters);
+
+
+        var driveCommand = drive.dt.createCommandForTrajectory(targetPath.get(), drive);
+        var SuperStructureCommand = structure.acceptSuperStructureState(superStructureSupplier);
+        var ejectCommand = Commands.run(()-> endEffector.ejectOverridePiece(targetEjectType.get()), endEffector);
+
+        addCommands(
+          
+          Commands.parallel(
+            
+          driveCommand,
+          Commands.waitUntil(isAtTargetPose).andThen(SuperStructureCommand,
+            Commands.waitUntil(ejectGamePiece).andThen(
+              ejectCommand
+            ))
+
+          )
+        );
 
 
 
@@ -50,12 +85,12 @@ public class SmartScore extends SequentialCommandGroup{
         Supplier<Boolean> targetEjectType = 
         ()-> getEjectType(objective);
 
- 
+        
 
 
         var SuperStructureCommand = structure.acceptSuperStructureState(superStructureSupplier);
         var ejectCommand = Commands.run(()-> endEffector.ejectOverridePiece(targetEjectType.get()), endEffector);
-
+        
         addCommands(
           Commands.parallel(
             SuperStructureCommand,
@@ -87,6 +122,33 @@ public class SmartScore extends SequentialCommandGroup{
         return new Translation3d();
       }
   } 
+
+  public static PathPlannerTrajectory calculatedAlignmentPath(Pose2d robotPose, Objective target){
+      Pose2d TargetPose = 
+      new Pose2d(
+       new Translation2d(1.74, 
+        FieldConstants.Grids.nodeY[target.nodeRow]), Rotation2d.fromDegrees(180));
+
+        Transform2d robotToTag = new Transform2d(robotPose, TargetPose);
+        PathPlannerTrajectory Route2Tag = PathPlanner.generatePath(
+            // these are acceleration and velocity constraints, in m/s and m/s squared
+            new PathConstraints(1, 2), 
+            // PathPoints have 3 values, the cordinates of the intial point, the heading of the desired vector, and the "holonomic rotation" of the robot
+            new PathPoint(robotPose.getTranslation() ,robotToTag.getRotation(),robotPose.getRotation()), 
+            new PathPoint(TargetPose.getTranslation(), robotToTag.getRotation(), TargetPose.getRotation())
+            );
+        return Route2Tag;
+
+
+      
+    
+
+  }
+      public boolean poseWithinBounds(Pose2d currentPose, Pose2d targetPose){
+        return (currentPose.getX()- targetPose.getX() < 0.01)&& (currentPose.getY()- targetPose.getY() < 0.01);
+      }
+
+  
   public static boolean getEjectType(Objective target){
     if (target.isConeNode()){
       return true;

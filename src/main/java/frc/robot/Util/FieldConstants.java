@@ -91,11 +91,13 @@ public final class FieldConstants {
     public static final double midX = outerX - Units.inchesToMeters(22.75);
     public static final double highX = outerX - Units.inchesToMeters(39.75);
 
+    public static final double scoringX = 1.78;
+
     // Y layout
     public static final int nodeRowCount = 9;
     public static final double[] nodeY =
         isRITField
-            ? new double[] {
+            ? new double[] { 
               Units.inchesToMeters(20.19 + 22.0 * 0),
               Units.inchesToMeters(20.19 + 22.0 * 1),
               Units.inchesToMeters(20.19 + 22.0 * 2),
@@ -107,15 +109,15 @@ public final class FieldConstants {
               Units.inchesToMeters(20.19 + 22.0 * 8 + 2.5)
             }
             : new double[] {
-              Units.inchesToMeters(20.19 + 22.0 * 0),
-              Units.inchesToMeters(20.19 + 22.0 * 1),
-              Units.inchesToMeters(20.19 + 22.0 * 2),
-              Units.inchesToMeters(20.19 + 22.0 * 3),
-              Units.inchesToMeters(20.19 + 22.0 * 4),
-              Units.inchesToMeters(20.19 + 22.0 * 5),
-              Units.inchesToMeters(20.19 + 22.0 * 6),
-              Units.inchesToMeters(20.19 + 22.0 * 7),
-              Units.inchesToMeters(20.19 + 22.0 * 8)
+              0.45,
+              1.10,
+              1.64,
+              2.1,
+              2.72,
+              3.34,
+              3.86,
+              4.42,
+              4.91
             };
 
     // Z layout
