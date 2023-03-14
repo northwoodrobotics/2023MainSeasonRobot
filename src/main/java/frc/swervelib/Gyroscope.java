@@ -12,7 +12,7 @@ public interface Gyroscope {
 
   
 
-  Double getGyroRoll();
+  
 
 
   /**
@@ -37,6 +37,25 @@ public interface Gyroscope {
    * @return True/False if the gyro is ready to be used.
    */
   Boolean getGyroReady();
-
   
-}
+
+
+
+  /**
+   * Gets the Current Roll of the Gyro as a Rotation2d object
+   * @return The Rotation2d value of the roll.
+   */
+   Rotation2d getGyroRoll();
+   
+  /* 
+   * Gets the Current Pitch of the Gyro as a Rotation2d object
+   * @return The Rotation2d value of the pitch.
+   * 
+  */
+   Rotation2d getGyroPitch();
+
+   Double pitchVelocity();
+
+   Double rollVelocity();
+
+} 

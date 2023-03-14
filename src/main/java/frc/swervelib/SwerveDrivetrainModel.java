@@ -365,6 +365,19 @@ public class SwerveDrivetrainModel {
             (getFieldReltaiveAcceleration().omegaRadiansPerSecond -(PreviousSpeeds.omegaRadiansPerSecond)/Timer.getFPGATimestamp()-lastTime)
         );
     }
+    public Rotation2d getGyroPitch(){
+        return gyro.getGyroPitch();
+    }
+    public Rotation2d getGyroRoll(){
+        return gyro.getGyroRoll();
+    }
+    public double getPitchVelocity(){
+        return gyro.pitchVelocity();
+    }
+    public double getRollVelocity(){
+        return gyro.rollVelocity();
+    }
+      
       
     
 
@@ -383,9 +396,7 @@ public class SwerveDrivetrainModel {
         return gyro.getGyroHeading();
     }
 
-    public double GyroRoll(){
-        return gyro.getGyroRoll();
-    }
+
 
     public Boolean getGyroReady() {
         return gyro.getGyroReady();

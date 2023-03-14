@@ -183,10 +183,10 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-        public static final double TRAJECTORYXkP = 1;
+        public static final double TRAJECTORYXkP = 1.5;
         public static final double TRAJECTORYXkI = 0;
         public static final double TRAJECTORYXkD = 0;
-        public static final double TRAJECTORYYkP = 1  ;
+        public static final double TRAJECTORYYkP = 1.5;
         public static final double TRAJECTORYYkI = 0;
         public static final double TRAJECTORYYkD = 0;
         public static final double DriveKS = 1.1152;

@@ -46,13 +46,27 @@ public class navXFactoryBuilder {
             gyroOffset = angle - getGyroHeading().getDegrees();
         }
         @Override 
-        public Double getGyroRoll(){
-            return Double.valueOf(navX.getRoll());
+        public Rotation2d getGyroRoll(){
+            return Rotation2d.fromDegrees(navX.getRoll());
+        }
+        @Override 
+        public Rotation2d getGyroPitch(){
+            return Rotation2d.fromDegrees(navX.getPitch());
         }
 
         @Override
         public void setAngle(double angle) {
             angleSim.set(angle);
         }
+        @Override
+        public Double pitchVelocity(){
+          return (double) (navX.getRawGyroX());
+          
+        }
+        @Override 
+        public Double rollVelocity(){
+            return (double) navX.getRawGyroX();
+    }
+    
     }
 }

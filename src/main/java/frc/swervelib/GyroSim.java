@@ -32,8 +32,26 @@ public class GyroSim {
         public void zeroGyroscope(double angle) {
          setAngle(angle);
         }
+  /**
+   * Gets the Current Roll of the Gyro as a Rotation2d object
+   * @return The Rotation2d value of the roll.
+   */
+    @Override
+    public Rotation2d getGyroRoll(){
+        return new Rotation2d();
+    }
+    @Override
+    public Rotation2d getGyroPitch(){
+        return new Rotation2d();
+    }
+    @Override
+        public Double pitchVelocity(){
+           
+           return 0.0;
+        }
         @Override 
-        public Double getGyroRoll(){
+        public Double rollVelocity(){
+            
             return 0.0;
         }
 
