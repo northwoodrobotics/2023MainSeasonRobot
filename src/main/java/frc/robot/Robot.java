@@ -25,6 +25,8 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import com.pathplanner.lib.server.PathPlannerServer;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.ExternalLib.AdvantageLib.VirtualSubsystem;
@@ -145,7 +147,7 @@ public class Robot extends LoggedRobot {
     if (Constants.getMode() == Mode.SIM) {
       DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
     }
-
+    PathPlannerServer.startServer(5811); // 5811
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard. 

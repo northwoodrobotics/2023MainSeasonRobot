@@ -162,7 +162,7 @@ public final class Constants {
         // SENSOR CONSTANTS
         // Sensor-related constants - pulled from datasheets for the sensors and gearboxes
 
-        static public final Pose2d DFLT_START_POSE = new Pose2d(1.78, 2.67,
+        static public final Pose2d DFLT_START_POSE = new Pose2d(1.85, 4.43,
                 Rotation2d.fromDegrees(0.0));
         static public final double ROBOT_MASS_kg = Units.lbsToKilograms(30);
         static public final double ROBOT_MOI_KGM2 = 1.0 / 12.0 * ROBOT_MASS_kg * Math.pow((WHEELBASE_METERS * 1.1), 2)
@@ -225,7 +225,7 @@ public final class Constants {
         public static final int EndEffectorMotorID = 31
         ; 
 
-        public static final double intakeCurrentSpikeThreashhold = 20; 
+        public static final double intakeCurrentSpikeThreashhold = 30; 
         public static final double intakeHoldingPercentOutput = 0.1; 
 
         public static final double intakeMinAngle = 120.0;
@@ -246,8 +246,8 @@ public final class Constants {
         public static final double WristF = 0.1; // FIXME set PIDF constant for Elevator
         public static final double WristD = 0.2; // FIXME set PIDF constant for Elevator 
         public static final double WristI = 0.0; // FIXME set PIDF constant for Elevator 
-        public static final double WristMotionAccel = 8192.0; // FIXME set PIDF constant for Elevator
-        public static final double WristMotionVelocity =8192.0;  // FIXME set PIDF constant for Elevator
+        public static final double WristMotionAccel = 20480.0; // FIXME set PIDF constant for Elevator
+        public static final double WristMotionVelocity =20480.0;  // FIXME set PIDF constant for Elevator
         public static final int WristCurrentLimit = 30; //FIXME Current Limit
 
 
@@ -265,16 +265,16 @@ public final class Constants {
                 0.0 // FIXME Measure
                 );
             public static final SuperStructureState midCube = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                221.0, // FIXME Measure
+                279.0 // FIXME Measure
                 );
             public static final SuperStructureState midCone = new SuperStructureState(
-              221.0, // FIXME Measure
+              271.0, // FIXME Measure
                 190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCone = new SuperStructureState(
                 487.0, // FIXME Measure
-                190.0 // FIXME Measure
+                200.0 // FIXME Measure
                 );
             public static final SuperStructureState highCube = new SuperStructureState(
                 392.2, // FIXME Measure
@@ -290,7 +290,7 @@ public final class Constants {
                 );
             public static final SuperStructureState stowed  = new SuperStructureState(
                 20.9, // FIXME Measure
-                160 // FIXME Measure
+                170 // FIXME Measure
                 );
             public static final SuperStructureState init = new SuperStructureState(
                 0.0, // FIXME Measure

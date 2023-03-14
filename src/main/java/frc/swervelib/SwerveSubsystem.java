@@ -80,12 +80,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
       dt.m_poseEstimator.update(dt.getGyroscopeRotation(), 
-      new BetterSwerveModuleState[]{
-        states[0], 
-        states[1], 
-        states[2], 
-        states[3],
-      },
+     
       new SwerveModulePosition[]{
         positions[0],
         positions[1],
@@ -95,6 +90,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
 
       );
+
+
       
 
       
@@ -131,5 +128,13 @@ public class SwerveSubsystem extends SubsystemBase {
       Logger.getInstance().processInputs("DriveModule"+(Integer.toString(i+1)), simInputs[i]);
     }
 
+  }
+
+  public double getCharacterizationVelocity() {
+    double driveVelocityAverage = 0.0;
+    for (int i = 0; i < 4; i++) {
+      driveVelocityAverage += inputs[i].driveVelocity;
+    }
+    return driveVelocityAverage / 4.0;
   }
 }

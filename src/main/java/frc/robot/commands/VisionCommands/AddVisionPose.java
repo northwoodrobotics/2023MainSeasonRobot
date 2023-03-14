@@ -2,6 +2,7 @@ package frc.robot.commands.VisionCommands;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -38,8 +39,10 @@ public class AddVisionPose extends CommandBase{
              EstimatedRobotPose camPose = result.get();
              RobotContainer.m_SwerveSubsystem.dt.VisionPose(
                      camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-           
+             Logger.getInstance().recordOutput("VisionPose", camPose.estimatedPose.toPose2d());
+
          }
+       
         
      }
      public void end(boolean interrupted){

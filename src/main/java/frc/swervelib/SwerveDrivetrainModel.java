@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.DeadReckoningHuskyPoseEstimator;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.GyroTracker;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.HuskyPathFollower;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.HuskyPoseEstimator;
@@ -60,7 +61,7 @@ public class SwerveDrivetrainModel {
     Pose2d endPose;
     PoseTelemetry dtPoseView;
 
-    HuskyPoseEstimator<N7, N7, N5> m_poseEstimator;
+    DeadReckoningHuskyPoseEstimator m_poseEstimator;
     GyroTracker m_tracker;
     Pose2d curEstPose = new Pose2d(SwerveConstants.DFLT_START_POSE.getTranslation(), SwerveConstants.DFLT_START_POSE.getRotation());
     Pose2d fieldPose = new Pose2d(); // Field-referenced orign
@@ -124,7 +125,7 @@ public class SwerveDrivetrainModel {
         // Trustworthiness of the internal model of how motors should be moving
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var stateStdDevs = VecBuilder.fill(0.00005, 0.00005, Units.degreesToRadians(0.005),0.00005, 0.00005, 0.00005, 0.00005);
+        var stateStdDevs = VecBuilder.fill(0.0005, 0.0005, Units.degreesToRadians(0.0005));
 
         // Trustworthiness of gyro in radians of standard deviation.
         var localMeasurementStdDevs = VecBuilder.fill(Units.degreesToRadians(0.1),0.01,0.01,0.01,0.01);
@@ -132,18 +133,16 @@ public class SwerveDrivetrainModel {
         // Trustworthiness of the vision system
         // Measured in expected standard deviation (meters of position and degrees of
         // rotation)
-        var visionMeasurementStdDevs = VecBuilder.fill(((5.83* Math.E)-5), ((5.83* Math.E)-5), ((5.83* Math.E)-5));
+        var visionMeasurementStdDevs = VecBuilder.fill((0.01), (0.01), (0.01));
         m_poseEstimator = 
-        new HuskyPoseEstimator<N7,N7,N5>(
-            Nat.N7(), 
-            Nat.N7(), 
-            Nat.N5(),
+        new DeadReckoningHuskyPoseEstimator(
+            SwerveConstants.KINEMATICS, 
             getGyroscopeRotation(), 
             positions,
             SwerveConstants.DFLT_START_POSE,
-            SwerveConstants.KINEMATICS, 
+         
             stateStdDevs, 
-            localMeasurementStdDevs, 
+            
             visionMeasurementStdDevs);
 
         setKnownPose(SwerveConstants.DFLT_START_POSE);
@@ -449,4 +448,13 @@ public class SwerveDrivetrainModel {
         }
         return input;
     }
+
+   public void characterizeDrivetrain(double volts){
+    for (int i = 0; i < 4; i++) {
+        realModules.get(i).set(
+            new BetterSwerveModuleState(volts/SwerveConstants.MAX_VOLTAGE * SwerveConstants.MAX_FWD_REV_SPEED_MPS, Rotation2d.fromDegrees(0.0), 0.0)
+        );
+      }
+   }
+
 }

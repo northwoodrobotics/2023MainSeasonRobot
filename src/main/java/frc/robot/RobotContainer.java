@@ -5,7 +5,7 @@
 package frc.robot;
 
 import java.io.IOException;
-import frc.robot.subsystems.SuperStructure.SuperStructure.endEffectorState;
+import frc.robot.subsystems.SuperStructure.EndEffector.endEffectorState;
 
 import org.eclipse.jetty.jndi.local.localContextRoot;
 import org.littletonrobotics.junction.Logger;
@@ -42,9 +42,12 @@ import frc.robot.commands.AutoCommands.ThreeCube;
 import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
+import frc.robot.commands.DriveCommands.FeedForwardCharacterization;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
+import frc.robot.commands.DriveCommands.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.SwitchGamePiece;
+import frc.robot.commands.SuperStructureCommands.FlipCone;
 import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.commands.SuperStructureCommands.HighCube;
@@ -97,7 +100,7 @@ public class RobotContainer {
   public static CommandXboxController driver = new CommandXboxController(0);
   public static CommandXboxController coDriver = new CommandXboxController(1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
-    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 3));
+    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 2.5));
 
 
 
@@ -174,6 +177,15 @@ public class RobotContainer {
       new AutoDrive(m_SwerveSubsystem, testRight3gamePiece)
     ));
 
+    autoChooser.addOption("Characterize Drivetrain", new FeedForwardCharacterization(m_SwerveSubsystem, 
+    true, 
+    new FeedForwardCharacterizationData("drive"),
+    m_SwerveSubsystem.dt ::characterizeDrivetrain,
+    m_SwerveSubsystem :: getCharacterizationVelocity
+    
+   )
+   );
+
   }
 
   /**
@@ -187,18 +199,23 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //driver.aButton.whileTrue(new CalibrateGyro(m_SwerveSubsystem));
     //driver.bButton.whileTrue(new SequentialCommandGroup(new DriveToRamp(m_SwerveSubsystem, m_SuperStructure), new WaitToRecieve(m_SuperStructure)));
-    driver.x().whileTrue(new GroundIntake(m_SuperStructure, m_EndEffector));
-    driver.a().whileTrue(new ReturnToStowed(m_SuperStructure));
+    driver.leftTrigger().whileTrue(new GroundIntake(m_SuperStructure, m_EndEffector));
+    driver.leftTrigger().whileFalse(new ReturnToStowed(m_SuperStructure));
+    //driver.a().whileTrue(new ReturnToStowed(m_SuperStructure));
     
     //driver.y().whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
-    driver.rightBumper().whileTrue(new MidCone(m_SuperStructure));
-    driver.leftBumper().whileTrue(new HighCone(m_SuperStructure));
-    driver.leftTrigger().whileTrue(new HighCube(m_SuperStructure));
+    //driver.rightBumper().whileTrue(new MidCone(m_SuperStructure));
+    //driver.leftBumper().whileTrue(new HighCone(m_SuperStructure));
+    //driver.leftTrigger().whileTrue(new HighCube(m_SuperStructure));
+    driver.x().whileTrue(new FlipCone(m_SuperStructure));
     driver.rightTrigger().whileTrue(
       new SmartScore(m_SuperStructure, 
       m_EndEffector,
       objectiveTracker.objective, 
       ()-> driver.y().getAsBoolean())
+    );
+    driver.rightTrigger().onFalse(
+      new ReturnToStowed(m_SuperStructure)
     );
 
 
@@ -211,7 +228,8 @@ public class RobotContainer {
      */
     coDriver.x().onTrue(new SwitchGamePiece(m_SuperStructure, false));
     coDriver.y().onTrue(new  SwitchGamePiece(m_SuperStructure, true));
-  
+    coDriver.leftTrigger().whileTrue(new InstantCommand((()->m_EndEffector.ejectOverridePiece(coDriver.leftBumper().getAsBoolean())), m_EndEffector));
+    coDriver.rightTrigger().whileTrue(new InstantCommand((()->m_EndEffector.conformEndEffectorState(endEffectorState.intaking)), m_EndEffector));
   //  coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
     coDriver.a().whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.getLeftY()));
     coDriver.b().whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.getRightY()));

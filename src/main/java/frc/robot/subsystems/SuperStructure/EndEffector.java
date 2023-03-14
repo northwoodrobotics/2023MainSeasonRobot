@@ -30,7 +30,7 @@ public class EndEffector extends SubsystemBase{
     private boolean ejectCone;
     private LoggedMotorIOInputsAutoLogged intakeLog = new LoggedMotorIOInputsAutoLogged();
     private LoggedNeo intakeMotor = new LoggedNeo(SuperStructureConstants.EndEffectorMotorID, true, 30);
-
+    private LoggedDashboardBoolean DashboardhasGamePiece = new LoggedDashboardBoolean("Has Game Piece");
     public EndEffector(){
         ejectCone = false;
         hasGamePiece = false;
@@ -51,8 +51,8 @@ public class EndEffector extends SubsystemBase{
     }
 
     public enum endEffectorState{
-        holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-1.0), intaking(1), empty(0.0),
-        coneEject(-0.3);
+        holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-0.5), intaking(1), empty(0.0),
+        coneEject(-0.1);
         public double output;
         private endEffectorState(double output){
             this.output = output;
@@ -114,8 +114,8 @@ public class EndEffector extends SubsystemBase{
             break;
             case intaking:
                 hasGamePiece = false;
-                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2){
-                    if (intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
+                if((Timer.getFPGATimestamp() - timeStateEntered)>0.2&& intakeMotor.getCurrentAmps() > SuperStructureConstants.intakeCurrentSpikeThreashhold){
+                    
                         hasGamePiece = true;
                         
                             conformEndEffectorState(endEffectorState.holding);
@@ -124,7 +124,7 @@ public class EndEffector extends SubsystemBase{
                     
     
                 
-            }else
+            else
 
             
             
@@ -137,6 +137,6 @@ public class EndEffector extends SubsystemBase{
         }
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("IntakeLog", intakeLog);
-
+        DashboardhasGamePiece.set(hasGamePiece);
      } 
 }

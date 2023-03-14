@@ -5,7 +5,7 @@ import frc.ExternalLib.SpectrumLib.gamepads.SpectrumXbox;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
-import frc.robot.subsystems.SuperStructure.SuperStructure.endEffectorState;
+import frc.robot.subsystems.SuperStructure.EndEffector.endEffectorState;
 
 public class SmartEject extends CommandBase{
     private final EndEffector m_EndEffector;

@@ -25,7 +25,6 @@ import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;;
 public class SuperStructure extends SubsystemBase{
 
     public ControlState controlState;
-    public endEffectorState intakeControlState;
     public double presetElevatorHeight;
     public double presetWristAngle;
 
@@ -55,7 +54,7 @@ public class SuperStructure extends SubsystemBase{
     private LoggedDashboardNumber wristPositionRadians = new LoggedDashboardNumber("WristPosition Radians");
     private LoggedDashboardNumber elevatorPositionRadians= new LoggedDashboardNumber("ElevatorPosition");
     private LoggedDashboardNumber wristTargetPositionRadians = new LoggedDashboardNumber("Targed Wrist Radians");
-    private LoggedDashboardBoolean DashboardhasGamePiece = new LoggedDashboardBoolean("Has Game Piece");
+    
     private LoggedDashboardNumber  wantedElevatorPos = new LoggedDashboardNumber("Wanted Elevator Rad");
     private LoggedDashboardBoolean gamePieceType = new LoggedDashboardBoolean("Cone in Intake");
 
@@ -68,7 +67,7 @@ public class SuperStructure extends SubsystemBase{
         presetWristAngle = SuperStructurePresets.stowed.getWristAngleRadians();
         
         controlState = ControlState.preset;
-        intakeControlState = endEffectorState.holding;
+
         //wristPositionRadians.setDefault(SuperStructurePresets.stowed.wristAngleRadians);
         elevatorPositionRadians.setDefault(0.0);
         wristTargetPositionRadians.setDefault(0.0);
@@ -140,28 +139,8 @@ public class SuperStructure extends SubsystemBase{
         wristAdjust,
         heightAdjust,
     }
-    // list of end Effector States
-    public enum endEffectorState{
-        holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-1.0), intaking(1), empty(0.0),
-        coneEject(-0.3);
-        public double output;
-        private endEffectorState(double output){
-            this.output = output;
 
-        }
-    }
     
-        // internally changing end effector state
-    public synchronized void setEndEffectorState(endEffectorState newState) {
-        if (newState != intakeControlState){
-            intakeStateHasChanged = true;
-            intakeControlState = newState;
-            timeStateEntered = Timer.getFPGATimestamp();
-        }
-
-        
-    }
-
 
   
     // sets control state ot wrist adjust and feeds adjustment into the controller
@@ -244,7 +223,7 @@ public class SuperStructure extends SubsystemBase{
         //elevatorPositionRadians.set(elevatorMotor.getPosition());
         //wristTargetPositionRadians.set(presetWristAngle);
         wantedElevatorPos.set(presetElevatorHeight);
-        DashboardhasGamePiece.set(hasGamePiece);
+       
         gamePieceType.set(ejectCone);
         
         

@@ -173,6 +173,7 @@ public class DrivetrainSubsystem {
                 SwerveConstants.MASS_kg = Constants.DriveConstants.MASS_kg;
                 SwerveConstants.MOI_KGM2 = Constants.DriveConstants.MOI_KGM2;
                 SwerveConstants.KINEMATICS = Constants.DriveConstants.KINEMATICS;
+                
 
                 SwerveConstants.TRAJECTORYXkP = Constants.AutoConstants.TRAJECTORYXkP;
 
