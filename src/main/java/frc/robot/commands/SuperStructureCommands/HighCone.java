@@ -24,7 +24,11 @@ public class HighCone extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-
+        
+    }
+    @Override
+    public boolean isFinished(){
+        return m_superStructure.isAtTargetHeight() && m_superStructure.isAtTargetAngle();
     }
 
 }

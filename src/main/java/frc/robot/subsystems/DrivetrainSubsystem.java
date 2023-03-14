@@ -10,8 +10,12 @@ import frc.swervelib.SwerveDrivetrainModel;
 import frc.wpiClasses.QuadSwerveSim;
 import frc.wpiClasses.SwerveModuleSim;
 import frc.robot.Constants;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import java.util.ArrayList;
+
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -180,6 +184,10 @@ public class DrivetrainSubsystem {
                 SwerveConstants.TRAJECTORYYkP = Constants.AutoConstants.TRAJECTORYYkP;
                 SwerveConstants.kMinRotationCommand = DriveConstants.minRotationCommand;
                 SwerveConstants.kMinTranslationCommand = DriveConstants.minTranslationCommand;
+
+                SwerveConstants.DriveKs = AutoConstants.DriveKS;
+                SwerveConstants.DriveKv = AutoConstants.DriveKV;
+                SwerveConstants.DriveKa = AutoConstants.DriveKA; 
 
         }
 

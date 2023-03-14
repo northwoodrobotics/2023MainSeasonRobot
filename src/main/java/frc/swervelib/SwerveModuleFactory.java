@@ -1,5 +1,6 @@
 package frc.swervelib;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -46,6 +47,7 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
     private class ModuleImplementation implements SwerveModule {
         private final DriveController driveController;
         private final SteerController steerController;
+        private final SimpleMotorFeedforward ffModel;
 
         
         private ShuffleboardTab tab = Shuffleboard.getTab("SwerveDt");
@@ -56,6 +58,9 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
         private ModuleImplementation(DriveController driveController, SteerController steerController, String namePrefix) {
             this.driveController = driveController;
             this.steerController = steerController;
+
+            ffModel = new SimpleMotorFeedforward(SwerveConstants.DriveKs, SwerveConstants.DriveKv, SwerveConstants.DriveKa);
+
 
                 
     
@@ -137,6 +142,7 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
             if (difference > Math.PI / 2.0 || difference < -Math.PI / 2.0) {
                 // Only need to add 180 deg here because the target angle will be put back into the range [0, 2pi)
                 steerAngle += Math.PI;
+                state.speedMetersPerSecond *= -1.0;
                 driveVoltage *= -1.0;
             }
 
@@ -146,7 +152,8 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
                 steerAngle += 2.0 * Math.PI;
             }
 
-            driveController.setReferenceVoltage(driveVoltage);
+           // driveController.setReferenceVoltage(ffModel.calculate(driveVoltage));
+            driveController.setReferenceVoltage(ffModel.calculate(state.speedMetersPerSecond));
             steerController.setReferenceAngle(steerAngle, state.omegaRadPerSecond* SwerveConstants.ModuleTwist_KV);
 
                     }
@@ -186,7 +193,7 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
                 steerAngle += 2.0 * Math.PI;
             }
 
-            driveController.setVelocity(state.speedMetersPerSecond);
+            driveController.setVelocity(state.speedMetersPerSecond, ffModel.calculate(state.speedMetersPerSecond));
             steerController.setReferenceAngle(steerAngle, state.omegaRadPerSecond* SwerveConstants.ModuleTwist_KV);
             
 

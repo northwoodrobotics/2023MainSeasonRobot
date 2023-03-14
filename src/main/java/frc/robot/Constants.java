@@ -183,15 +183,15 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
-        public static final double TRAJECTORYXkP = 1.5;
+        public static final double TRAJECTORYXkP = 400;
         public static final double TRAJECTORYXkI = 0;
         public static final double TRAJECTORYXkD = 0;
-        public static final double TRAJECTORYYkP = 1.5;
+        public static final double TRAJECTORYYkP = 400;
         public static final double TRAJECTORYYkI = 0;
         public static final double TRAJECTORYYkD = 0;
-        public static final double DriveKS = 1.1152;
-        public static final double DriveKV = 0.62013;
-        public static final double DriveKA = 0.12412;
+        public static final double DriveKS = 0.0026856;
+        public static final double DriveKV = 2.4304;
+        public static final double DriveKA = 0.41217;
         public static final double THETACONTROLLERkP = 1;
         public static final double THETACONTROLLERkI = 0;
         public static final double THETACONTROLLERkD = 0;
@@ -199,7 +199,7 @@ public final class Constants {
         // software
         // Tape Measure out 1 Meter and Drive back and forth on it, change this number
         // until odometry says 0-1m.
-        public static final double TractionConstant = Units.feetToMeters(13.5);
+        public static final double TractionConstant = Units.feetToMeters(15.0);
         public static final TrapezoidProfile.Constraints BalanceConstraints = 
         new Constraints(
           1.0, // velocity in meters per second that the robot is allowed to pursue when balancing 

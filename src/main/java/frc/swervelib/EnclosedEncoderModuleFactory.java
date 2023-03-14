@@ -177,7 +177,7 @@ public class EnclosedEncoderModuleFactory<DriveConfiguration, SteerConfiguration
                 steerAngle += 2.0 * Math.PI;
             }
 
-            driveController.setVelocity(driveVelocity);
+            driveController.setVelocity(driveVelocity, 0.0);
             steerController.setReferenceAngle(steerAngle, state.omegaRadPerSecond);
 
             this.driveVelocityCmdEntry.setDouble(driveVelocity);

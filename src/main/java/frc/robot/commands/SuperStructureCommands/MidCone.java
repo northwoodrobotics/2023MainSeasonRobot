@@ -13,7 +13,7 @@ public class MidCone extends CommandBase{
     }
     @Override
     public void initialize(){
-        m_superStructure.setSuperStructureState(SuperStructurePresets.midCone.getHeightDemand(), SuperStructurePresets.midCone.getWristAngleRadians());
+       m_superStructure.acceptSuperStructureState(()-> SuperStructurePresets.midCone);
 
     }
     
@@ -24,6 +24,10 @@ public class MidCone extends CommandBase{
     @Override
     public void end(boolean interrupted){
 
+    }
+    @Override
+    public boolean isFinished(){
+        return m_superStructure.isAtTargetHeight() && m_superStructure.isAtTargetAngle();
     }
 
 }

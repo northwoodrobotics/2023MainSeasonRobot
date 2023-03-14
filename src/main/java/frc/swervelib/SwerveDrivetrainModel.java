@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
-
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.numbers.N5;
@@ -327,7 +327,7 @@ public class SwerveDrivetrainModel {
     }
 
     public void setKnownPose(Pose2d in) {
-        resetWheelEncoders();
+        //resetWheelEncoders();
         gyro.zeroGyroscope(in.getRotation().getDegrees());
         m_poseEstimator.resetPosition(getGyroscopeRotation(), positions, in);
         curEstPose = in;
@@ -417,18 +417,18 @@ public class SwerveDrivetrainModel {
     }
 
     public Command createCommandForTrajectory(PathPlannerTrajectory trajectory, SwerveSubsystem m_drive) {
-        HuskyPathFollower swerveControllerCommand =
-            new HuskyPathFollower(
+        PPSwerveControllerCommand swerveControllerCommand =
+            new PPSwerveControllerCommand(
                 trajectory,
                 () -> getPose(), // Functional interface to feed supplier
-                SwerveConstants.KINEMATICS,
+               
 
                 // Position controllers
-                SwerveConstants.XPIDCONTROLLER,
-                SwerveConstants.YPIDCONTROLLER,
+                new PIDController(5, 0, 0),
+                new PIDController(5, 0, 0),
                 thetaController,
                 // feed states into controller
-                commandStates -> this.states = commandStates,
+                this :: setModuleStates,
                 true,
                 m_drive);
         return swerveControllerCommand.andThen(() -> setModuleStates(new SwerveInput(0,0,0)));

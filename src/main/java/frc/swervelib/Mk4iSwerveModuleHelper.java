@@ -14,6 +14,7 @@ public final class Mk4iSwerveModuleHelper {
 
     private static DriveControllerFactory<?, Integer> getFalcon500DriveFactory(Mk4ModuleConfiguration configuration) {
         return new Falcon500DriveControllerFactoryBuilder()
+                .withPidConstants(0.044, 0, 0.001)
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withCurrentLimit(configuration.getDriveCurrentLimit())
                 .withCanivore(configuration.getCanivoreName())

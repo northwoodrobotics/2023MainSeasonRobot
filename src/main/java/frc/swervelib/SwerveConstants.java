@@ -31,4 +31,8 @@ public class SwerveConstants {
 
     public static PIDController XPIDCONTROLLER = new PIDController(TRAJECTORYXkP, 0, 0);
     public static PIDController YPIDCONTROLLER = new PIDController(TRAJECTORYYkP, 0, 0);
+
+    public static double DriveKs;
+    public static double DriveKv;
+    public static double DriveKa;
 }

@@ -73,10 +73,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
       SecondOrderKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_FWD_REV_SPEED_MPS);
 
-      modules.get(0).set(states[0]);
-      modules.get(1).set(states[1]);
-      modules.get(2).set(states[2]);
-      modules.get(3).set(states[3]);
+      modules.get(0).setVelocity(states[0]);
+      modules.get(1).setVelocity(states[1]);
+      modules.get(2).setVelocity(states[2]);
+      modules.get(3).setVelocity(states[3]);
 
 
       dt.m_poseEstimator.update(dt.getGyroscopeRotation(), 
@@ -132,9 +132,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public double getCharacterizationVelocity() {
     double driveVelocityAverage = 0.0;
-    for (int i = 0; i < 4; i++) {
-      driveVelocityAverage += inputs[i].driveVelocity;
-    }
+    driveVelocityAverage += modules.get(0).getDriveVelocity();
+    driveVelocityAverage += modules.get(0).getDriveVelocity();
+    driveVelocityAverage += modules.get(0).getDriveVelocity();
+    driveVelocityAverage += modules.get(0).getDriveVelocity();
+    
+  
     return driveVelocityAverage / 4.0;
   }
 }

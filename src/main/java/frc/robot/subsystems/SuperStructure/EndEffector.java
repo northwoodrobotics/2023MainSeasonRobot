@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 import org.littletonrobotics.junction.Logger;
-
+import org.littletonrobotics.junction.networktables.LoggedDashboardBoolean;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.LoggedMotorIOInputsAutoLogged;
@@ -113,7 +113,7 @@ public class EndEffector extends SubsystemBase{
                     
     
                 
-            }else
+            
 
             
             

@@ -2,13 +2,14 @@ package frc.robot.commands.SuperStructureCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
+import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.robot.subsystems.SuperStructure.EndEffector.endEffectorState;
 public class WaitToRecieve extends CommandBase{
-private final SuperStructure m_superStructure;
+private final EndEffector m_EndEffector;
     
-public WaitToRecieve(SuperStructure superStructure){
-    this.m_superStructure = superStructure;
+public WaitToRecieve(EndEffector endEffector){
+    this.m_EndEffector = endEffector;
     }
     @Override
     public void initialize(){
@@ -28,6 +29,6 @@ public WaitToRecieve(SuperStructure superStructure){
     }
     @Override
     public boolean isFinished(){
-        return m_superStructure.getIntakeStateChange();
+        return m_EndEffector.hasGamePiece();
     }
 }

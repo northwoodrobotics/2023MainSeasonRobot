@@ -100,7 +100,7 @@ public class RobotContainer {
   public static CommandXboxController driver = new CommandXboxController(0);
   public static CommandXboxController coDriver = new CommandXboxController(1);
   private static ShuffleboardTab master = Shuffleboard.getTab("master");
-    private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(3, 2.5));
+  private static PathPlannerTrajectory testRight3gamePiece = PathPlanner.loadPath("3 Cube Balance", new PathConstraints(2, 2));
 
 
 

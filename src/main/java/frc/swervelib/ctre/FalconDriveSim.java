@@ -68,7 +68,7 @@ public final class FalconDriveSim {
             
         } 
         @Override
-        public void setVelocity(double velocity) {
+        public void setVelocity(double velocity, double feedForward) {
             
             
         }

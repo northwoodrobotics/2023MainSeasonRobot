@@ -2,6 +2,7 @@ package frc.swervelib.ctre;
 
 import java.util.Optional;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -106,7 +107,7 @@ public final class Falcon500DriveControllerFactoryBuilder {
                 motor.enableVoltageCompensation(true);
             }
             
-
+            
             motor.setNeutralMode(NeutralMode.Brake);
 
             motor.setInverted(moduleConfiguration.isDriveInverted() ? TalonFXInvertType.Clockwise : TalonFXInvertType.CounterClockwise);
@@ -153,8 +154,8 @@ public final class Falcon500DriveControllerFactoryBuilder {
         }
 
         @Override
-        public void setVelocity(double velocity) {
-            motor.set(TalonFXControlMode.Velocity, velocity / sensorVelocityCoefficient);
+        public void setVelocity(double velocity, double feedForward) {
+            motor.set(TalonFXControlMode.Velocity, velocity / sensorVelocityCoefficient ,DemandType.ArbitraryFeedForward, feedForward/12.0);
         }
         @Override 
         public double getStateMeters(){

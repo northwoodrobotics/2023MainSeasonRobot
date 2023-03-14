@@ -114,8 +114,8 @@ public final class NeoDriveControllerFactoryBuilder {
         }
 
         @Override
-        public void setVelocity(double velocity) {
-            controller.setReference(velocity, ControlType.kVelocity);
+        public void setVelocity(double velocity, double feedForward) {
+            controller.setReference(velocity, ControlType.kVelocity, 0, feedForward);
         }
 
         @Override

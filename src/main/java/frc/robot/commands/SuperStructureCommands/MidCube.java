@@ -13,7 +13,7 @@ public class MidCube extends CommandBase{
     }
     @Override
     public void initialize(){
-        //m_superStructure.setSuperStructureState(SuperStructurePresets.midCube);
+        m_superStructure.acceptSuperStructureState(()-> SuperStructurePresets.midCube);
     }
     
     @Override
@@ -22,7 +22,11 @@ public class MidCube extends CommandBase{
     }
     @Override
     public void end(boolean interrupted){
-
+       
+    }
+    @Override
+    public boolean isFinished(){
+        return m_superStructure.isAtTargetHeight() && m_superStructure.isAtTargetAngle();
     }
 
 }
