@@ -139,7 +139,7 @@ public class SwerveDrivetrainModel {
             SwerveConstants.KINEMATICS, 
             getGyroscopeRotation(), 
             positions,
-            SwerveConstants.DFLT_START_POSE,
+            new Pose2d(),
          
             stateStdDevs, 
             

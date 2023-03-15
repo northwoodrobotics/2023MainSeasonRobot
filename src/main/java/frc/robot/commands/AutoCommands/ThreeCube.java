@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.SuperStructureCommands.EjectOverride;
 import frc.robot.commands.SuperStructureCommands.GroundIntake;
 import frc.robot.commands.SuperStructureCommands.HighCone;
@@ -21,8 +22,10 @@ import frc.robot.commands.SuperStructureCommands.WaitToRecieve;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.commands.SuperStructureCommands.MidCone;
 import frc.robot.commands.SuperStructureCommands.MidCube;
+import frc.robot.commands.SuperStructureCommands.ReturnToStowed;
 import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
+import frc.robot.subsystems.SuperStructure.EndEffector.endEffectorState;
 import frc.swervelib.SwerveSubsystem;
 
 public class ThreeCube extends SequentialCommandGroup{
@@ -36,10 +39,13 @@ public class ThreeCube extends SequentialCommandGroup{
 
     public ThreeCube(SwerveSubsystem swerve, SuperStructure structure, EndEffector effector){
         eventMap.put("IntakeDown1", 
-        new ParallelDeadlineGroup(
-            new WaitToRecieve(effector), new GroundIntake(structure, effector))
-        );
-        eventMap.put("HighCube",  structure.acceptSuperStructureState(()-> SuperStructurePresets.midCone));
+
+        new SequentialCommandGroup((new ParallelDeadlineGroup(
+            new WaitToRecieve(effector), structure.acceptSuperStructureState(()-> SuperStructurePresets.groundIntake),
+            new InstantCommand(()->effector.conformEndEffectorState(endEffectorState.intaking)))
+        ), new ReturnToStowed(structure)));
+
+        eventMap.put("HighCube",  structure.acceptSuperStructureState(()-> SuperStructurePresets.midCube));
         eventMapTwo.put("IntakeGround2", new GroundIntake(structure,effector));
         eventMapTwo.put("CubeMid",  structure.acceptSuperStructureState(()-> SuperStructurePresets.midCone));
         FollowPathWithEvents firstCommand = new FollowPathWithEvents(new AutoDrive(swerve, ThreeCube.get(0)), ThreeCube.get(0).getMarkers(), eventMap);
@@ -47,12 +53,14 @@ public class ThreeCube extends SequentialCommandGroup{
         
         addCommands(
         new InstantCommand(()-> swerve.dt.setKnownState(ThreeCube.get(0).getInitialState())),
-        structure.acceptSuperStructureState(()-> SuperStructurePresets.midCube),
-        new EjectOverride(effector, false),
+        structure.acceptSuperStructureState(()-> SuperStructurePresets.midCone),
+        new WaitCommand(1.4),
+        new EjectOverride(effector, true),
         firstCommand,
-        new SmartEject(effector),
+        new WaitCommand(0.3),
+        new EjectOverride(effector, false),
         secondCommand,
-        new SmartEject(effector)    
+        new EjectOverride(effector, true)  
  
         );
         

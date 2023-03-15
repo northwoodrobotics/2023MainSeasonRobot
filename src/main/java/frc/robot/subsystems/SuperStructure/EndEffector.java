@@ -24,7 +24,7 @@ public class EndEffector extends SubsystemBase{
         ejectCone = false;
         hasGamePiece = false;
         intakeStateHasChanged = false;
-        intakeControlState = endEffectorState.holding;
+        conformEndEffectorState(endEffectorState.holding);
     }
 
     public boolean hasGamePiece(){
