@@ -6,17 +6,21 @@ package frc.robot.commands.DriveCommands;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TeleShooter extends CommandBase {
   /** Creates a new TeleShooter. */
-  public TeleShooter() {}
+  
     
-    private Shooter shooter;
-
-    public TeleShooter(Shooter shooter) {
-        this.shooter = shooter;
-        addRequirements(shooter);
+  private Shooter shooter;
+  private DoubleSupplier pwr;
+  public TeleShooter(Shooter shooter,DoubleSupplier pwr) {
+      this.shooter = shooter;
+      this.pwr = pwr;
+      addRequirements(shooter);
     
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -29,7 +33,7 @@ public class TeleShooter extends CommandBase {
   @Override
   public void execute() {
 
-    shooter.move(RobotContainer.coDriver.getLeftTriggerAxis());
+    shooter.move(pwr.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
