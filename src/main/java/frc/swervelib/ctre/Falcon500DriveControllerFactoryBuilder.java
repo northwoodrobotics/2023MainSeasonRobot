@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.swervelib.DriveController;
 import frc.swervelib.DriveControllerFactory;
@@ -109,8 +110,9 @@ public final class Falcon500DriveControllerFactoryBuilder {
             
             
             motor.setNeutralMode(NeutralMode.Brake);
-
+            Timer.delay(1);
             motor.setInverted(moduleConfiguration.isDriveInverted() ? TalonFXInvertType.Clockwise : TalonFXInvertType.CounterClockwise);
+            Timer.delay(1.0);
             motor.setSensorPhase(true);
 
             

@@ -95,6 +95,7 @@ public class SwerveDrivetrainModel {
     public SwerveDrivetrainModel(ArrayList<SwerveModule> realModules, Gyroscope gyro){
         this.gyro = gyro;
         this.realModules = realModules;
+        this.gyro.zeroGyroscope(0.0);
 
         this.positions = new SwerveModulePosition[]{
             realModules.get(0).getPosition(),
@@ -144,13 +145,11 @@ public class SwerveDrivetrainModel {
             stateStdDevs, 
             
             visionMeasurementStdDevs);
-
-        setKnownPose(SwerveConstants.DFLT_START_POSE);
-
+      
         //dtPoseView = new PoseTelemetry(swerveDt, m_poseEstimator);
 
         // Control Orientation Chooser
-        orientationChooser.setDefaultOption("Field Oriented", "Field Oriented");
+         orientationChooser.setDefaultOption("Field Oriented", "Field Oriented");
         orientationChooser.addOption("Robot Oriented", "Robot Oriented");
         SmartDashboard.putData("Orientation Chooser", orientationChooser);
 
@@ -384,9 +383,7 @@ public class SwerveDrivetrainModel {
     public void zeroGyroscope() {
         gyro.zeroGyroscope(0.0);
     }
-    public void plusNinetyGyroscope() {
-        gyro.zeroGyroscope(90.0);
-    }
+
     public Pose2d gyroPose(){
         return m_tracker.getPoseMeters();
     }

@@ -34,6 +34,7 @@ public class LoggedFalcon500 implements LoggedMotor{
         motor.setNeutralMode(NeutralMode.Brake);
         motor.setInverted(false);
         motor.configAllSettings(this.config);
+        
     }
 
     public LoggedFalcon500(int motorID, boolean motorinvert, int statorCurrLimit){

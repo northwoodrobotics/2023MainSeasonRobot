@@ -19,8 +19,9 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DrivetrainSubsystem {
+public class DrivetrainSubsystem extends SubsystemBase{
         // in house plug and play swerve code. Copy and paste this file, along with the
         // drivetrain constants section as long as you are using SDS MK4 Modules.
         // all you need to do is change the constants to the ones that apply to your

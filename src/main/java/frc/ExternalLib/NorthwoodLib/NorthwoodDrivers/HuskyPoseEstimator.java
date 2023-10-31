@@ -14,9 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.util.WPIUtilJNI;
@@ -29,7 +27,7 @@ import java.util.function.BiConsumer;
  * This class wraps an {@link UnscentedKalmanFilter Unscented Kalman Filter} to fuse
  * latency-compensated vision measurements with swerve drive encoder velocity and position measurements. It will
  * correct for noisy measurements and encoder drift. It is intended to be an easy but more accurate
- * drop-in for {@link edu.wpi.first.math.kinematics.SwerveDriveOdometry}.
+ * drop-in for {@link frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.SecondOrderOdometry}.
  *
  * <p>The generic arguments to this class define the size of the state, input and output vectors
  * used in the underlying {@link UnscentedKalmanFilter Unscented Kalman Filter}. {@link Num States}
@@ -38,7 +36,7 @@ import java.util.function.BiConsumer;
  *
  * <p>{@link HuskyPoseEstimator#update} should be called every robot loop. If your loops are
  * faster or slower than the default of 20 ms, then you should change the nominal delta time using
- * the secondary constructor: {@link SwerveDrivePoseEstimator#SwerveDrivePoseEstimator(Nat, Nat,
+ * the secondary constructor: {@link HuskyPoseEstimator#SwerveDrivePoseEstimator(Nat, Nat,
  * Nat, Rotation2d, SwerveModulePosition[], Pose2d, SwerveDriveKinematics, Matrix, Matrix, Matrix,
  * double)}.
  *
@@ -331,11 +329,11 @@ public class HuskyPoseEstimator<States extends Num, Inputs extends Num, Outputs 
    *
    * <p>Note that the vision measurement standard deviations passed into this method will continue
    * to apply to future measurements until a subsequent call to {@link
-   * SwerveDrivePoseEstimator#setVisionMeasurementStdDevs(Matrix)} or this method.
+   * HuskyPoseEstimator#setVisionMeasurementStdDevs(Matrix)} or this method.
    *
    * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
    * @param timestampSeconds The timestamp of the vision measurement in seconds. Note that if you
-   *     don't use your own time source by calling {@link SwerveDrivePoseEstimator#updateWithTime}
+   *     don't use your own time source by calling {@link HuskyPoseEstimator#updateWithTime}
    *     then you must use a timestamp with an epoch since FPGA startup (i.e. the epoch of this
    *     timestamp is the same epoch as Timer.getFPGATimestamp.) This means that you should use
    *     Timer.getFPGATimestamp as your time source in this case.

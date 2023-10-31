@@ -41,7 +41,7 @@ public class EndEffector extends SubsystemBase{
 
     public enum endEffectorState{
         holding(SuperStructureConstants.intakeHoldingPercentOutput), cubeEject(-0.5), intaking(1), empty(0.0),
-        coneEject(-0.1);
+        coneEject(-0.15);
         public double output;
         private endEffectorState(double output){
             this.output = output;
@@ -109,20 +109,11 @@ public class EndEffector extends SubsystemBase{
                         
                             conformEndEffectorState(endEffectorState.holding);
                 }
-               
-                    
-    
-                
-            
-
-            
-            
-            break;
+                break;
             case holding:
-            break;
+                break;
             case empty:
-            break; 
-            
+                break;
         }
         intakeMotor.updateInputs(intakeLog);
         Logger.getInstance().processInputs("IntakeLog", intakeLog);

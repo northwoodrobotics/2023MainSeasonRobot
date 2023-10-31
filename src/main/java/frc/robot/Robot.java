@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -79,6 +80,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     Logger logger = Logger.getInstance();
+    CameraServer.startAutomaticCapture();
 
     logger.recordMetadata("Robot", Constants.getRobot().toString());
     logger.recordMetadata("TuningMode", Boolean.toString(Constants.tuningMode));

@@ -38,10 +38,15 @@ import frc.robot.Constants.Mode;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.commands.ActionCommands.DriveToRamp;
 import frc.robot.commands.ActionCommands.SmartScore;
+import frc.robot.commands.AutoCommands.PlaceAndBalance;
 import frc.robot.commands.AutoCommands.ThreeCube;
-import frc.robot.commands.AutoCommands.ThreeCubeRightBalance;
+import frc.robot.commands.AutoCommands.ThreeCubeBalance;
+import frc.robot.commands.AutoCommands.TwoCubeRightBalance;
+import frc.robot.commands.AutoCommands.OnePlusHalfBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
+import frc.robot.commands.DriveCommands.TeleShooter;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
+import frc.robot.commands.DriveCommands.DriveTimeCommand;
 import frc.robot.commands.DriveCommands.FeedForwardCharacterization;
 import frc.robot.commands.DriveCommands.TeleopDriveCommand;
 import frc.robot.commands.DriveCommands.FeedForwardCharacterization.FeedForwardCharacterizationData;
@@ -62,6 +67,7 @@ import frc.robot.commands.TuningCommands.ElevatorAdjust;
 
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.PhotonCams;
 import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
 import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
@@ -88,6 +94,7 @@ public class RobotContainer {
   public static PhotonCamera camera;
   public static SuperStructure m_SuperStructure;
   private ObjectiveTracker objectiveTracker;
+  public static Shooter shooter;
 
   public static final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
 
@@ -122,6 +129,8 @@ public class RobotContainer {
     // create drivetrain from our file, utilizing the libary to do position
     // tracking, path following, and a couple of other tricks.
     
+  
+
     if (Constants.getMode() != Mode.REPLAY) {
       switch (Constants.getRobot()) {
         case ROBOT_2023C:
@@ -130,17 +139,18 @@ public class RobotContainer {
         m_cams = new PhotonCams();
         objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
         m_EndEffector = new EndEffector();
-          break;
+        shooter = new Shooter();
+        break;
         case ROBOT_2023P:
         dt = DrivetrainSubsystem.createSwerveModel();
-         
+        shooter = new Shooter();
           break;
         case ROBOT_SIMBOT:
           dt = DrivetrainSubsystem.createSimSwerveModel();
           m_cams = new PhotonCams();
           m_SuperStructure = new SuperStructure();
          // objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
-
+         shooter = new Shooter();
           break;
       }
     } 
@@ -153,29 +163,29 @@ public class RobotContainer {
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
-        () -> xLimiter.calculate(-driver.getLeftY()),
-        () -> yLimiter.calculate(-driver.getLeftX()),
-        () -> -driver.getRightX()));
+        () -> xLimiter.calculate(driver.getLeftY()),
+        () -> yLimiter.calculate(driver.getLeftX()),
+        () -> driver.getRightX()));
 
         ShowInputs();
     //m_SuperStructure.setDefaultCommand(new ReturnToStowed(m_SuperStructure));
     
-
+ 
 
     // Configure the button bindings
     configureButtonBindings();
 
-
+  
     autoChooser.addDefaultOption("Do Nothing", null);
-    autoChooser.addOption("Full Link", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
-    autoChooser.addOption("Full Link Right+ Balance", new ThreeCubeRightBalance(m_SwerveSubsystem, m_SuperStructure,m_EndEffector));
+    autoChooser.addOption("2.5 Piece", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("Mid cone and nothing", new OnePlusHalfBalance(m_SwerveSubsystem, m_SuperStructure,m_EndEffector));
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
-    autoChooser.addOption("Right Full Link Just Path", 
-    
-    new SequentialCommandGroup(
-      new InstantCommand(()-> dt.setKnownState(testRight3gamePiece.getInitialState())),
-      new AutoDrive(m_SwerveSubsystem, testRight3gamePiece)
-    ));
+    autoChooser.addOption("2.5 Plus Balance", new ThreeCubeBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("PlaceAndBalance", new PlaceAndBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("2.5 Right Side", new TwoCubeRightBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("Mid cone and mobility (right)", new ThreeCubeBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("Mid cone and Balance", new PlaceAndBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("Mid cone and mobility (left)", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
 
     autoChooser.addOption("Characterize Drivetrain", new FeedForwardCharacterization(m_SwerveSubsystem, 
     true, 
@@ -202,7 +212,9 @@ public class RobotContainer {
     driver.leftTrigger().whileTrue(new GroundIntake(m_SuperStructure, m_EndEffector));
     driver.leftTrigger().whileFalse(new ReturnToStowed(m_SuperStructure));
     //driver.a().whileTrue(new ReturnToStowed(m_SuperStructure));
-    
+    driver.leftBumper().whileTrue(m_SuperStructure.acceptSuperStructureState(()->SuperStructurePresets.humanPlayer )
+    .alongWith(new InstantCommand(()-> m_EndEffector.conformEndEffectorState(endEffectorState.intaking))));
+    driver.leftBumper().whileFalse(new ReturnToStowed(m_SuperStructure));
     //driver.y().whileTrue(new InstantCommand(()-> m_SuperStructure.ejectGamePiece()));
     //driver.rightBumper().whileTrue(new MidCone(m_SuperStructure));
     //driver.leftBumper().whileTrue(new HighCone(m_SuperStructure));
@@ -228,8 +240,8 @@ public class RobotContainer {
      */
     coDriver.x().onTrue(new SwitchGamePiece(m_SuperStructure, false));
     coDriver.y().onTrue(new  SwitchGamePiece(m_SuperStructure, true));
-    coDriver.leftTrigger().whileTrue(new InstantCommand((()->m_EndEffector.ejectOverridePiece(coDriver.leftBumper().getAsBoolean())), m_EndEffector));
-    coDriver.rightTrigger().whileTrue(new InstantCommand((()->m_EndEffector.conformEndEffectorState(endEffectorState.intaking)), m_EndEffector));
+    coDriver.leftTrigger().whileTrue(new TeleShooter());
+    //coDriver.rightTrigger().whileTrue(new InstantCommand((()->m_EndEffector.conformEndEffectorState(endEffectorState.intaking)), m_EndEffector));
   //  coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
     coDriver.a().whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.getLeftY()));
     coDriver.b().whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.getRightY()));

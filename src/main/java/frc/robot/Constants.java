@@ -78,6 +78,8 @@ public final class Constants {
     REPLAY,
     SIM
   }
+  public static final int topShooterMotorID = 19;
+  public static final int bottomShooterMotorID = 20;
   public static final boolean tuningMode = true;
   public static boolean invalidRobotAlertSent = false;
   private static final RobotType robot = RobotType.ROBOT_2023C;
@@ -149,8 +151,8 @@ public final class Constants {
         public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(72.77+180); // FIXME Measure and set
                                                                                              // back right steer offset
         // Drivetrain Performance Mechanical limits
-        static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(8);
-        static public final double MAX_STRAFE_SPEED_MPS = Units.feetToMeters(8);
+        static public final double MAX_FWD_REV_SPEED_MPS = Units.feetToMeters(14);
+        static public final double MAX_STRAFE_SPEED_MPS = Units.feetToMeters(14);
         static public final double MAX_ROTATE_SPEED_RAD_PER_SEC = Units.degreesToRadians(180);
         static public final double MAX_TRANSLATE_ACCEL_MPS2 = MAX_FWD_REV_SPEED_MPS / 0.25; // 0-full time of 0.25
                                                                                             // second
@@ -222,10 +224,10 @@ public final class Constants {
     public static final class SuperStructureConstants{
         public static final int ElevatorMotorID = 1; 
         public static final int WristMotorID = 2; 
-        public static final int EndEffectorMotorID = 31
-        ; 
+        public static final int EndEffectorMotorID = 31; 
 
-        public static final double intakeCurrentSpikeThreashhold = 30; 
+
+        public static final double intakeCurrentSpikeThreashhold = 80; 
         public static final double intakeHoldingPercentOutput = 0.1; 
 
         public static final double intakeMinAngle = 120.0;
@@ -257,8 +259,8 @@ public final class Constants {
 
         public static final class SuperStructurePresets{
             public static final SuperStructureState groundIntake = new SuperStructureState(
-                35.0, // FIXME Measure
-                376.0  // FIXME Measure
+                27.5, // FIXME Measure
+                350.0  // FIXME Measure
                 ); 
             public static final SuperStructureState lowDrop = new SuperStructureState(
                 0.0, // FIXME Measure
@@ -273,7 +275,7 @@ public final class Constants {
                 190.0 // FIXME Measure
                 );
             public static final SuperStructureState highCone = new SuperStructureState(
-                487.0, // FIXME Measure
+                490.0, // FIXME Measure
                 200.0 // FIXME Measure
                 );
             public static final SuperStructureState highCube = new SuperStructureState(
@@ -281,8 +283,8 @@ public final class Constants {
                 279.0 // FIXME Measure
                 );
             public static final SuperStructureState humanPlayer = new SuperStructureState(
-                0.0, // FIXME Measure
-                0.0 // FIXME Measure
+                630.0, // FIXME Measure
+                330.0 // FIXME Measure
                 );
             public static final SuperStructureState ramp = new SuperStructureState(
                 0.0, // FIXME Measure

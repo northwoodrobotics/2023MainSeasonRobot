@@ -22,11 +22,13 @@ public class LoggedNeo implements LoggedMotor{
       controller = this.motor.getPIDController();
       encoder = motor.getEncoder();
       motor.setInverted(motorInvert);
+
       motor.enableVoltageCompensation(12.0);
       motor.setSmartCurrentLimit(currentLimit);
       controller.setFeedbackDevice(encoder);
       encoder.setPositionConversionFactor(gearRatio);
       encoder.setMeasurementPeriod(8);
+      motor.burnFlash();
 
   } 
     @Override

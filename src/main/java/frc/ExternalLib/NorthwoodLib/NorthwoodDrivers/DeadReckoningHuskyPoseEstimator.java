@@ -16,7 +16,6 @@ import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.Interpolatable;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -28,13 +27,13 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 /**
- * This class wraps {@link SwerveDriveOdometry Swerve Drive Odometry} to fuse latency-compensated
+ * This class wraps {@link SecondOrderOdometry Swerve Drive Odometry} to fuse latency-compensated
  * vision measurements with swerve drive encoder distance measurements. It is intended to be a
- * drop-in replacement for {@link edu.wpi.first.math.kinematics.SwerveDriveOdometry}.
+ * drop-in replacement for {@link frc.ExternalLib.NorthwoodLib.NorthwoodDrivers.SecondOrderOdometry}.
  *
- * <p>{@link SwerveDrivePoseEstimator#update} should be called every robot loop.
+ * <p>{@link DeadReckoningHuskyPoseEstimator#update} should be called every robot loop.
  *
- * <p>{@link SwerveDrivePoseEstimator#addVisionMeasurement} can be called as infrequently as you
+ * <p>{@link DeadReckoningHuskyPoseEstimator#addVisionMeasurement} can be called as infrequently as you
  * want; if you never call it, then this class will behave as regular encoder odometry.
  */
 public class DeadReckoningHuskyPoseEstimator {
@@ -167,7 +166,7 @@ public class DeadReckoningHuskyPoseEstimator {
    * while still accounting for measurement noise.
    *
    * <p>This method can be called as infrequently as you want, as long as you are calling {@link
-   * SwerveDrivePoseEstimator#update} every loop.
+   * DeadReckoningHuskyPoseEstimator#update} every loop.
    *
    * <p>To promote stability of the pose estimate and make it robust to bad vision data, we
    * recommend only adding vision measurements that are already within one meter or so of the
@@ -176,7 +175,7 @@ public class DeadReckoningHuskyPoseEstimator {
    * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
    * @param timestampSeconds The timestamp of the vision measurement in seconds. Note that if you
    *     don't use your own time source by calling {@link
-   *     SwerveDrivePoseEstimator#updateWithTime(double,Rotation2d,SwerveModulePosition[])} then you
+   *     DeadReckoningHuskyPoseEstimator#updateWithTime(double,Rotation2d,SwerveModulePosition[])} then you
    *     must use a timestamp with an epoch since FPGA startup (i.e., the epoch of this timestamp is
    *     the same epoch as {@link edu.wpi.first.wpilibj.Timer#getFPGATimestamp()}.) This means that
    *     you should use {@link edu.wpi.first.wpilibj.Timer#getFPGATimestamp()} as your time source
@@ -235,7 +234,7 @@ public class DeadReckoningHuskyPoseEstimator {
    * while still accounting for measurement noise.
    *
    * <p>This method can be called as infrequently as you want, as long as you are calling {@link
-   * SwerveDrivePoseEstimator#update} every loop.
+   * DeadReckoningHuskyPoseEstimator#update} every loop.
    *
    * <p>To promote stability of the pose estimate and make it robust to bad vision data, we
    * recommend only adding vision measurements that are already within one meter or so of the
@@ -243,12 +242,12 @@ public class DeadReckoningHuskyPoseEstimator {
    *
    * <p>Note that the vision measurement standard deviations passed into this method will continue
    * to apply to future measurements until a subsequent call to {@link
-   * SwerveDrivePoseEstimator#setVisionMeasurementStdDevs(Matrix)} or this method.
+   * DeadReckoningHuskyPoseEstimator#setVisionMeasurementStdDevs(Matrix)} or this method.
    *
    * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
    * @param timestampSeconds The timestamp of the vision measurement in seconds. Note that if you
    *     don't use your own time source by calling {@link
-   *     SwerveDrivePoseEstimator#updateWithTime(double,Rotation2d,SwerveModulePosition[])}, then
+   *     DeadReckoningHuskyPoseEstimator#updateWithTime(double,Rotation2d,SwerveModulePosition[])}, then
    *     you must use a timestamp with an epoch since FPGA startup (i.e., the epoch of this
    *     timestamp is the same epoch as {@link edu.wpi.first.wpilibj.Timer#getFPGATimestamp()}).
    *     This means that you should use {@link edu.wpi.first.wpilibj.Timer#getFPGATimestamp()} as
