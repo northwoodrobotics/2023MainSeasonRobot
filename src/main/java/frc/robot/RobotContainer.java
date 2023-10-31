@@ -159,7 +159,7 @@ public class RobotContainer {
     //m_SuperStructure = new SuperStructure();
    // PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
-
+    shooter.setDefaultCommand(new TeleShooter(shooter));
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
