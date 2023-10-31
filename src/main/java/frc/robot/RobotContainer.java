@@ -159,7 +159,7 @@ public class RobotContainer {
     //m_SuperStructure = new SuperStructure();
    // PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
-    shooter.setDefaultCommand(new TeleShooter(shooter));
+    shooter.setDefaultCommand(new TeleShooter(shooter,() -> coDriver.getLeftTriggerAxis()-coDriver.getRightTriggerAxis()));
    
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
@@ -240,7 +240,7 @@ public class RobotContainer {
      */
     coDriver.x().onTrue(new SwitchGamePiece(m_SuperStructure, false));
     coDriver.y().onTrue(new  SwitchGamePiece(m_SuperStructure, true));
-    coDriver.leftTrigger().whileTrue(new TeleShooter());
+    //coDriver.leftTrigger().whileTrue(new TeleShooter(shooter));
     //coDriver.rightTrigger().whileTrue(new InstantCommand((()->m_EndEffector.conformEndEffectorState(endEffectorState.intaking)), m_EndEffector));
   //  coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
     coDriver.a().whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.getLeftY()));
