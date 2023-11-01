@@ -80,6 +80,8 @@ public final class Constants {
   }
   public static final int topShooterMotorID = 19;
   public static final int bottomShooterMotorID = 20;
+  public static final int topIntakeMotorID = 17;
+  public static final int bottomIntakeMotorID = 18;
   public static final boolean tuningMode = true;
   public static boolean invalidRobotAlertSent = false;
   private static final RobotType robot = RobotType.ROBOT_2023C;

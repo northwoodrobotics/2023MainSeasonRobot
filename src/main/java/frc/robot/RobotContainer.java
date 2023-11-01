@@ -45,6 +45,7 @@ import frc.robot.commands.AutoCommands.TwoCubeRightBalance;
 import frc.robot.commands.AutoCommands.OnePlusHalfBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
 import frc.robot.commands.DriveCommands.TeleShooter;
+import frc.robot.commands.DriveCommands.TeleIntake;
 import frc.robot.commands.DriveCommands.CalibrateGyro;
 import frc.robot.commands.DriveCommands.DriveTimeCommand;
 import frc.robot.commands.DriveCommands.FeedForwardCharacterization;
@@ -68,6 +69,7 @@ import frc.robot.commands.TuningCommands.ElevatorAdjust;
 import frc.robot.commands.VisionCommands.AddVisionPose;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonCams;
 import frc.robot.subsystems.NodeSelector.NodeSelectorServerIO;
 import frc.robot.subsystems.NodeSelector.ObjectiveTracker;
@@ -95,7 +97,7 @@ public class RobotContainer {
   public static SuperStructure m_SuperStructure;
   private ObjectiveTracker objectiveTracker;
   public static Shooter shooter;
-
+  public static Intake intake;
   public static final LoggedDashboardChooser<Command> autoChooser = new LoggedDashboardChooser<>("Auto Routine");
 
   /**
@@ -140,6 +142,7 @@ public class RobotContainer {
         objectiveTracker = new ObjectiveTracker(new NodeSelectorServerIO());
         m_EndEffector = new EndEffector();
         shooter = new Shooter();
+        intake = new Intake();
         break;
         case ROBOT_2023P:
         dt = DrivetrainSubsystem.createSwerveModel();
@@ -159,8 +162,8 @@ public class RobotContainer {
     //m_SuperStructure = new SuperStructure();
    // PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
-    shooter.setDefaultCommand(new TeleShooter(shooter,() -> coDriver.getLeftTriggerAxis()-coDriver.getRightTriggerAxis()));
-   
+    intake.setDefaultCommand(new TeleIntake(intake,() -> coDriver.getLeftTriggerAxis()-coDriver.getRightTriggerAxis()));
+    shooter.setDefaultCommand(new TeleShooter(shooter,() -> coDriver.getLeftY()-coDriver.getRightY()));
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
         () -> xLimiter.calculate(driver.getLeftY()),
@@ -238,13 +241,13 @@ public class RobotContainer {
     driver.yButton.onTrue(new HumanPlayerPickup(m_SuperStructure));
     driver.xButton.onTrue(new EjectAndReturnToBottom(m_SuperStructure));
      */
-    coDriver.x().onTrue(new SwitchGamePiece(m_SuperStructure, false));
-    coDriver.y().onTrue(new  SwitchGamePiece(m_SuperStructure, true));
+    //coDriver.x().onTrue(new SwitchGamePiece(m_SuperStructure, false));
+    //coDriver.y().onTrue(new  SwitchGamePiece(m_SuperStructure, true));
     //coDriver.leftTrigger().whileTrue(new TeleShooter(shooter));
     //coDriver.rightTrigger().whileTrue(new InstantCommand((()->m_EndEffector.conformEndEffectorState(endEffectorState.intaking)), m_EndEffector));
   //  coDriver.yButton.whileTrue(new HighCone(m_SuperStructure));
-    coDriver.a().whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.getLeftY()));
-    coDriver.b().whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.getRightY()));
+    //coDriver.a().whileTrue(new WristAdjust(m_SuperStructure,()-> coDriver.getLeftY()));
+    //coDriver.b().whileTrue(new ElevatorAdjust(m_SuperStructure,()-> coDriver.getRightY()));
 
    
   }
