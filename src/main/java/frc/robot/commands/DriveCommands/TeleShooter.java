@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TeleShooter extends CommandBase {
@@ -33,7 +34,10 @@ public class TeleShooter extends CommandBase {
   @Override
   public void execute() {
 
-    shooter.move(pwr.getAsDouble());
+    shooter.move(
+      
+      MathUtil.applyDeadband( pwr.getAsDouble(), 0.1));
+  
   }
 
   // Called once the command ends or is interrupted.
