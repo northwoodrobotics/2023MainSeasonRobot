@@ -162,8 +162,8 @@ public class RobotContainer {
     //m_SuperStructure = new SuperStructure();
    // PortForwarder.add(5800, "photonvision.local", 5800);
     m_cams.setDefaultCommand(new AddVisionPose(m_cams));
-    intake.setDefaultCommand(new TeleIntake(intake,() -> coDriver.getLeftTriggerAxis()-coDriver.getRightTriggerAxis()));
-    shooter.setDefaultCommand(new TeleShooter(shooter,() -> coDriver.getLeftY()-coDriver.getRightY()));
+    intake.setDefaultCommand(new TeleIntake(intake,() -> ((coDriver.getLeftTriggerAxis()-coDriver.getRightTriggerAxis()))*0.5));
+    shooter.setDefaultCommand(new TeleShooter(shooter,() -> coDriver.getLeftY()));
 
     m_SwerveSubsystem.setDefaultCommand(new TeleopDriveCommand(m_SwerveSubsystem,
         () -> xLimiter.calculate(driver.getLeftY()),
@@ -180,7 +180,7 @@ public class RobotContainer {
 
   
     autoChooser.addDefaultOption("Do Nothing", null);
-    autoChooser.addOption("2.5 Piece", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    //autoChooser.addOption("2.5 Piece", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
     autoChooser.addOption("Mid cone and nothing", new OnePlusHalfBalance(m_SwerveSubsystem, m_SuperStructure,m_EndEffector));
     autoChooser.addOption("Localization Reset", new InstantCommand(()-> dt.setKnownPose(new Pose2d(0, 0, dt.getGyroscopeRotation()))));
     autoChooser.addOption("2.5 Plus Balance", new ThreeCubeBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
@@ -188,7 +188,7 @@ public class RobotContainer {
     autoChooser.addOption("2.5 Right Side", new TwoCubeRightBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
     autoChooser.addOption("Mid cone and mobility (right)", new ThreeCubeBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
     autoChooser.addOption("Mid cone and Balance", new PlaceAndBalance(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
-    autoChooser.addOption("Mid cone and mobility (left)", new ThreeCube(m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
+    autoChooser.addOption("Mid cone and mobility (left)", new ThreeCube(shooter,intake,m_SwerveSubsystem, m_SuperStructure, m_EndEffector));
 
     autoChooser.addOption("Characterize Drivetrain", new FeedForwardCharacterization(m_SwerveSubsystem, 
     true, 

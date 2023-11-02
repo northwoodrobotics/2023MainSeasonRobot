@@ -17,8 +17,8 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
    topShooter = new WPI_TalonSRX(Constants.topShooterMotorID);
    bottomShooter = new WPI_TalonSRX(Constants.bottomShooterMotorID);
-   topShooter.setInverted(true);
-   bottomShooter.setInverted(false);
+   topShooter.setInverted(false);
+   bottomShooter.setInverted(true);
 
   }
   
