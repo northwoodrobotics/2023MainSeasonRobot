@@ -65,7 +65,7 @@ public class ThreeCube extends SequentialCommandGroup{
             new EjectOverride(effector, true),
             structure.acceptSuperStructureState(()-> SuperStructurePresets.stowed),
             new AutoIntake(intake, 0.5, 1.0),
-            new AutoShoot(shooter, 0.5,1.0),
+            new AutoShoot(shooter, 0.6,1.0),
         
             new DriveTimeCommand(swerve, 1.25, 2250)
             //firstCommand,

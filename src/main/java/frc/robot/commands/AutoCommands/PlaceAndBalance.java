@@ -20,12 +20,16 @@ import frc.robot.commands.SuperStructureCommands.HighCone;
 import frc.robot.Constants.SuperStructureConstants.SuperStructurePresets;
 import frc.robot.commands.ActionCommands.AutoBalance;
 import frc.robot.commands.DriveCommands.AutoDrive;
+import frc.robot.commands.DriveCommands.AutoIntake;
+import frc.robot.commands.DriveCommands.AutoShoot;
 import frc.robot.commands.SuperStructureCommands.SmartEject;
 import frc.robot.commands.SuperStructureCommands.WaitToRecieve;
 import frc.robot.commands.SuperStructureCommands.HighCube;
 import frc.robot.commands.SuperStructureCommands.MidCone;
 import frc.robot.commands.SuperStructureCommands.MidCube;
 import frc.robot.commands.SuperStructureCommands.ReturnToStowed;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SuperStructure.EndEffector;
 import frc.robot.subsystems.SuperStructure.SuperStructure;
 import frc.robot.subsystems.SuperStructure.EndEffector.endEffectorState;
@@ -41,7 +45,7 @@ public class PlaceAndBalance extends SequentialCommandGroup{
     
     
 
-    public PlaceAndBalance(SwerveSubsystem swerve, SuperStructure structure, EndEffector effector){
+    public PlaceAndBalance(Shooter shooter, Intake intake, SwerveSubsystem swerve, SuperStructure structure, EndEffector effector){
         eventMap.put("IntakeMode1", 
 
         new SequentialCommandGroup((new ParallelDeadlineGroup(
@@ -62,8 +66,11 @@ public class PlaceAndBalance extends SequentialCommandGroup{
             new WaitCommand(1.4),
             new EjectOverride(effector, true),
             structure.acceptSuperStructureState(()-> SuperStructurePresets.stowed),
-            new DriveTimeCommand(swerve, 1.5, 3200),
-            new DriveTimeCommand(swerve, -1.5, 1700),
+
+            new AutoIntake(intake, 0.5, 1.0),
+            new AutoShoot(shooter, 0.6,1.0),
+            new DriveTimeCommand(swerve, 1.5, 3300),
+            new DriveTimeCommand(swerve, -1.5, 1550),
             new StrafeTimeCommand(swerve,0,9000)
             //firstCommand,
             // new WaitCommand(0.3),
